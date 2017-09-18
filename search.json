@@ -1,0 +1,32 @@
+﻿{
+  "tools": [
+    {
+      "key": "必应搜索",
+      "value": "http://cn.bing.com/search?q=%s"
+    },
+    {
+      "key": "百度一下",
+      "value": "https://www.baidu.com/s?wd=%s"
+    },
+    {
+      "key": "百度百科",
+      "value": "https://baike.baidu.com/searchword/?word=%s"
+    },
+    {
+      "key": "百度翻译",
+      "value": "http://fanyi.baidu.com/#zh/en/%s"
+    },
+    {
+      "key": "知乎搜索",
+      "value": "https://www.zhihu.com/search?type=content&q=%s"
+    },
+    {
+      "key": "豆瓣电影",
+      "value": "https://movie.douban.com/subject_search?search_text=%s"
+    },
+    {
+      "key": "高德地图",
+      "value": "http://ditu.amap.com/search?query=%s"
+    }
+  ]
+}
