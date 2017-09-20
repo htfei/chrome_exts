@@ -44,4 +44,14 @@ function active_load_menus(){
   }
 }
 
-﻿window.onmouseup =  active_load_menus() ;
+active_load_menus();
+
+/*
+﻿window.onmouseup = active_load_menus();//error
+background.js无法直接与当前页面的dom交互，
+所以猜测其也无法直接调用window.onmouseup等dom事件，
+故需要content.js脚本，在其中监听事件，并通过消息机制发送到background.js中来.
+*/
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
+  active_load_menus();
+});
