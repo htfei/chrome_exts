@@ -11,10 +11,9 @@ function table_load_from_localStorage(){
 	if(localStorage.length == 0){
 		//加载默认项到localStorage
 		localStorage.setItem("百度一下","https://www.baidu.com/s?wd=%s");
-		localStorage.setItem("百度翻译","http://fanyi.baidu.com/#zh/en/%s");
-		localStorage.setItem("高德地图查询位置","http://ditu.amap.com/search?query=%s");
-		localStorage.setItem("neets查询电影资源","http://neets.cc/search?key=%s");
-
+		localStorage.setItem("查翻译","http://www.iciba.com/%s");
+		localStorage.setItem("查地图","http://ditu.amap.com/search?query=%s");
+		localStorage.setItem("查电影","http://neets.cc/search?key=%s");
 	}
 	var table = '<table><tr><th>名称</th><th>URL</th></tr>';
 	for(var i= 0 ;i < localStorage.length; i++ ){

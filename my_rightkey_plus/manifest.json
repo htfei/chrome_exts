@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "使用自定义搜索",
+  "name": "右键搜索",
   "version": "1.0",
-  "description": "自定义你的右键搜索，快捷搜索新选项！",
+  "description": "自定义你的右键搜索！",
   "browser_action": {
     "default_icon": {
       "19": "images/sb.png"
