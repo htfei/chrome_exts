@@ -14,6 +14,7 @@ function table_load_from_localStorage(){
 		localStorage.setItem("查翻译","http://www.iciba.com/%s");
 		localStorage.setItem("查地图","http://ditu.amap.com/search?query=%s");
 		localStorage.setItem("查电影","http://neets.cc/search?key=%s");
+		localStorage.setItem("转二维码","http://qr.liantu.com/api.php?text=%s");
 	}
 	var table = '<table><tr><th>名称</th><th>URL</th></tr>';
 	for(var i= 0 ;i < localStorage.length; i++ ){

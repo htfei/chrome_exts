@@ -27,6 +27,10 @@
     {
       "key": "高德地图",
       "value": "http://ditu.amap.com/search?query=%s"
+    },
+    {
+      "key": "转二维码",
+      "value": "http://qr.liantu.com/api.php?text=%s"
     }
   ]
 }
