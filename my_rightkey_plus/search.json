@@ -31,6 +31,14 @@
     {
       "key": "转二维码",
       "value": "http://qr.liantu.com/api.php?text=%s"
+    },
+    {
+      "key": "链家搜索",
+      "value": "http://wh.fang.lianjia.com/loupan/rs%s"
+    },
+    {
+      "key": "百度站内搜索",
+      "value": "https://www.baidu.com/s?wd=site:%w %s"
     }
   ]
 }

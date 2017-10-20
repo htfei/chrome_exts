@@ -10,20 +10,22 @@ function table_load_from_localStorage(){
 	//show_log("loadtable...");
 	if(localStorage.length == 0){
 		//加载默认项到localStorage
-		localStorage.setItem("百度一下","https://www.baidu.com/s?wd=%s");
 		localStorage.setItem("查翻译","http://www.iciba.com/%s");
 		localStorage.setItem("查地图","http://ditu.amap.com/search?query=%s");
 		localStorage.setItem("查电影","http://neets.cc/search?key=%s");
+		localStorage.setItem("查房价","http://wh.fang.lianjia.com/loupan/rs%s");
 		localStorage.setItem("转二维码","http://qr.liantu.com/api.php?text=%s");
 	}
-	var table = '<table><tr><th>名称</th><th>URL</th></tr>';
+	var table = '<table><tr><th> </th><th>名称</th><th>URL</th></tr>';
 	for(var i= 0 ;i < localStorage.length; i++ ){
 		var key = localStorage.key(i);
 		var value = localStorage.getItem(key);
 		table += '<tr>';
+		table += '<td>'+i+'</td>';
 		table += '<td><input type="text" value="'+key+'"/></td>';
 		table += '<td><input type="text" value="'+value+'" size=60 /></td>';
 		table += '<td><input type="button" class="del_btn" value="删除" /></td>';
+		table += '<td><input type="button" class="up_btn" value="更新" /></td>';
 		table += '</tr>';
 	}
 	table += '</table>';
@@ -38,18 +40,27 @@ document.getElementById('add_btn').onclick = function(){
 	var key = document.getElementById('add_key').value;
 	var value = document.getElementById('add_value').value;
 	localStorage.setItem(key,value);
-	//table_add_list(key,value);
-	//show_log(key+':'+ value+ '添加成功!');
 	location.reload();
 };
 
 //删除某一项键值对
 $('.del_btn').click(function(){
-	 var obj = this.parentNode.parentNode;
-	 var key = obj.childNodes[0].childNodes[0].value ;
+	 var obj = this.parentNode.parentNode;//input.td.tr
+	 var key = obj.childNodes[1].childNodes[0].value ;//tr.td1.input.value
 	 localStorage.removeItem(key);
-	 //obj.parentNode.removeChild(obj);
-	 //show_log(key+ ' 删除成功!');
+	 location.reload();
+});
+
+//更新某一项键值对
+$('.up_btn').click(function(){
+	 var obj = this.parentNode.parentNode;
+	 var num = obj.childNodes[0].innerHTML;
+	 //先删除再添加
+	 var old_key = localStorage.key(num);
+	 localStorage.removeItem(old_key);
+	 var new_key = obj.childNodes[1].childNodes[0].value ;
+	 var new_val = obj.childNodes[2].childNodes[0].value ;
+	 localStorage.setItem(new_key,new_val);
 	 location.reload();
 });
 
