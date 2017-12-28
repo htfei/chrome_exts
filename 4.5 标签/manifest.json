@@ -1,0 +1,33 @@
+{
+    "manifest_version": 2,
+    "name": "标签demo",
+    "version": "1.0",
+    "description": "标签demo",
+    "icons": {
+        "16": "images/icon16.png",
+        "48": "images/icon48.png",
+        "128": "images/icon128.png"
+    },
+    "browser_action": {
+        "default_icon": {
+            "19": "images/icon19.png",
+            "38": "images/icon38.png"
+        },
+        "default_title": "标签demo",
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [
+      {
+        "matches": ["*://*/*"],
+        "js": ["js/content.js"]
+      }
+    ],
+    "permissions": [
+      "tabs","activeTab"
+    ],
+    "background": {
+        "scripts": [
+            "js/background.js"
+        ]
+    }
+}
