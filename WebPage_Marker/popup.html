@@ -1,0 +1,41 @@
+﻿<html>
+<head>
+  <title>我的右键plusplus</title>
+  <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+  <style>
+  .upload{
+    padding: 4px 10px;
+    position: relative;
+    border: 1px solid #999;
+    text-decoration: none;
+  }
+  .change{
+    position: absolute;
+    overflow: hidden;
+    right: 0;
+    top: 0;
+    opacity: 0;
+  }
+  </style>
+</head>
+
+<body>
+  <div id="content_page" style="width:250px">
+    <p>当前页：访问2/24次数,已收藏</p>
+    <!--<img src ="#" height="16" width="16"/>-->
+    <a href="#" style="text-decoration:none;">aaaa</a>
+  </div>
+
+  <div>
+    <p>快速访问：</p> <!--pv值最大的7个页面-->
+    <img src="https://www.baidu.com/favicon.ico" height="16" width="16"/>
+    <a href="#" id="open_url_new_tab" style="text-decoration:none;">百度一下</a>
+  </div>
+
+  <br/>
+
+  <div id="log"></div>
+
+  <script type="text/javascript" src="js/popup.js"></script>
+</body>
+</html>
