@@ -1,42 +1,53 @@
 
-chrome.runtime.sendMessage('Hello', function(response){
-    console.log("收到回复："+response);
+var current_tab;
+
+//获取当前活动的用户标签并显示到popup页面上
+chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+    console.log(tabs[0]);
+    $('#content_page img').get(0).src = tabs[0].favIconUrl;
+    $('#content_page a').get(0).href = tabs[0].url;
+    $('#content_page a').get(0).innerHTML = tabs[0].title;
+    $('#content_page a').click(() => {
+      chrome.tabs.create({url: $('#content_page a').get(0).href });
+    });
+    current_tab = tabs[0];
+    //更新记录信息
+    var value = JSON.parse(localStorage.getItem(current_tab.url));
+    if(value){
+      $('#content_page p').get(0).innerHTML = ((value.rate == 1)?"已收藏":"已拉黑");
+    }
+    else{
+      $('#content_page p').get(0).innerHTML = "未记录";
+    }
+}); //end query
+
+//创建新标签
+$('#create_tab').click(() =>{
+  chrome.tabs.create({
+      url: 'http://www.baidu.com',
+      active: true,
+      pinned: false
+  }, function(tab){
+      console.log(tab);
+  });
 });
 
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
-      console.log("收到消息："+message);
+//like
+$('#like_btn').click(() =>{
+  var key = current_tab.url;
+	var value =  {"type":1,"pv":0,"rate":1,"title":current_tab.title,"favIconUrl":current_tab.favIconUrl};
+	localStorage.setItem(key,JSON.stringify(value));
 });
-
-
-/* 在popup页面加载后将content页面信息显示出来 */
-var nowpage_key ="";
-chrome.storage.sync.get("nowpage",function(date){
-	nowpage_key = date["nowpage"];
+//hate
+$('#hate_btn').click(() =>{
+  var key = current_tab.url;
+	var value =  {"type":1,"pv":0,"rate":10,"title":current_tab.title,"favIconUrl":current_tab.favIconUrl};
+	localStorage.setItem(key,JSON.stringify(value));
 });
-chrome.storage.sync.get(nowpage_key,function(date){
-  var link = nowpage_key;
-  var value = date[nowpage_key];
-  var title = value["title"];
-  var pv = value["pv"];
-  var hv = value["hv"];
-  var rate = value["rate"];
-  var fav = (rate == 1)?"已收藏":(rate == 2)?"已拉黑":"未收藏";
-  $('#content_page img').get(0).src = date.hostname +"/favicon.ico" ;
-  $('#content_page a').get(0).href = link;
-  $('#content_page a').get(0).innerHTML = title;
-  $('#content_page p').get(0).innerHTML = "当前页：访问"+ pv +"/"+hv+"次,"+fav;
-});
-
-// 新标签打开网页
-$('#content_page a').click(() => {
-  chrome.tabs.create({url: $('#content_page a').get(0).href });
-});
-
-
-table_load_from_localStorage();
-
-
-// 新标签打开网页
-$('#open_url_new_tab').click(() => {
-	chrome.tabs.create({url: 'https://www.baidu.com/'});
+//添加新tag
+$('#add_btn').click(() =>{
+  var key = current_tab.url;
+	var value = {"type":0,"str":document.getElementById('add_value').value};
+	localStorage.setItem(key,JSON.stringify(value));
+	location.reload();
 });

@@ -1,39 +1,20 @@
 {
   "manifest_version": 2,
-  "name": "右键搜索2",
+  "name": "网页标记",
   "version": "1.0",
-  "description": "自定义你的右键搜索！",
+  "description": "对你感兴趣的or讨厌的网页做标记！",
   "browser_action": {
-    "default_icon": {
-      "19": "images/sb.png"
-    },
-    "default_title": "右键搜索2",
+    "default_icon":{"19":"images/ok.png"},
+    "default_title": "网页标记",
     "default_popup": "popup.html"
   },
-  "icons": {
-    "16": "images/sb.png",
-    "48": "images/sb.png",
-    "128": "images/sb.png"
-  },
-  "background": {
-    "scripts": [
-      "js/background.js"
-    ]
-  },
-  "content_scripts": [
-    {
-      "matches": ["*://*/*"],
-      "js": ["js/jquery-1.8.3.js","js/content.js"]
-    }
-  ],
+  "icons": {"16": "images/ok.png","48": "images/ok.png","128": "images/ok.png"},
+  "background": {"scripts": ["js/background.js"]},
+  "content_scripts": [{
+    "matches": ["*://*/*"],
+    "js": ["js/jquery-1.8.3.js","js/content.js"]
+  }],
   "options_page": "options.html",
-  "options_ui":
-  {
-    "page": "options.html",
-    "chrome_style": true
-  },
-  "permissions": [
-    "contextMenus",
-    "storage"
-  ]
+  "options_ui":{"page": "options.html", "chrome_style": true},
+  "permissions": ["contextMenus", "storage","tabs"]
 }
