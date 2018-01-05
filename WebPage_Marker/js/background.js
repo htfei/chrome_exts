@@ -27,12 +27,15 @@ function add_set(){
   /* 拉黑网址 */
   chrome.contextMenus.create({
       'type':'normal',
-      'title':'拉黑网址',
+      'title':'拉黑该网站',
       'contexts':['page','link'],
       'id':'blackpage',
       'onclick':function(info, tab){
-        var key = tab.url;
-        var value = {"type":1,"pv":0,"rate":0,"title":tab.title,"favIconUrl":tab.favIconUrl};
+        var url = tab.url;
+        var urlArr = url.split("/");
+        hostname = urlArr[2];
+        var key = hostname ;
+        var value =  {"rate":10,"sonpage":tab.url};
         localStorage.setItem(key,JSON.stringify(value));
     }
   });
