@@ -21,25 +21,26 @@
 
 <body>
   <div id="content_page" style="width:300px">
-    <br/>
-    <img src ="#" height="16" width="16"/>
-    <a href="#" style="text-decoration:none;"></a><br/>
-    <p><font>主站：</font><a href="#" style="text-decoration:none;"></a></p>
-    <p></p><!--访问？次，已收藏or已拉黑？-->
-    <p>标签：</p>
-    <input type="button" id="like_btn" value="收藏网页" />
-    <input type="button" id="hate_btn" value="拉黑网站" /><br/><br/>
 
-
-    <input type="text" id="add_tag"/>
+    <p id="current_url"><img src ="#" height="16" width="16"/><a href="#" style="text-decoration:none;"></a></p>
+    <!--访问？次，收藏拉黑属于网页--><!--标签打在网页上，但属于整个网站，todo:此处可根据标签筛选网页-->
+    <font id="current_mark">标记：</font><br/>
+    <font id="current_tag">标签：</font><br/><br/>
+    <input type="button" id="like_btn" value="收藏" />
+    <input type="button" id="hate_btn" value="拉黑" /><br/>
+    <input type="text" style="width:70%;" id="add_tag"/>
     <input type="button" id="add_btn" value="添加新标签" /><br/>
+
+
+    <p><font>主站：</font><a id="host_link" href="#" style="text-decoration:none;"></a></p>
+    <p id="host_mark">所有标签：</p><!--标签打在网页上，但属于整个网站，todo:此处可根据标签筛选网页-->
 
   </div>
 
   <div>
-    <p>快速访问：</p> <!--pv值最大的7个页面-->
+    <p>快速访问：</p> <!--pv值最大的7个页面--------------------------->
     <img src="https://www.baidu.com/favicon.ico" height="16" width="16"/>
-    <a href="#" id="create_tab" style="text-decoration:none;">百度一下</a>
+    <a href="#" id="open_baidu_in_newtab" style="text-decoration:none;">百度一下</a>
   </div>
   <br/>
 
