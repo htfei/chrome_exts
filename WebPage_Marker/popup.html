@@ -2,6 +2,7 @@
 <head>
   <title>我的右键plusplus</title>
   <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+  <script type="text/javascript" src="js/background.js"></script>
   <style>
   .upload{
     padding: 4px 10px;
@@ -26,8 +27,9 @@
     <!--访问？次，收藏拉黑属于网页--><!--标签打在网页上，但属于整个网站，todo:此处可根据标签筛选网页-->
     <font id="current_mark">标记：</font><br/>
     <font id="current_tag">标签：</font><br/><br/>
-    <input type="button" id="like_btn" value="收藏" />
-    <input type="button" id="hate_btn" value="拉黑" /><br/>
+    <input type="button" id="like_btn" class="pagemark_btn" value="收藏" />
+    <input type="button" id="hate_btn" class="pagemark_btn" value="拉黑" />
+    <input type="button" id="cancel_btn" class="pagemark_btn" value="取消标记" /><br/>
     <input type="text" style="width:70%;" id="add_tag"/>
     <input type="button" id="add_btn" value="添加新标签" /><br/>
 
