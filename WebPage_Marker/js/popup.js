@@ -35,16 +35,10 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
     $('#host_mark').get(0).innerHTML += jstr.tag;
 }); //end query
 
+
 //新标签打开百度
-$('#open_baidu_in_newtab').click(() =>{
-  chrome.tabs.create({
-      url: 'http://www.baidu.com',
-      active: true,
-      pinned: false
-  }, function(tab){
-      console.log(tab);
-  });
-});
+$('#open_baidu_in_newtab').click(() => {chrome.tabs.create({url: 'http://www.baidu.com' });});
+
 
 /* like or hate or cancel = 1/2/0 */
 /*
@@ -58,7 +52,7 @@ $('.pagemark_btn').click(function(){
 
   //确定是哪个按钮
   //console.log(this);
-	console.log(this.value);
+	//console.log(this.value);
   var btn = 0;
   if(this.id == "like_btn"){
     btn=1;
@@ -66,21 +60,32 @@ $('.pagemark_btn').click(function(){
   else if(this.id == "hate_btn"){
     btn=2;
   }
-  console.log(btn);
-//});
+  //console.log(btn);
+////});
   //更新url记录信息
   var flag = 1;
+  var time = (new Date()).getTime();
   var value = JSON.parse(localStorage.getItem(current_tab.url));
   if(value){//localStorage已存在记录且rate有改动，则更新
     if(value.rate != btn){
       value.rate = btn;
+      value.last_edit_time = time;
     }
     else{
       flag = 0; //不需要做任何更新操作
     }
   }
   else{//localStorage无记录，则新建
-    value =  {"rate":btn,"title":current_tab.title,"favIconUrl":current_tab.favIconUrl,"host":hostname,"tag":""};
+    value =  {
+      "rate":btn,
+      "title":current_tab.title,
+      "favIconUrl":current_tab.favIconUrl,
+      "host":hostname,
+      "tag":"",
+      "create_time":time,
+      "last_edit_time":time,
+      "pv":1
+    };
   }
 
   //确认有改动，则更新并重新加载popup
@@ -94,15 +99,34 @@ $('.pagemark_btn').click(function(){
 
 //添加新tag
 $('#add_btn').click(() =>{
-	var value = JSON.parse(localStorage.getItem(current_tab.url));
-  if(!value){//无记录则新建
-    value =  {"rate":0,"title":current_tab.title,"favIconUrl":current_tab.favIconUrl,"host":hostname};
+  var tag = $('#add_tag')[0].value ;
+  if(tag != ""){//text内容为空则跳过
+    var time = (new Date()).getTime();
+    var value = JSON.parse(localStorage.getItem(current_tab.url));
+    if(value){//localStorage已存在记录tag则追加
+      //todo : 已有相同tag则忽略
+      value.tag += (" " + tag);
+      value.last_edit_time = time;
+    }
+    else{//无记录则新建
+      value =  {
+        "rate":0,
+        "title":current_tab.title,
+        "favIconUrl":current_tab.favIconUrl,
+        "host":hostname,
+        "tag":tag,
+        "create_time":time,
+        "last_edit_time":time,
+        "pv":1
+      };
+    }
+    localStorage.setItem(current_tab.url,JSON.stringify(value));
+    location.reload();
   }
-  else{
-    //已有tag则追加，尚无则直接使用
-    //todo : 已有相同tag则忽略
-    value.tag?(value.tag += " " + $('#add_tag')[0].value):(value.tag = $('#add_tag')[0].value);
-  }
-	localStorage.setItem(current_tab.url,JSON.stringify(value));
-	location.reload();
 });
+//添加新tag //2018.01.09add:加入回车键提交tag
+document.getElementById("add_tag").onkeydown = function onkeydown_enter(){
+  if(event.keyCode==13){
+    document.getElementById("add_btn").click();
+  }
+}
