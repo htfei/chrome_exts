@@ -1,4 +1,4 @@
-
+document.write("<script language=javascript src='js/common.js'></script>");
 var current_tab;
 var hostname;
 //document.write("<script language=javascript src=’./background.js’></script>");
@@ -100,29 +100,36 @@ $('.pagemark_btn').click(function(){
 //添加新tag
 $('#add_btn').click(() =>{
   var tag = $('#add_tag')[0].value ;
-  if(tag != ""){//text内容为空则跳过
-    var time = (new Date()).getTime();
-    var value = JSON.parse(localStorage.getItem(current_tab.url));
-    if(value){//localStorage已存在记录tag则追加
-      //todo : 已有相同tag则忽略
-      value.tag += (" " + tag);
-      value.last_edit_time = time;
-    }
-    else{//无记录则新建
-      value =  {
-        "rate":0,
-        "title":current_tab.title,
-        "favIconUrl":current_tab.favIconUrl,
-        "host":hostname,
-        "tag":tag,
-        "create_time":time,
-        "last_edit_time":time,
-        "pv":1
-      };
-    }
-    localStorage.setItem(current_tab.url,JSON.stringify(value));
-    location.reload();
+  if(tag == ""){
+    return ;//text内容为空则跳过
   }
+  var time = (new Date()).getTime();
+  var value = JSON.parse(localStorage.getItem(current_tab.url));
+  if(value){//localStorage有记录则追加tag
+    // 若存在aaa,以下代码会导致aa无法添加，故注释掉
+    //if(value.tag.indexOf(tag) >= 0){
+    //  $('#add_tag')[0].value = "";//"已存在相同tag!";
+    //  return ;
+    //}
+    value.tag += (" " + tag);
+    //todo : 已有相同tag则忽略
+    value.tag = [... new Set(value.tag.split(/[', ']/))].join(' ');
+    value.last_edit_time = time;
+  }
+  else{//无记录则新建
+    value =  {
+      "rate":0,
+      "title":current_tab.title,
+      "favIconUrl":current_tab.favIconUrl,
+      "host":hostname,
+      "tag":tag,
+      "create_time":time,
+      "last_edit_time":time,
+      "pv":1
+    };
+  }
+  localStorage.setItem(current_tab.url,JSON.stringify(value));
+  location.reload();
 });
 //添加新tag //2018.01.09add:加入回车键提交tag
 document.getElementById("add_tag").onkeydown = function onkeydown_enter(){
