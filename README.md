@@ -1,15 +1,23 @@
-# chrome_exts
-chrome浏览器插件开发demo合集
+# chrome浏览器插件开发demo合集
 
+## 可食用插件
 项目名|简介|使用的技术
 -|-|-
 my_rightkey_plus | 可以自定义的右键搜索 |localStorage,contextMenus,扩展通信
 WebPage_Marker|对网页进行拉黑、收藏、打标签|localStorage,contextMenus
 
+## 油猴脚本
+
+项目名|简介|使用的技术
+-|-|-
+光谷社区优化 | 回复列表改为盖楼形式 |无
+绝对领域图片提取| 点击下载主内容区图片，避免下载其他区域杂图|无
+下载选中区图片| 对上个脚本的改进版，可自定义区域，适配任何网站| localStorage
 
 
-以下示例来自于https://github.com/Sneezry/chrome_extensions_and_apps_programming
- , 有部分修改(参考[《Chrome扩展及应用开发（首发版）》](http://www.ituring.com.cn/book/1421))
+## 学习demo
+
+以下示例来自于[《Chrome扩展及应用开发（首发版）》](http://www.ituring.com.cn/book/1421)的[附带源码](https://github.com/Sneezry/chrome_extensions_and_apps_programming)，有部分修改及新增项目
 
 项目名|简介|使用的技术
 -|-|-
