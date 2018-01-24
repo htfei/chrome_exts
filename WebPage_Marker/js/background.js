@@ -28,7 +28,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
 /* 加入黑名单 */
 chrome.contextMenus.create({
   'type':'normal',
-  'title':'将当前页面加入黑名单',
+  'title':'将本网页加入黑名单',
   'contexts':['page'],
   'id':'pushblackpage',
   'onclick':function(info, tab){pushblackpage(tab,2);}
@@ -36,8 +36,16 @@ chrome.contextMenus.create({
 /* 加入收藏 */
 chrome.contextMenus.create({
   'type':'normal',
-  'title':'将当前页面加入收藏',
+  'title':'将本网页加入收藏',
   'contexts':['page'],
   'id':'pushfavpage',
   'onclick':function(info, tab){pushblackpage(tab,1);}
+});
+/* 加入黑名单 */
+chrome.contextMenus.create({
+  'type':'normal',
+  'title':'为本网页添加标签'+'"%s"',
+  'contexts':['selection'],
+  'id':'addtag',
+  'onclick':function(info, tab){add_tag(tab,info.selectionText);}
 });
