@@ -37,7 +37,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
 
 
 //新标签打开百度
-$('#open_baidu_in_newtab').click(() => {chrome.tabs.create({url: 'http://www.baidu.com' });});
+//$('#open_baidu_in_newtab').click(() => {chrome.tabs.create({url: 'http://www.baidu.com' });});
 
 
 /* like or hate or cancel = 1/2/0 */

@@ -68,6 +68,7 @@ function add_tag(current_tab,tag){
     value.tag += (" " + tag);
     value.tag = [... new Set(value.tag.split(/[', ']/))].join(' ');
     value.last_edit_time = time;
+    value.pv += 1; 
   }
   else{//无记录则新建
     value =  {
