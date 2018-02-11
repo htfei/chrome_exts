@@ -1,33 +1,9 @@
 ﻿
-//-------添加新的搜索项-------
-chrome.contextMenus.create({
-    'type':'normal',
-    'title':'[添加新的搜索项]',
-    'contexts':['all'],
-    'id':'test1',
-    'onclick':function(info, tab){
-      //window.open('./options.html', '_blank');
-      window.open('chrome://extensions/?options=nobklgnfhnjmcapkppbpmckchijdebcj', '_blank');
-	}
-});
+//百度识图
 
-
-//-------百度一下-------
-function add_baidu(){
-  chrome.contextMenus.create({
-      'type':'normal',
-      'title':'百度一下'+'"%s"',
-      'contexts':['selection'],
-      'id':'baidu',
-      'onclick':function(info, tab){
-        var url = 'https://www.baidu.com/s?wd=' + info.selectionText ;
-        window.open(url, '_blank');
-  	}
-  });
-}
 
 //----动态加载菜单项-----
-function add_active_menus(hostname){
+function add_active_menus(){
   for( var i = 0; i < localStorage.length; i++ ){
   	var key = localStorage.key(i);
   	var value = localStorage.getItem(key);
@@ -39,29 +15,39 @@ function add_active_menus(hostname){
   	    	'id':'id'+i,
   	    	'onclick':function(info, tab){
             var url = fvalue.replace("%s",info.selectionText);
-            if(hostname != null){
-              url = url.replace("%w",hostname);
-            }
   	    		window.open(url, '_blank');
   	    	}
-  	    });
+        });
+      if(key.indexOf("识图") != -1){
+        chrome.contextMenus.update('id'+i,{
+          'contexts':['image'],//百度识图为image类型
+          'onclick':function(info, tab){
+            var url = fvalue.replace("%s",info.srcUrl);//image的url
+  	    		window.open(url, '_blank');
+  	    	}
+        });
+      }        
   	})(value)
   }
 }
 
-add_baidu();
-add_active_menus(null);
+add_active_menus();
 
-/*
-﻿window.onmouseup = active_load_menus();//error
-background.js无法直接与当前页面的dom交互，所以无法直接调用window.onmouseup等dom事件，
-故需要content.js脚本，在其中监听事件，并通过消息机制发送到background.js中来.
-尚存bug：2017.10.11--omMessage并不是每次都能成功传递过来，与具体站点相关，且有时必须重启浏览器。
-*/
-
+/* 2018.02.11：大部分情况并不需要重新加载，【站内搜索】需要获取网站的host ,此时需要传递消息 */
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
-    chrome.contextMenus.removeAll();
-    add_baidu();
-    //chrome.contextMenus.update('baidu',{'title':'百度一下 ['+message.selstr+'] '});
-    add_active_menus(message.host);
+    //chrome.contextMenus.removeAll();//删除所有菜单项
+    //add_active_menus(message.host);
+    for( var i = 0; i < localStorage.length; i++ ){
+      var key = localStorage.key(i);
+      var value = localStorage.getItem(key);
+      if(key.indexOf("站内") != -1 ){
+        chrome.contextMenus.update('id'+i,{
+          'onclick':function(info, tab){
+            var url = value.replace("%s",info.selectionText).replace("%w",message.host);
+            window.open(url, '_blank');
+          }
+        });
+      }
+      //break;//只有一个站内项
+    }
 });

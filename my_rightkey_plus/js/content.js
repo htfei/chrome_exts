@@ -2,7 +2,7 @@
     var selection = window.getSelection();
     if(selection.anchorOffset != selection.extentOffset){
         chrome.runtime.sendMessage({
-          selstr:selection.toString(),
+          //selstr:selection.toString(),
           host:location.hostname
         });
     }
