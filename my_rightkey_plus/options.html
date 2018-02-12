@@ -21,26 +21,26 @@
 
 <body>
   <div id="all">载入中……</div><br/>
-  <p>注意：更新后需要<font color="#FF0000"> 重启本扩展或浏览器 </font>后方可生效！</p>
+  <p>注意：更新后需要<font color="#FF0000"> 重新加载本扩展或重启浏览器 </font>后方可生效！</p>
+
   <div id="help">
-    <p>如何添加新的[搜索项]？</p>
-    <p>1. 自己分析搜索url，并添加进来。</p>
+    <b>添加配置</b>
     <input type="text" id="add_key"/>
-    <input type="text" id="add_value" size="30"/>
-    <input type="button" id="add_btn" value="添加" /><br/>
-    <p>2. 通过<a href="https://github.com/htfei/chrome_exts/tree/master/my_rightkey_plus">开发者网站</a>下载search.json文件,并导入进来。</p>
-    <a href="javascript:;" class="upload">导入表单文件
-      <input class="change" type="file" id="loadfile" accept=".json"/><br/>
+    <input type="text" id="add_value" size="60"/>
+    <input type="button" id="add_btn" value="添加" /><br/><br/>
+
+    <b>导入导出 </b>
+    <a href="javascript:;" class="upload">导入json文件
+      <input class="change" type="file" id="loadfile" accept=".json"/>
     </a>
-    <p>3. 将你的需求描述清楚，通过<a href="mailto:why2fly@aliyun.com">邮件</a>告诉开发者。</p>
-    <br/>
-    <!--
-    <p>支付宝打赏作者一包辣条：</p>
-    <img src="./images/zfb1y.jpg"></img>
-    -->
+    <input  class="upload" type="button" id="export_file" value="导出json文件" /><br/><br/>
+
   </div>
-  <input type="button" id="onkey_del_btn" value="一键还原(慎用)" /><br/><br/>
+
+  <!--<input type="button" id="onkey_del_btn" value="一键还原(慎用)" /><br/><br/>-->
+  <a href="https://github.com/htfei/chrome_exts/tree/master/my_rightkey_plus">开发者网站</a>
   <div id="log"></div>
+
   <script type="text/javascript" src="js/options.js"></script>
 </body>
 </html>
