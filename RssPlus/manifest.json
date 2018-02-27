@@ -17,5 +17,14 @@
         "default_popup": "popup.html"
     },
     "options_page": "options.html",
-    "permissions": ["*://*/"]
+    "options_ui": {
+        "page": "options.html",
+        "chrome_style": true
+    },
+    "permissions": [
+        "*://*/",
+        "contextMenus",
+        "storage",
+        "tabs"
+    ]
 }
