@@ -1,0 +1,21 @@
+{
+    "dir":["新闻","武汉"],
+    "rss": [
+        {
+            "key": "http://feed43.com/5123185481381181.xml",
+            "value": {
+                "title": "网易新闻24H排行榜",
+                "favIconUrl": "http://csdnimg.cn/public/favicon.ico",
+                "dir":"新闻"
+            }
+        },
+        {
+            "key": "http://feed43.com/5123185481381182.xml",
+            "value": {
+                "title": "网易新闻24H排行榜2",
+                "favIconUrl": "http://csdnimg.cn/public/favicon.ico",
+                "dir":""
+            }
+        }
+    ]
+}

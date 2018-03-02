@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>在线尝试 Bootstrap 实例</title>
+
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="bootstrap-4.0.0-dist/css/bootstrap.min.css">
     <script src="bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
@@ -18,8 +19,13 @@
 <body>
     <div id="clock_div"></div>
     <script src="js/my_clock.js"></script>
-    <div id="item">loading...</div>
-    <br/>
+    <div id="head" class="list-group-item active">
+            <button type="button" class="btn btn-default">1</button>
+            <button type="button" class="btn btn-default">2</button>
+            <button type="button" class="btn btn-default">设置</button>
+    </div>
+    <div id="rss"></div>
+    <div id="item"></div>
 </body>
 
 </html>
