@@ -1,44 +1,60 @@
-﻿{
-  "tools": [
-    {
-      "key": "必应搜索",
-      "value": "http://cn.bing.com/search?q=%s"
-    },
-    {
-      "key": "百度一下",
-      "value": "https://www.baidu.com/s?wd=%s"
-    },
-    {
-      "key": "百度百科",
-      "value": "https://baike.baidu.com/searchword/?word=%s"
-    },
-    {
-      "key": "百度翻译",
-      "value": "http://fanyi.baidu.com/#zh/en/%s"
-    },
-    {
-      "key": "知乎搜索",
-      "value": "https://www.zhihu.com/search?type=content&q=%s"
-    },
-    {
-      "key": "豆瓣电影",
-      "value": "https://movie.douban.com/subject_search?search_text=%s"
-    },
-    {
-      "key": "高德地图",
-      "value": "http://ditu.amap.com/search?query=%s"
-    },
-    {
-      "key": "转二维码",
-      "value": "http://qr.liantu.com/api.php?text=%s"
-    },
-    {
-      "key": "链家搜索",
-      "value": "http://wh.fang.lianjia.com/loupan/rs%s"
-    },
-    {
-      "key": "百度站内搜索",
-      "value": "https://www.baidu.com/s?wd=site:%w %s"
-    }
-  ]
+{
+    "tools": [{
+        "key": "百度识图",
+        "value": "http://image.baidu.com/pcdutu?queryImageUrl=%s"
+    }, {
+        "key": "🌏高德地图",
+        "value": "http://ditu.amap.com/search?query=%s"
+    }, {
+        "key": "🎬neets电影",
+        "value": "http://neets.cc/search?key=%s"
+    }, {
+        "key": "🎬豆瓣电影",
+        "value": "https://movie.douban.com/subject_search?search_text=%s"
+    }, {
+        "key": "🏠58租房",
+        "value": "http://wh.58.com/chuzu/0/b2/?key=%s&ispic=1&selpic=2&PGTID=0d3090a7-0009-eb75-8508-0d34ec23da60&ClickID=2"
+    }, {
+        "key": "🏠得意生活",
+        "value": "http://search.deyi.com/?q=%s&p=1&range=0&orderby=2&fid=0"
+    }, {
+        "key": "🏠链家二手房",
+        "value": "https://wh.lianjia.com/ershoufang/rs%s/"
+    }, {
+        "key": "🏠链家小区",
+        "value": "https://wh.lianjia.com/xiaoqu/rs%s/"
+    }, {
+        "key": "🏠链家新房",
+        "value": "http://wh.fang.lianjia.com/loupan/rs%s"
+    }, {
+        "key": "📖有道翻译",
+        "value": "http://fanyi.youdao.com/translate?i=%s"
+    }, {
+        "key": "📖金山词霸",
+        "value": "http://www.iciba.com/%s"
+    }, {
+        "key": "🔍云盘精灵",
+        "value": "https://www.yunpanjingling.com/search/%s?sort=share_time.desc"
+    }, {
+        "key": "🔍今日头条搜索",
+        "value": "https://www.toutiao.com/search/?keyword=%s"
+    }, {
+        "key": "🔍微博搜索",
+        "value": "http://s.weibo.com/weibo/%s"
+    }, {
+        "key": "🔍百度指数",
+        "value": "http://index.baidu.com/?tpl=trend&word=%s"
+    }, {
+        "key": "🔍百度站内搜",
+        "value": "https://www.baidu.com/s?wd=site:%w %s"
+    }, {
+        "key": "🔍看秀屋",
+        "value": "http://www.kanxiuwu.com/plus/search.php?keyword=%s"
+    }, {
+        "key": "🔍知乎搜索",
+        "value": "https://www.zhihu.com/search?type=content&q=%s"
+    }, {
+        "key": "🕸转二维码",
+        "value": "http://qr.liantu.com/api.php?text=%s"
+    }]
 }
