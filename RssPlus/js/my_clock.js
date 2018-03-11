@@ -1,3 +1,5 @@
+document.write("<script language=javascript src='js/common.js'></script>");
+
 //从websql中读取rss源，并显示到页面
 var db = openDatabase('myrssdb', '1.0', 'I can rss everthing !', 2 * 1024 * 1024);
 
@@ -9,7 +11,7 @@ function loadRssfromWebsql() {
             function (tx, results) {
                 var len = results.rows.length;
                 //console.log(len);
-                rssstr = "<div>";
+                rssstr = '<div><a id="head1" class="list-group-item btn active" style="text-align: center;">待设计的标题栏</a>';
                 for (i = 0; i < len; i++) {
                     var rss = results.rows.item(i).rss;
                     var title = results.rows.item(i).title;
@@ -17,9 +19,9 @@ function loadRssfromWebsql() {
                     tx.executeSql('UPDATE Rss SET unreadNums=(SELECT COUNT(*) FROM Feeds WHERE rssUrl=? AND isread IS NULL) WHERE rss=?', [rss, rss]);
                     //console.log(title);
                     if (unreadNums && unreadNums != 0) {
-                        rssstr += '<li class="list-group-item btn btn-default" style="text-align: left;" data-rss="' + rss + '" ><span class="badge pull-right" title="将所有项标记为已读">' + unreadNums + '</span>' + title + '</li>';
+                        rssstr += '<a class="list-group-item btn" style="text-align: left;" data-rss="' + rss + '" data-title="' + title + '"><span class="badge pull-right" title="将所有项标记为已读">' + unreadNums + '</span>' + title + '</a>';
                     } else {
-                        rssstr += '<li class="list-group-item btn btn-default" style="text-align: left;" data-rss="' + rss + '" >' + title + '</li>';
+                        rssstr += '<a class="list-group-item btn" style="text-align: left;" data-rss="' + rss + '" data-title="' + title + '">' + title + '</a>';
                     }
                 }
                 rssstr += "</div>";
@@ -32,13 +34,13 @@ loadRssfromWebsql();
 
 var itemstr = "";
 
-function loadItemsfromWebsql(rssUrl) {
+function loadItemsfromWebsql(rssUrl,rssTitle) {
     db.transaction(function (tx) {
-        tx.executeSql('SELECT * FROM Feeds where rssUrl = ? ORDER BY pubtimestamp DESC LIMIT 10', [rssUrl], function (tx, results) {
+        tx.executeSql('SELECT * FROM Feeds where rssUrl = ? ORDER BY pubtimestamp DESC LIMIT 5', [rssUrl], function (tx, results) {
             var len = results.rows.length;
             console.log(len);
             if (len) {
-                itemstr = "<div>";
+                itemstr = '<div><a id="head" class="list-group-item active btn" style="text-align: center;">' + rssTitle + '</a>';
                 for (i = 0; i < len; i++) {
                     var itemurl = results.rows.item(i).url;
                     var title = results.rows.item(i).title;
@@ -49,7 +51,7 @@ function loadItemsfromWebsql(rssUrl) {
                         itemstr += '<a class="list-group-item" href="' + itemurl + '" ><span class="badge pull-right" title="标记为已读">新</span>' + title + '</a>';
                     }
                 }
-                itemstr += "</div>";
+                itemstr += '<a id="foot" class="list-group-item" style="text-align: center;">加载更多</a></div>';
                 document.getElementById('item').innerHTML = itemstr;
             } else {
                 document.getElementById('item').innerHTML = '<a class="list-group-item">暂无更新！</a>';
@@ -83,10 +85,9 @@ window.onclick = function (e) {
     //console.log(e.target);
     if (rssUrl = e.target.getAttribute('data-rss')) {
         //加载某一个rss的内容
-        loadItemsfromWebsql(rssUrl);
-        //更改head,隐藏rss列表
-        div = '<p class="list-group-item">' + e.target.innerHTML + '</p>';
-        document.getElementById('head').innerHTML = div;
+        var rssTitle = e.target.getAttribute('data-title');
+        loadItemsfromWebsql(rssUrl,rssTitle);
+        //隐藏rss列表
         document.getElementById('rss').innerHTML = "";
     }
     if (e.target.href) {
@@ -97,8 +98,7 @@ window.onclick = function (e) {
         });
     }
     if (e.target.id == 'head' || e.target.parentNode.id == 'head') {
-        //隐藏head,隐藏items列表,加载rss列表
-        document.getElementById('head').innerHTML = "";
+        //隐藏items列表,加载rss列表
         document.getElementById('item').innerHTML = "";
         document.getElementById('rss').innerHTML = rssstr;
     }

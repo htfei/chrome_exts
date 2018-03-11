@@ -4,14 +4,14 @@
     "version": "1.0",
     "description": "万物皆可订阅！",
     "icons": {
-        "16": "images/icon16.png",
-        "48": "images/icon48.png",
-        "128": "images/icon128.png"
+        "16": "images/rss_button.png",
+        "48": "images/rss_button.png",
+        "128": "images/rss_button.png"
     },
     "browser_action": {
         "default_icon": {
-            "19": "images/icon19.png",
-            "38": "images/icon38.png"
+            "19": "images/rss_button.png",
+            "38": "images/rss_button.png"
         },
         "default_title": "RssPlus",
         "default_popup": "popup.html"
