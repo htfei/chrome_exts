@@ -11,8 +11,7 @@ javascript: {
     var node = document.getElementById("my_add_div");
     if (node != null) {
         node.parentNode.removeChild(node);
-    }
-    else {
+    } else {
         var list = document.getElementsByTagName("source");
         var sdiv = '<div>';
         for (var i = 0; i < list.length; i++) {
@@ -87,14 +86,14 @@ javascript: {
     }
     /* 获取指定class的子孙节点list */
     function getchilds(node, f_class_value) {
-        return node.getElementsByClassName(f_class_value);        
-    }        
+        return node.getElementsByClassName(f_class_value);
+    }
 
     var list = document.getElementsByTagName("source");
     for (var i = 0; i < list.length; i++) {
-        //获取添加位置的父节点
-        var fn = getparents(list[i],"post_wrapper");
-        //添加下载按钮    
+        /* 获取添加位置的父节点 */
+        var fn = getparents(list[i], "post_wrapper");
+        /* 添加下载按钮 */
         var div = document.createElement('div');
         div.innerHTML = '<a href="' + list[i].src + '" download>点击下载</a>';
         fn.appendChild(div);
