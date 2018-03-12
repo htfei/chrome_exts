@@ -23,11 +23,16 @@ function showItem(rssxml, rssurl) {
         var list = rssxml.getElementsByTagName('item');
         var items = [];
         for (i = 0; i < list.length; i++) {
+
             var title = list[i].getElementsByTagName('title')[0].innerHTML;
             var titlefix = removeCDATA(title);
+
             var pubdate = list[i].getElementsByTagName('pubDate')[0].innerHTML;
             var pubtimestamp = Math.round(new Date(pubdate).getTime() / 1000);
+
             var itemurl = list[i].getElementsByTagName('link')[0].innerHTML;
+            //必须加https://，否则默认前缀为chrome-extension://dhjefkpchmfdghfipcdmaodhigmfbpef
+
             //console.log("item",i,titlefix);
             //executeSql第一条执行完毕之前for循环已经结束了，故只插入了一条记录，需先保存起来在一次插入
             items.push([itemurl, titlefix, pubtimestamp, rssurl]);

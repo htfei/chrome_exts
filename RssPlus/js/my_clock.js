@@ -11,7 +11,11 @@ function loadRssfromWebsql() {
             function (tx, results) {
                 var len = results.rows.length;
                 //console.log(len);
-                rssstr = '<div><a id="head1" class="list-group-item btn active" style="text-align: center;">待设计的标题栏</a>';
+                rssstr = '<div>'+
+                '<a id="update" type="button" class="btn btn-primary">立即更新</a>'+
+                '<a id="showstar" type="button" class="btn btn-primary">显示收藏</a>'+
+                '<a id="addrss" type="button" class="btn btn-primary" href="./../options.html">添加新的RSS源</a>'+
+                '</div>';
                 for (i = 0; i < len; i++) {
                     var rss = results.rows.item(i).rss;
                     var title = results.rows.item(i).title;
@@ -32,15 +36,19 @@ function loadRssfromWebsql() {
 }
 loadRssfromWebsql();
 
+var headstr = "";
 var itemstr = "";
-
-function loadItemsfromWebsql(rssUrl,rssTitle) {
+var footstr = "";
+function sethead(rssTitle){
+    headstr = '<div><a id="head" class="list-group-item active btn" style="text-align: center;">' + rssTitle + '</a>';
+}
+function loadItemsfromWebsql(rssUrl,index,nums) {
+    //console.log("loadItemsfromWebsql=====",rssUrl,index);
     db.transaction(function (tx) {
-        tx.executeSql('SELECT * FROM Feeds where rssUrl = ? ORDER BY pubtimestamp DESC LIMIT 5', [rssUrl], function (tx, results) {
+        tx.executeSql('SELECT * FROM Feeds where rssUrl = ? ORDER BY pubtimestamp DESC LIMIT ?,?', [rssUrl,index,nums], function (tx, results) {
             var len = results.rows.length;
-            console.log(len);
+            //console.log(len);           
             if (len) {
-                itemstr = '<div><a id="head" class="list-group-item active btn" style="text-align: center;">' + rssTitle + '</a>';
                 for (i = 0; i < len; i++) {
                     var itemurl = results.rows.item(i).url;
                     var title = results.rows.item(i).title;
@@ -51,12 +59,12 @@ function loadItemsfromWebsql(rssUrl,rssTitle) {
                         itemstr += '<a class="list-group-item" href="' + itemurl + '" ><span class="badge pull-right" title="标记为已读">新</span>' + title + '</a>';
                     }
                 }
-                itemstr += '<a id="foot" class="list-group-item" style="text-align: center;">加载更多</a></div>';
-                document.getElementById('item').innerHTML = itemstr;
+                footstr = '<a id="loadmore" class="list-group-item btn" style="text-align: center;" data-rssUrl="'+ rssUrl +'" data-index="'+index+'">加载更多</a></div>';
+                document.getElementById('item').innerHTML = headstr+itemstr+footstr;
             } else {
-                document.getElementById('item').innerHTML = '<a class="list-group-item">暂无更新！</a>';
+                footstr = '<a id="nothing" class="list-group-item btn" style="text-align: center;" title="点击返回主界面" >暂无更新！</a></div>';
+                document.getElementById('item').innerHTML = headstr+itemstr+footstr;
             }
-
             //console.log(itemstr);
         }, 
         function (tx, error) {
@@ -68,27 +76,50 @@ function loadItemsfromWebsql(rssUrl,rssTitle) {
 //标记为已读
 function makeItemRead(itemUrl) {
     db.transaction(function (tx) {
-        tx.executeSql('update Feeds set isread = 1 where url = ?', [itemUrl], null, null);
+        tx.executeSql('update Feeds set isread = 1 where url = ?', [itemUrl], null, function (tx, error) {
+            console.log('失败!' , error.message)
+        });
+        tx.executeSql('update Rss set unreadNums = unreadNums - 1 where rss = (select rssUrl from Feeds where url = ?)', [itemUrl], null, function (tx, error) {
+            console.log('失败!' , error.message)
+        });
+        location.reload();//执行完毕后刷新
     });
 }
 //标记为已读
 function makeRssItemsRead(rssUrl) {
     db.transaction(function (tx) {
-        tx.executeSql('update Feeds set isread = 1 where rssUrl = ?', [rssUrl], null, null);
-        tx.executeSql('update Rss set unreadNums = 0 where rss = ?', [rssUrl], null, null);
+        tx.executeSql('update Feeds set isread = 1 where rssUrl = ?', [rssUrl], null, function (tx, error) {
+            console.log('失败!' , error.message)
+        });
+        tx.executeSql('update Rss set unreadNums = 0 where rss = ?', [rssUrl], null, function (tx, error) {
+            console.log('失败!' , error.message)
+        });
+        location.reload();
     });
 }
 
-
+var onceNums =5;
 //绑定点击事件
 window.onclick = function (e) {
     //console.log(e.target);
     if (rssUrl = e.target.getAttribute('data-rss')) {
         //加载某一个rss的内容
         var rssTitle = e.target.getAttribute('data-title');
-        loadItemsfromWebsql(rssUrl,rssTitle);
+        sethead(rssTitle);
+        loadItemsfromWebsql(rssUrl,0,onceNums);//0到10条
         //隐藏rss列表
         document.getElementById('rss').innerHTML = "";
+    }
+    if (e.target.id == 'loadmore') {
+        //加载某一个rss的内容
+        var rssUrl = e.target.getAttribute('data-rssUrl');
+        var index = e.target.getAttribute('data-index');
+        index = Number(index)+onceNums;
+        loadItemsfromWebsql(rssUrl,index,onceNums);//10到20条 ... 
+    }
+    if(e.target.id=="update"){
+        rss_request();
+        this.setTimeout("location.reload();",5000); //5s后刷新  
     }
     if (e.target.href) {
         //将对应item标记为已读
@@ -97,8 +128,12 @@ window.onclick = function (e) {
             url: e.target.href
         });
     }
-    if (e.target.id == 'head' || e.target.parentNode.id == 'head') {
+    if (e.target.id == 'head' || (e.target.parentNode&&e.target.parentNode.id == 'head') || e.target.id == 'nothing') {
         //隐藏items列表,加载rss列表
+        this.console.log(e.target);
+        headstr = "";
+        itemstr = "";
+        footstr = "";
         document.getElementById('item').innerHTML = "";
         document.getElementById('rss').innerHTML = rssstr;
     }
@@ -108,7 +143,8 @@ window.onclick = function (e) {
     }
     if (e.target.getAttribute('title') == '将所有项标记为已读') {
         makeRssItemsRead(e.target.parentNode.getAttribute('data-rss'));
-    } else {
-        this.console.log(e.target);
+    }     
+    else {
+        //this.console.log(e.target);
     }
 }
