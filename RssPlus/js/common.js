@@ -1,3 +1,28 @@
+//标记为已读
+function makeItemRead(itemUrl) {
+    db.transaction(function (tx) {
+        tx.executeSql('update Feeds set isread = 1 where url = ?', [itemUrl], null, function (tx, error) {
+            console.log('失败!' , error.message)
+        });
+        tx.executeSql('update Rss set unreadNums = unreadNums - 1 where rss = (select rssUrl from Feeds where url = ?)', [itemUrl], null, function (tx, error) {
+            console.log('失败!' , error.message)
+        });
+        location.reload();//执行完毕后刷新
+    });
+}
+//标记为已读
+function makeRssItemsRead(rssUrl) {
+    db.transaction(function (tx) {
+        tx.executeSql('update Feeds set isread = 1 where rssUrl = ?', [rssUrl], null, function (tx, error) {
+            console.log('失败!' , error.message)
+        });
+        tx.executeSql('update Rss set unreadNums = 0 where rss = ?', [rssUrl], null, function (tx, error) {
+            console.log('失败!' , error.message)
+        });
+        location.reload();
+    });
+}
+
 //储存items到websql
 function items2websql(items){
     db.transaction(function (tx) {

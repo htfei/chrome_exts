@@ -4,6 +4,7 @@ document.write("<script language=javascript src='js/common.js'></script>");
 var db = openDatabase('myrssdb', '1.0', 'I can rss everthing !', 2 * 1024 * 1024);
 
 var rssstr = "";
+var dirstr = "";
 //页面加载时读取rss源列表
 function loadRssfromWebsql() {
     db.transaction(function (tx) {
@@ -11,7 +12,7 @@ function loadRssfromWebsql() {
             function (tx, results) {
                 var len = results.rows.length;
                 //console.log(len);
-                rssstr = '<div>'+
+                document.getElementById('rss').innerHTML  += '<div>'+
                 '<a id="update" type="button" class="btn btn-primary">立即更新</a>'+
                 '<a id="showstar" type="button" class="btn btn-primary">显示收藏</a>'+
                 '<a id="addrss" type="button" class="btn btn-primary" href="./../options.html">添加新的RSS源</a>'+
@@ -20,16 +21,39 @@ function loadRssfromWebsql() {
                     var rss = results.rows.item(i).rss;
                     var title = results.rows.item(i).title;
                     var unreadNums = results.rows.item(i).unreadNums;
-                    tx.executeSql('UPDATE Rss SET unreadNums=(SELECT COUNT(*) FROM Feeds WHERE rssUrl=? AND isread IS NULL) WHERE rss=?', [rss, rss]);
+                    var dir = results.rows.item(i).dir;
+                    //tx.executeSql('UPDATE Rss SET unreadNums=(SELECT COUNT(*) FROM Feeds WHERE rssUrl=? AND isread IS NULL) WHERE rss=?', [rss, rss]);
                     //console.log(title);
                     if (unreadNums && unreadNums != 0) {
-                        rssstr += '<a class="list-group-item btn" style="text-align: left;" data-rss="' + rss + '" data-title="' + title + '"><span class="badge pull-right" title="将所有项标记为已读">' + unreadNums + '</span>' + title + '</a>';
+                        var rss1 = '<a class="list-group-item btn" style="text-align: left;" data-rss="' + rss + '" data-title="' + title + '"><span class="badge pull-right" title="将所有项标记为已读">' + unreadNums + '</span>' + title + '</a>';
                     } else {
-                        rssstr += '<a class="list-group-item btn" style="text-align: left;" data-rss="' + rss + '" data-title="' + title + '">' + title + '</a>';
+                        var rss1 = '<a class="list-group-item btn" style="text-align: left;" data-rss="' + rss + '" data-title="' + title + '">' + title + '</a>';
+                    }
+                    
+                    if(dir){
+                        //指定了目录则先判断目录是否已添加
+                        if(dirstr.indexOf(dir) >=0){
+                            //已添加则直接加入该目录
+                            var obj =document.getElementById(dir);
+                            obj.innerHTML += rss1;
+                        }else{
+                            dirstr +=dir;
+                            //未添加则先加目录在添加
+                            var hstr ='<div class="list-group-item active" data-toggle="collapse"  href="#'+dir+'">'+dir+'</div>';
+                            var obj = document.createElement('div');
+                            obj.id = dir;
+                            obj.classList="panel-collapse collapse;";
+                            obj.innerHTML = rss1;
+                            document.getElementById('rss').innerHTML  += (hstr +obj.outerHTML);
+                        }
+                    }
+                    else{
+                        //没指定目录则直接添加
+                        rssstr += rss1;
                     }
                 }
                 rssstr += "</div>";
-                document.getElementById('rss').innerHTML = rssstr;
+                document.getElementById('rss').innerHTML += rssstr;
                 //console.log(rssstr);
             },null);
     });
@@ -73,30 +97,6 @@ function loadItemsfromWebsql(rssUrl,index,nums) {
     });
 }
 
-//标记为已读
-function makeItemRead(itemUrl) {
-    db.transaction(function (tx) {
-        tx.executeSql('update Feeds set isread = 1 where url = ?', [itemUrl], null, function (tx, error) {
-            console.log('失败!' , error.message)
-        });
-        tx.executeSql('update Rss set unreadNums = unreadNums - 1 where rss = (select rssUrl from Feeds where url = ?)', [itemUrl], null, function (tx, error) {
-            console.log('失败!' , error.message)
-        });
-        location.reload();//执行完毕后刷新
-    });
-}
-//标记为已读
-function makeRssItemsRead(rssUrl) {
-    db.transaction(function (tx) {
-        tx.executeSql('update Feeds set isread = 1 where rssUrl = ?', [rssUrl], null, function (tx, error) {
-            console.log('失败!' , error.message)
-        });
-        tx.executeSql('update Rss set unreadNums = 0 where rss = ?', [rssUrl], null, function (tx, error) {
-            console.log('失败!' , error.message)
-        });
-        location.reload();
-    });
-}
 
 var onceNums =5;
 //绑定点击事件
