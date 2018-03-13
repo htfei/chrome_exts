@@ -1,12 +1,14 @@
 ﻿<html>
     <head>
-        <title>设定RSS</title>
+        <title>管理rss源</title>
     </head>
     <body>
-        <p>添加rss源</p>
-        rss链接:<input type="text" id="rssurl" size='60'/>
-        标题：<input type="text" id="rsstitle" size='60'/>
-        <input type="button" id="save" value="保存" />
+        <p>管理rss源</p>
+        <p>链接：<input type="text" id="rssurl" size='60'/></p>
+        <p>标题：<input type="text" id="rsstitle" size='60'/>  (注：删除rss时可不填)</p>
+        <p>目录：<input type="text" id="rssdir" size='60'/>  (注：可不填)</p>
+        <input type="button" id="save" value="添加rss源(若存在则更新)" />
+        <input type="button" id="del" value="删除rss源" />
         <script src="js/options.js"></script>
     </body>
 </html>

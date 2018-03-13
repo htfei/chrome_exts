@@ -1,3 +1,27 @@
+//更换图标下的bar
+function changeicobar(){
+    db.transaction(function (tx) {
+        tx.executeSql('SELECT COUNT(*) as nums FROM Feeds WHERE isread IS NULL',[],function (tx, results) {
+                var nums = results.rows.item(0).nums;
+                console.log("nums",nums);
+                if(nums > 0 ){
+                    chrome.browserAction.setBadgeBackgroundColor({color: [190, 190, 190, 128]});//rgb 灰色 50%透明
+                    if(nums >= 100){
+                        chrome.browserAction.setBadgeText({text: '99+'});
+                    }else{
+                        chrome.browserAction.setBadgeText({text: nums.toString()});
+                    }
+                }else{
+                    chrome.browserAction.setBadgeBackgroundColor({color: [190, 190, 190, 256]});//rgb 灰色 100%透明
+                }
+        },
+        function (tx, error) {
+            console.log('更改badge失败: ', error.message)
+        });
+    });
+
+}
+
 //标记为已读
 function makeItemRead(itemUrl) {
     db.transaction(function (tx) {
@@ -7,7 +31,8 @@ function makeItemRead(itemUrl) {
         tx.executeSql('update Rss set unreadNums = unreadNums - 1 where rss = (select rssUrl from Feeds where url = ?)', [itemUrl], null, function (tx, error) {
             console.log('失败!' , error.message)
         });
-        location.reload();//执行完毕后刷新
+        changeicobar();
+        //location.reload();//执行完毕后刷新
     });
 }
 //标记为已读
@@ -19,7 +44,8 @@ function makeRssItemsRead(rssUrl) {
         tx.executeSql('update Rss set unreadNums = 0 where rss = ?', [rssUrl], null, function (tx, error) {
             console.log('失败!' , error.message)
         });
-        location.reload();
+        changeicobar();
+        //location.reload();
     });
 }
 
@@ -106,6 +132,11 @@ function rss_request() {
             function (tx, error) {
                 console.log('查询数据失败: ', error.message)
             });
+        //插入数据后更新未读条数
+        tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
+        //更换图标下的bar
+        changeicobar();
     });
     //console.log("请求rss源数据完毕！5mim后再次执行！")
+
 }

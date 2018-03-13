@@ -13,7 +13,7 @@
             "19": "images/rss_button.png",
             "38": "images/rss_button.png"
         },
-        "default_title": "RssPlus",
+        "default_title": "Rss订阅追踪器,万物皆可订阅！",
         "default_popup": "popup.html"
     },
     "background": {
