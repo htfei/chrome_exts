@@ -23,7 +23,7 @@ function loadRssfromWebsql() {
                     var dir = results.rows.item(i).dir;
 
                     //rsslist
-                    if (unreadNums && unreadNums != 0) {
+                    if (unreadNums && unreadNums > 0) {
                         var rss1 = '<a class="list-group-item list-group-item-warning btn" style="text-align: left;" data-rss="' + rss + '" data-title="' + title + '"><span class="badge pull-right" title="将该RSS源标记为已读">' + unreadNums + '</span>' + title + '</a>';
                     } else {
                         var rss1 = '<a class="list-group-item list-group-item-warning btn" style="text-align: left;" data-rss="' + rss + '" data-title="' + title + '">' + title + '</a>';
@@ -40,16 +40,16 @@ function loadRssfromWebsql() {
                             if (a) {
                                 a.innerHTML = Number(a.innerHTML) + unreadNums;
                             } else {
-                                document.getElementById(dir + 'head').innerHTML += ('<span id="' + dir + 'nums" class="badge pull-right" title="将目录标记为已读">' + unreadNums + '</span>');
+                                document.getElementById(dir + 'head').innerHTML += ('<span id="' + dir + 'nums" class="badge pull-right btn" title="将目录标记为已读">' + unreadNums + '</span>');
                             }
 
                         } else {
                             dirstr += dir;
                             //未添加则先加目录在添加
                             if (unreadNums && unreadNums > 0) {
-                                document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item list-group-item-success" data-toggle="collapse"  href="#' + dir + '"><span id="' + dir + 'nums" class="badge pull-right" title="将目录标记为已读">' + unreadNums + '</span>' + dir + '</div>';
+                                document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item list-group-item-success" data-toggle="collapse"  href="#' + dir + '"><img src="/images/folder-icon.png" width="16" height="16"/>  ' + dir + '<span id="' + dir + 'nums" class="badge pull-right btn" title="将目录标记为已读">' + unreadNums + '</span></div>';
                             } else {
-                                document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item list-group-item-success" data-toggle="collapse"  href="#' + dir + '">' + dir + '</div>';
+                                document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item list-group-item-success" data-toggle="collapse"  href="#' + dir + '"><img src="/images/folder-icon.png" width="16" height="16"/>  '+ dir + '</div>';
                             }
 
                             var obj = document.createElement('div');
@@ -145,29 +145,36 @@ function makeItemRead(itemUrl) {
                 tx.executeSql('update Feeds set isread = 1 where url = ?', [itemUrl], null, function (tx, error) {
                     console.log('失败!', error.message)
                 });
-                tx.executeSql('update Rss set unreadNums = unreadNums - 1 where rss = (select rssUrl from Feeds where url = ?)', [itemUrl], null, function (tx, error) {
-                    console.log('失败!', error.message)
-                });
+                //插入数据后更新未读条数
+                tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
+    
                 changeicobar();
             }
         }, null);
     });
 }
-//标记为已读
-function makeRssItemsRead(rssUrl) {
+//标记为RSS已读
+function makeRssRead(rssUrl) {
     db.transaction(function (tx) {
-        tx.executeSql('SELECT isread FROM Feeds WHERE url = ?', [itemUrl], function (tx, results) {
-            var isread = results.rows.item(0).isread;
-            if (isread == null) {
-                tx.executeSql('update Feeds set isread = 1 where rssUrl = ?', [rssUrl], null, function (tx, error) {
-                    console.log('失败!', error.message)
-                });
-                tx.executeSql('update Rss set unreadNums = 0 where rss = ?', [rssUrl], null, function (tx, error) {
-                    console.log('失败!', error.message)
-                });
-                changeicobar();
-            }
-        }, null);
+        tx.executeSql('update Feeds set isread = 1 where rssUrl = ?', [rssUrl], null, function (tx, error) {
+            console.log('失败!', error.message)
+        });
+        tx.executeSql('update Rss set unreadNums = 0 where rss = ?', [rssUrl], null, function (tx, error) {
+            console.log('失败!', error.message)
+        });
+        changeicobar();
+    });
+}
+//标记目录为已读
+function makeDirRead(dirstr) {
+    db.transaction(function (tx) {
+        tx.executeSql('update Feeds set isread = 1 WHERE Feeds.rssUrl = (SELECT rss FROM Rss WHERE dir = ?)', [dirstr], null, function (tx, error) {
+            console.log('失败!', error.message)
+        });
+        //插入数据后更新未读条数
+        tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
+
+        changeicobar();
     });
 }
 
@@ -244,7 +251,11 @@ window.onclick = function (e) {
         e.target.parentNode.removeChild(e.target);
     }
     if (e.target.getAttribute('title') == '将该RSS源标记为已读') {
-        makeRssItemsRead(e.target.parentNode.getAttribute('data-rss'));
+        makeRssRead(e.target.parentNode.getAttribute('data-rss'));
+        e.target.parentNode.removeChild(e.target);
+    }
+    if (e.target.getAttribute('title') == '将目录标记为已读') {
+        makeDirRead(e.target.id.replace("nums", ""));
         e.target.parentNode.removeChild(e.target);
     } else {
         //this.console.log(e.target);
