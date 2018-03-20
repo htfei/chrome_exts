@@ -1,8 +1,7 @@
-
 var db = openDatabase('myrssdb', '1.0', 'I can rss everthing !', 2 * 1024 * 1024);
 
 //储存items到websql
-function items2websql(items){
+function items2websql(items) {
     db.transaction(function (tx) {
         for (i = 0; i < items.length; i++) {
             tx.executeSql('INSERT OR IGNORE INTO Feeds (url,title,pubtimestamp,rssUrl) VALUES (?,?,?,?)', items[i],
@@ -15,8 +14,18 @@ function items2websql(items){
 }
 
 /*从<![CDATA[%s]]>中取出%s*/
-function removeCDATA(fstr){
+function removeCDATA(fstr) {
     return fstr.replace("<![CDATA[", "").replace("]]>", "")
+}
+
+function addhttphead(url) {
+    if (url.substr(0, 8) != 'https://' && url.substr(0, 7) != 'http://') {
+        if (url.substr(0, 2) == '//') {
+            return 'https:' + url;
+        } else {
+            return 'https://' + url;
+        }
+    }
 }
 
 //解析items
@@ -35,10 +44,11 @@ function showItem(rssxml, rssurl) {
 
             var itemurl = list[i].getElementsByTagName('link')[0].innerHTML;
             //必须加https://，否则默认前缀为chrome-extension://dhjefkpchmfdghfipcdmaodhigmfbpef
-
+            itemurlfix = addhttphead(itemurl);
+            
             //console.log("item",i,titlefix);
             //executeSql第一条执行完毕之前for循环已经结束了，故只插入了一条记录，需先保存起来在一次插入
-            items.push([itemurl, titlefix, pubtimestamp, rssurl]);
+            items.push([itemurlfix, titlefix, pubtimestamp, rssurl]);
         }
         items2websql(items);
         console.log(rssurl, "更新成功！");
@@ -62,8 +72,9 @@ function httpRequest(url, callback) {
 
 //测试httpRequest
 var xml;
-function testcallback(rssxml, rssurl){
-    console.log("testcallback",rssxml); 
+
+function testcallback(rssxml, rssurl) {
+    console.log("testcallback", rssxml);
     xml = rssxml;
 }
 //httpRequest("http://dig.chouti.com/feed.xml",testcallback);
@@ -95,13 +106,13 @@ function rss_request() {
 
 
 
-function init(){
+function init() {
     db.transaction(function (tx) {
-    
+
         //新建表
         tx.executeSql('CREATE TABLE IF NOT EXISTS Rss (rss unique, title,unreadNums)');
         tx.executeSql('CREATE TABLE IF NOT EXISTS Feeds (url unique, title, pubtimestamp,isread,rssUrl)');
-    
+
         //插入一个rss源
         //tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title) VALUES (?, ?)', ["https://feed43.com/5123185481381181.xml", "网易新闻24H排行榜"]);
         tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title) VALUES (?, ?)', ["https://feed43.com/2770086871034514.xml", "抽屉24h最热"]);
@@ -111,20 +122,20 @@ function init(){
         //tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title) VALUES (?, ?)', ["https://feed43.com/2866623024361680.xml", "光谷二手房--得意生活"]);
         tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title) VALUES (?, ?)', ["https://feed43.com/1011517213012743.xml", "武汉房管局公告"]);
         //tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title) VALUES (?, ?)', ["https://feed43.com/3864107213381284.xml", "武汉亿房论坛"]);
-       
+
         //更新数据
         //tx.executeSql('UPDATE Rss SET rss=? where rowid=2', ["http://feed43.com/2770086871034514.xml"]);
         //tx.executeSql('UPDATE Feeds SET rssUrl=?', ["http://feed43.com/5123185481381181.xml"]);
         //tx.executeSql('UPDATE Feeds SET rssUrl=? where rowid = 363 ', ["https://feed43.com/3680851688572686.xml"]);
         //删除数据
         //tx.executeSql('DELETE FROM Feeds WHERE rssUrl = "https://feed43.com/5123185481381181.xml"');
-    
+
         //删除表
         //tx.executeSql('drop table MYRSS');
-          
+
         //增加列
         //tx.executeSql("ALTER TABLE Feeds ADD COLUMN pubtimestamp INT");
         //tx.executeSql("ALTER TABLE Feeds ADD COLUMN rssUrl");
-    
+
     });
-    }
+}

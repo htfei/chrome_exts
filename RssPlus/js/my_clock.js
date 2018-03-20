@@ -12,8 +12,9 @@ function loadRssfromWebsql() {
 
                 document.getElementById('rss').innerHTML =
                     '<div class="list-group-item list-group-item-info btn" >' +
-                    '<a id="addrss" class="btn" href="./../options.html">管理RSS源</a>' +
-                    '<a id="star" class="btn">查看收藏</a>' +
+                    '<a id="addrss" class="btn" href="./../options.html">设置</a>' +
+                    '<a id="listh" class="btn">列表</a>' +
+                    '<a id="star" class="btn">收藏</a>' +
                     '<a id="update" class="btn">刷新</a></div><div>';
 
                 for (i = 0; i < len; i++) {
@@ -109,7 +110,7 @@ function changeicobar() {
     db.transaction(function (tx) {
         tx.executeSql('SELECT COUNT(*) as nums FROM Feeds WHERE isread IS NULL', [], function (tx, results) {
                 var nums = results.rows.item(0).nums;
-                console.log("nums", nums);
+                console.log("unreadnums", nums);
                 if (nums > 0) {
                     chrome.browserAction.setBadgeBackgroundColor({
                         color: [190, 190, 190, 128]
@@ -167,13 +168,13 @@ function makeRssRead(rssUrl) {
 }
 //标记目录为已读
 function makeDirRead(dirstr) {
+    console.log("标记目录为已读",dirstr);
     db.transaction(function (tx) {
         tx.executeSql('update Feeds set isread = 1 WHERE Feeds.rssUrl = (SELECT rss FROM Rss WHERE dir = ?)', [dirstr], null, function (tx, error) {
             console.log('失败!', error.message)
         });
-        //插入数据后更新未读条数
+        //插入数据后更新未读条数//2018.03.19 sql语句待优化：将指定目录类下的所有rss的unreadnums设为0.而不是更新所有
         tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
-
         changeicobar();
     });
 }
@@ -204,6 +205,10 @@ var onceNums = localStorage.onceNums ? localStorage.onceNums : 10;
 
 //绑定点击事件
 window.onclick = function (e) {
+
+    //离开之间保存页面，下次直接加载该页面
+    this.localStorage.lastBodystr = document.getElementById('body').innerHTML;
+
     //console.log(e.target);
     if (rssUrl = e.target.getAttribute('data-rss')) {
         //加载某一个rss的内容
@@ -222,7 +227,7 @@ window.onclick = function (e) {
     }
     if (e.target.id == "update") {
         //rss_request();
-        //localStorage.lastBodystr ="";
+        localStorage.lastBodystr ="";
         this.console.log("刷新页面, 重新生成popup页面...");
         loadRssfromWebsql();
         //this.setTimeout("location.reload();",3000); //3s后刷新  
@@ -230,7 +235,7 @@ window.onclick = function (e) {
     if (e.target.href) {
         //将对应item标记为已读
         makeItemRead(e.target.href);
-        e.target.parentNode.removeChild(e.target);
+        e.target.removeChild(e.target.firstChild);
         chrome.tabs.create({
             url: e.target.href
         });
@@ -260,7 +265,4 @@ window.onclick = function (e) {
     } else {
         //this.console.log(e.target);
     }
-
-    //离开之间保存页面，下次直接加载该页面
-    this.localStorage.lastBodystr = document.getElementById('body').innerHTML;
 }
