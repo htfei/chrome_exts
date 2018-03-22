@@ -25,7 +25,9 @@ function addhttphead(url) {
         } else {
             return 'https://' + url;
         }
-    }
+    }else{
+        return url;
+    }   
 }
 
 //解析items
@@ -39,7 +41,12 @@ function showItem(rssxml, rssurl) {
             var title = list[i].getElementsByTagName('title')[0].innerHTML;
             var titlefix = removeCDATA(title);
 
-            var pubdate = list[i].getElementsByTagName('pubDate')[0].innerHTML;
+            var pub = list[i].getElementsByTagName('pubDate');
+            if(pub.length == 0 ){
+                console.log("这是一个坏的items!")
+                continue;
+            }
+            var pubdate = pub[0].innerHTML;
             var pubtimestamp = Math.round(new Date(pubdate).getTime() / 1000);
 
             var itemurl = list[i].getElementsByTagName('link')[0].innerHTML;
@@ -99,7 +106,7 @@ function rss_request() {
         //插入数据后更新未读条数
         tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
         //更换图标下的bar
-        //changeicobar();
+        changeicobar();
     });
     //console.log("请求rss源数据完毕！5mim后再次执行！")
 }

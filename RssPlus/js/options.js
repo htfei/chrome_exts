@@ -32,8 +32,32 @@ document.getElementById('del').onclick = function () {
     });
 }
 
+//清空feeds缓存
+document.getElementById('clearfeeds').onclick = function () {
+    db.transaction(function (tx) {
+        tx.executeSql('delete from feeds',[],alert('清空feeds缓存成功!'),null); //清空数据
+    });
+}
+
+//设置请求时间间隔
+document.getElementById('reqtimebtn').onclick = function (){
+    var reqtime = document.getElementById('reqtime').value;
+    localStorage.reqtime = Number(reqtime);
+    alert('设置成功!');
+}
+
+//设置请求时间间隔
+document.getElementById('onceNumsbtn').onclick = function (){
+    var onceNums = document.getElementById('onceNums').value;
+    localStorage.onceNums = Number(onceNums);
+    alert('设置成功!');
+}
+
+
 //页面加载时读取rss列表
 function loadRss() {
+    document.getElementById('reqtime').value = localStorage.reqtime?localStorage.reqtime:5;
+    document.getElementById('onceNums').value = localStorage.onceNums?localStorage.onceNums:5;
     db.transaction(function (tx) {
         tx.executeSql('SELECT * FROM Rss', [],
             function (tx, results) {
@@ -41,7 +65,7 @@ function loadRss() {
                     var rss = results.rows.item(i).rss;
                     var title = results.rows.item(i).title;
                     var dir = results.rows.item(i).dir;
-                    document.getElementById('rss').innerHTML += '<div>' + dir + '\t'  + title + '\t' + rss + '</div>';
+                    document.getElementById('rss').innerHTML += '<div>' + dir + '\t' + title + '\t' + rss + '</div>';
                 }
             },
             null
