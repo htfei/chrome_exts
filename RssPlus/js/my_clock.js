@@ -206,8 +206,8 @@ var onceNums = localStorage.onceNums ? localStorage.onceNums : 10;
 //绑定点击事件
 window.onclick = function (e) {
 
-    //离开之间保存页面，下次直接加载该页面
-    this.localStorage.lastBodystr = document.getElementById('body').innerHTML;
+    //离开之间保存页面，下次直接加载该页面 //有些分支点击之后打开新页面，所以处理之前需要获取当前body.
+    //this.localStorage.lastBodystr = document.getElementById('body').innerHTML;
 
     //console.log(e.target);
     if (rssUrl = e.target.getAttribute('data-rss')) {
@@ -238,6 +238,7 @@ window.onclick = function (e) {
         //将对应item标记为已读
         makeItemRead(e.target.href);
         e.target.removeChild(e.target.firstChild);
+        this.localStorage.lastBodystr = document.getElementById('body').innerHTML;
         chrome.tabs.create({
             url: e.target.href
         });
@@ -263,8 +264,12 @@ window.onclick = function (e) {
     }
     if (e.target.getAttribute('title') == '将目录标记为已读') {
         makeDirRead(e.target.id.replace("nums", ""));
-        e.target.parentNode.removeChild(e.target);
+        //e.target.parentNode.removeChild(e.target);
+        loadPopup();
     } else {
         //this.console.log(e.target);
     }
+
+    //有些分支需要点击之后改变显示，所以处理完毕之后再次获取最新body.2018.03.28
+    this.localStorage.lastBodystr = document.getElementById('body').innerHTML;
 }
