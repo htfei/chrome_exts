@@ -107,6 +107,7 @@ function rss_request() {
         tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
         //更换图标下的bar
         changeicobar();
+        loadRssfromWebsql();
     });
     //console.log("请求rss源数据完毕！5mim后再次执行！")
 }

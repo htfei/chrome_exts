@@ -11,7 +11,7 @@ function loadRssfromWebsql() {
                 var nodirstr = "";
 
                 document.getElementById('rss').innerHTML =
-                    '<p class="list-group-item list-group-item-info btn" >' +
+                    '<p style="margin:0 0 0px; background-color:#f0ffff; text-align:center">' +
                     '<a id="addrss" class="btn" title="设置" href="./../options.html">设置</a>' +
                     '<a id="listh" class="btn" title="列表">列表</a>' +
                     '<a id="star" class="btn">收藏</a>' +
@@ -72,7 +72,10 @@ function loadRssfromWebsql() {
 
 //点击rss列表时加载标题及条目
 function sethead(rssTitle) {
-    localStorage.headstr = '<div><a id="head" class="list-group-item list-group-item-info btn" style="text-align: center;">' + rssTitle + '</a>';
+    localStorage.headstr = '<p style="margin:0 0 0px; background-color:#f0ffff;">'+
+    '<a id="goback" class="btn" title="后退" >后退</a>' +   
+    '<a id="head" class="btn" >' + rssTitle + '</a>' + 
+    '</p><div>';
 }
 
 function loadItemsfromWebsql(rssUrl, index, nums) {
@@ -206,36 +209,44 @@ var onceNums = localStorage.onceNums ? localStorage.onceNums : 10;
 //绑定点击事件
 window.onclick = function (e) {
 
-    //离开之间保存页面，下次直接加载该页面 //有些分支点击之后打开新页面，所以处理之前需要获取当前body.
-    //this.localStorage.lastBodystr = document.getElementById('body').innerHTML;
+    //离开之间保存页面，下次直接加载该页面
+    
 
-    //console.log(e.target);
-    if (rssUrl = e.target.getAttribute('data-rss')) {
-        //加载某一个rss的内容
+    //加载items列表
+    if (rssUrl = e.target.getAttribute('data-rss')) {   
+           
+        localStorage.lastBodystrtemp =localStorage.lastBodystr;//后退时需要用到
+
         var rssTitle = e.target.getAttribute('data-title');
         sethead(rssTitle);
         loadItemsfromWebsql(rssUrl, 0, onceNums); //0到10条
         //隐藏rss列表
-        document.getElementById('rss').innerHTML = "";
+        document.getElementById('rss').innerHTML = ""; 
     }
+    //加载更多
     if (e.target.id == 'loadmore') {
-        //加载某一个rss的内容
         var rssUrl = e.target.getAttribute('data-rssUrl');
         var index = e.target.getAttribute('data-index');
         index = Number(index) + onceNums;
         loadItemsfromWebsql(rssUrl, index, onceNums); //10到20条 ... 
     }
+    //刷新
     if (e.target.id == "update") {
         rss_request();
-
         localStorage.lastBodystr ="";
         this.console.log("刷新页面, 重新生成popup页面...");
         loadRssfromWebsql();
-
-        //this.setTimeout("location.reload();",3000); //3s后刷新  
     }
-    if (e.target.href) {
-        //将对应item标记为已读
+    //后退
+    if (e.target.id == "goback") {
+        localStorage.lastBodystr =localStorage.lastBodystrtemp;
+        localStorage.headstr = "";
+        localStorage.itemstr = "";
+        localStorage.footstr = "";
+        loadPopup();
+    }
+    //访问item（同时标记已读）
+    if (e.target.href) {     
         makeItemRead(e.target.href);
         e.target.removeChild(e.target.firstChild);
         this.localStorage.lastBodystr = document.getElementById('body').innerHTML;
@@ -243,8 +254,8 @@ window.onclick = function (e) {
             url: e.target.href
         });
     }
+    //隐藏items列表,加载rss列表
     if (e.target.id == 'head' || (e.target.parentNode && e.target.parentNode.id == 'head') || e.target.id == 'nothing') {
-        //隐藏items列表,加载rss列表
         //this.console.log(e.target);        
         localStorage.headstr = "";
         localStorage.itemstr = "";
@@ -264,12 +275,10 @@ window.onclick = function (e) {
     }
     if (e.target.getAttribute('title') == '将目录标记为已读') {
         makeDirRead(e.target.id.replace("nums", ""));
-        //e.target.parentNode.removeChild(e.target);
-        loadPopup();
+        e.target.parentNode.removeChild(e.target);
     } else {
         //this.console.log(e.target);
     }
 
-    //有些分支需要点击之后改变显示，所以处理完毕之后再次获取最新body.2018.03.28
     this.localStorage.lastBodystr = document.getElementById('body').innerHTML;
 }
