@@ -12,48 +12,43 @@
 (function () {
     'use strict';
 
-    var mydiv = document.getElementById("mydiv");
-    if (mydiv !== null) {
-        mydiv.parentNode.removeChild(mydiv);
-    } else {
-        function get_node_selector(node){
-            var n = select_node;
-            var s =  (n.tagName) + (n.id?("#"+n.id):"") + (n.className?("."+n.className):"");
-        }
-        function show_onlyone_selector(select_node){
-            var n = select_node;
-            my_selector = (n.tagName) + (n.id?("#"+n.id):"") + (n.className?("."+n.className):"");
-            /* 类有多个时className中的[空格]需改为[.] ,不然选择器失效 */
-            my_selector = my_selector.split(' ').join('.');
 
-            /* 当前的选择器无法唯一定位，尝试加入父节点增加精确度 */
-            if($(my_selector).length != 1){
-                while(n.parentNode.tagName !== 'HTML'){
-                    var fn = n.parentNode;
-                    var fn_str = (fn.tagName) + (fn.id?("#"+fn.id):"") + (fn.className?("."+fn.className):"");
-                    fn_str = fn_str.split(' ').join('.');
-                    my_selector = fn_str + ">" + my_selector;
-                    if($(my_selector).length == 1){
-                        /* 可以精确定位到所选的元素了 */
-                        break;
-                    }
-                    /* 依次往上层遍历 */
-                    n = n.parentNode;
-                }
-                /* 如果整个HTML上诉完了还不能精确定位到所选的元素，说明元素具有兄弟元素，提示获取父元素 */
-                console.log('your select area maybe have brothers ,please try to get [上层元素] frist!');
+    function get_selector(node){
+        var s =  (node.tagName) + (node.className?("."+node.className):"");
+        s = s.split(' ').join('.');
+        return s;
+    }
+
+    function is_only_selector(str){
+        if($(s).length != 1){
+            return false;
+        }
+        return true;
+    }
+
+    function get_one_selector(node){
+        var s = get_selector(node);
+
+        if(is_only_selector(s)){
+            return s;
+        }
+        while(node.parentNode.tagName !== 'HTML'){
+            var fn = node.parentNode;
+            var fs = get_selector(fn);
+            s = fs + ">" + s;
+            if($(s).length == 1){                     
+                break;/* 可以精确定位到所选的元素了 */
             }
-            /* 将选择器保存到当前网页的localStorage中去 */
-            document.getElementById('log').innerHTML = my_selector ;
-            localStorage.setItem("my_one_key_down_selector",my_selector);
-            /* 完成之后将选中元素重置 */
-            /* 感觉没必要 */
+            /* 依次往上层遍历 */
+            node = node.parentNode;
         }
+        /* 如果整个HTML上诉完了还不能精确定位到所选的元素，说明元素具有兄弟元素，提示获取父元素 */
+        console.log('元素可能有兄弟，请先获取父元素 !');
+    }
+        
 
-        var my_selector = "";
-        var show_node = null;
-
-        /* 新添加的操作主界面div */
+    /* 新添加的操作主界面div */
+    function createMydiv(){       
         var div = document.createElement('div');
         div.id = 'mydiv';
         div.style.cssText = "width:300px; height:300px; position:fixed; top:20%; right:40px";
@@ -67,7 +62,24 @@
             '<div id="log"></div></div>';
         document.body.appendChild(div);
 
+        function show_log(str){
+            document.getElementById('log').innerHTML = "<p>"+str + "</p>";
+        }
+    }
 
+
+
+    var mydiv = document.getElementById("mydiv");
+    if (mydiv !== null) {
+        mydiv.parentNode.removeChild(mydiv);
+    } else {
+
+
+
+
+
+        var s = "";
+        var show_node = null;
 
         //绑定点击事件
         document.getElementById('gotop').onclick = function () {
@@ -76,30 +88,26 @@
         document.getElementById('gps').onclick = function () {
             localStorage.gps = localStorage.gps ? localStorage.gps : 1;
         };
-        document.getElementById('gps').onclick = show_onlyone_selector();
+        document.getElementById('gps').onclick = 
 
         /* 高亮点击的页面DOM区 */
-        window.onmouseup = function (e) {
-            if (!e) {
-                e = window.event;
+        window.onmouseover = function (e) {
+            if (e.target.tagName !='a') {
+                return;
             }
-            if (e.button !== 0) return; /* 只监听鼠标左键 */
             var targ = e.target;
             /* 1.普通的页面节点，则高亮该节点 */
-            if (targ.id != "mydiv" && targ.parentNode.id != "mydiv") {
 
-                document.getElementById('log').innerHTML = targ.tagName;
+            show_log(targ.tagName);
 
-                if (targ.tagName != "INPUT" && targ.tagName != "input") {
-                    /* 旧节点移除高亮，新节点添加高亮 */
-                    if (show_node !== null) {
-                        show_node.removeAttribute("border");
-                    }
-                    targ.setAttribute('style','border:1px solid #F00');
-                    /* 选中该节点 */
-                    show_node = targ;
+            var list = get_list_selector();
+                /* 旧节点移除高亮，新节点添加高亮 */
+                if (show_node !== null) {
+                    show_node.removeAttribute("border");
                 }
-            }
+                targ.setAttribute('style','border:1px solid #F00');
+                /* 选中该节点 */
+                show_node = targ;
         };
 
     }
