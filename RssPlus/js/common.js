@@ -28,11 +28,14 @@ function loadItemsfromWebsql(rssUrl, index, nums) {
                     for (i = 0; i < len; i++) {
                         var itemurl = results.rows.item(i).url;
                         var title = results.rows.item(i).title;
+                        //title =title.substr(0,30);
                         var isread = results.rows.item(i).isread;
+                        var description = results.rows.item(i).description;
+                        description = description.substr(0,200);
                         if (isread == 1) {
-                            localStorage.itemstr += '<a class="list-group-item list-group-item-warning" href="' + itemurl + '" >' + title + '</a>';
+                            localStorage.itemstr += '<a class="list-group-item list-group-item-warning" title="'+ description +'" href="' + itemurl + '" >' + title + '</a>';
                         } else {
-                            localStorage.itemstr += '<a class="list-group-item list-group-item-warning" href="' + itemurl + '" ><span class="badge pull-right" title="标记为已读">新</span>' + title + '</a>';
+                            localStorage.itemstr += '<a class="list-group-item list-group-item-warning" title="'+ description +'" href="' + itemurl + '" ><span class="badge pull-right" title="标记为已读">新</span>' + title + '</a>';
                         }
                     }
                     localStorage.footstr = '<a id="loadmore" class="list-group-item list-group-item-warning btn" style="text-align: center;" data-rssUrl="' + rssUrl + '" data-index="' + index + '">加载更多</a></div>';
