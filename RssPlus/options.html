@@ -2,35 +2,41 @@
 
 <head>
     <title>管理rss源</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="js/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>   
 </head>
 
 <body>
-    <p>管理rss源</p>
-    <p>链接：
-        <input type="text" id="rssurl" size='60' />
-        <input type="button" id="del" value="删除rss源" />
-    </p>
-    <p>标题：
-        <input type="text" id="rsstitle" size='60' /> (选填)</p>
-    <p>目录：
-        <input type="text" id="rssdir" size='60' /> (选填)</p>
-    <input type="button" id="save" value="添加rss源（若存在则更新）" />
-    <br/>
-    <br/>
-    <input type="button" id="clearfeeds" value="清空feeds缓存" />
-    <br/>
-    <br/>
-    <p>
-        <input type="text" id="reqtime" />
-        <input type="button" id="reqtimebtn" value="设置自动请求rss源的时间间隔(分钟)" />
-    </p>
-    <p>
-        <input type="text" id="onceNums" />
-        <input type="button" id="onceNumsbtn" value="设置一次加载的新闻数量" />
-    </p>
-    <br/>
-    <br/>
-    <div id='rss'></div>
+    <div class='container'>
+        <p>管理rss源</p>
+        <p>链接：
+            <input type="text" id="rssurl" size='60' />
+            <input type="button" id="del" value="删除rss源" />
+        </p>
+        <p>标题：
+            <input type="text" id="rsstitle" size='60' /> (选填)</p>
+        <p>目录：
+            <input type="text" id="rssdir" size='60' /> (选填)</p>
+        <input type="button" id="save" value="添加rss源（若存在则更新）" />
+        <br/>
+        <br/>
+        <input type="button" id="clearfeeds" value="清空feeds缓存" />
+        <br/>
+        <br/>
+        <p>
+            <input type="text" id="reqtime" />
+            <input type="button" id="reqtimebtn" value="设置自动请求rss源的时间间隔(分钟)" />
+        </p>
+        <p>
+            <input type="text" id="onceNums" />
+            <input type="button" id="onceNumsbtn" value="设置一次加载的新闻数量" />
+        </p>
+        <br/>
+        <br/>
+        <div id='rss'></div>      
+    </div>
     <script src="js/options.js"></script>
 </body>
 

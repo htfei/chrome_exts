@@ -61,12 +61,16 @@ function loadRss() {
     db.transaction(function (tx) {
         tx.executeSql('SELECT * FROM Rss', [],
             function (tx, results) {
+                var divstr = '<table class="table table-striped table-hover table-condensed">' +
+                '<caption>管理订阅的RSS源(开发中)</caption><thead><tr><th>名称</th><th>目录</th><th>RSS链接</th></tr></thead><tbody>';
                 for (i = 0; i < results.rows.length; i++) {
                     var rss = results.rows.item(i).rss;
                     var title = results.rows.item(i).title;
                     var dir = results.rows.item(i).dir;
-                    document.getElementById('rss').innerHTML += '<div>' + dir + '\t' + title + '\t' + rss + '</div>';
+                    divstr += '<tr><td>' + dir + '</td><td>' + title + '</td><td>' + rss + '</td><td><input type="button" class="edit" value="编辑" /></td></tr>';
                 }
+                divstr += '</tbody></table>';
+                document.getElementById('rss').innerHTML = divstr ;
             },
             null
         );
@@ -74,3 +78,14 @@ function loadRss() {
 }
 
 loadRss();
+
+//更新某一项键值对
+$('.edit').click(function(){
+//document.getElementsByClassName('edit').onclick = function(){
+    var obj = this.parentNode.parentNode;//input.td.tr
+    document.getElementById('rssurl').value = obj.childNodes[2].value;
+    document.getElementById('rsstitle').value = obj.childNodes[0].value;
+    document.getElementById('rssdir').value = obj.childNodes[1].value;
+    console.log(obj);
+//}
+});
