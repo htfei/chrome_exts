@@ -11,10 +11,11 @@ function loadPopup() {
 
 //点击rss列表时加载标题及条目
 function sethead(rssTitle,rssUrl) {
-    localStorage.headstr = '<p style="margin:0 0 0px; background-color:#f0ffff;">'+
+    localStorage.headstr = '<p style="margin:0 0 0px; background-color:#f0ffff;" data-rssUrl="' + rssUrl  + '" data-title="' + rssTitle + '">'+
     '<a id="goback" class="btn" title="后退" >后退</a>' +   
     '<a id="head" class="btn" >' + rssTitle + '</a>' + 
-    '<a id="updateRss" class="btn" title="立刻更新当前的rss源" data-rssUrl="' + rssUrl  + '" data-title="' + rssTitle + '">刷新</a>' + 
+    '<a id="updateRss" class="btn" title="立刻更新当前的rss源" >刷新</a>' + 
+    // '<a id="makerssread" class="btn" title="将该RSS源标记为已读" >已读</a>' +  //TODO 无效，暂不启用
     '</p><div>';
 }
 

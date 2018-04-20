@@ -45,7 +45,7 @@ window.onclick = function (e) {
     if (e.target.id == "updateRss") {
         console.log("刷新单个Rss源, 3s后重新生成popup页面...");     
 
-        var rssUrl = e.target.getAttribute('data-rssUrl')
+        var rssUrl = e.target.parentNode.getAttribute('data-rssUrl');
         httpRequest(rssUrl, parseXmlstr);
 
         localStorage.itemstr = "";
