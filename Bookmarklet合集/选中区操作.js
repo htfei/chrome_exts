@@ -19,6 +19,12 @@
         return s;
     }
 
+    function get_id_selector(node){
+        var s =  (node.tagName) + (node.id?("#"+node.id):"") + (node.className?("."+node.className):"");
+        s = s.split(' ').join('.');
+        return s;
+    }
+
     function is_only_selector(s){
         if($(s).length != 1){
             return false;
