@@ -141,8 +141,8 @@ function loadRssfromWebsql() {
                 document.getElementById('rss').innerHTML =
                     '<p style="margin:0 0 0px; background-color:#f0ffff; text-align:center">' +
                     '<a id="addrss" class="btn" title="设置" href="./../options.html">设置</a>' +
-                    '<a id="listh" class="btn" title="列表">列表</a>' +
-                    '<a id="star" class="btn">收藏</a>' +
+                    //'<a id="listh" class="btn" title="列表">列表</a>' +
+                    //'<a id="star" class="btn">收藏</a>' +
                     '<a id="update" class="btn">刷新</a></p><div>';
 
                 for (i = 0; i < len; i++) {
@@ -410,9 +410,9 @@ function init() {
         tx.executeSql('CREATE TABLE IF NOT EXISTS Feeds (url unique, title, pubtimestamp,isread,rssUrl,description,category,content)');
 
         //插入一个rss源
-        tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title) VALUES (?, ?)', ["https://feed43.com/5123185481381181.xml", "网易新闻24H排行榜"]);
-        tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title) VALUES (?, ?)', ["https://feed43.com/2770086871034514.xml", "抽屉24h最热"]);
-        tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title) VALUES (?, ?)', ["https://feed43.com/3680851688572686.xml", "天涯实时热帖榜"]);
+        //tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title) VALUES (?, ?)', ["https://feed43.com/5123185481381181.xml", "网易新闻24H排行榜"]);
+        //tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title) VALUES (?, ?)', ["https://feed43.com/2770086871034514.xml", "抽屉24h最热"]);
+        //tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title) VALUES (?, ?)', ["https://feed43.com/3680851688572686.xml", "天涯实时热帖榜"]);
 
     });
 }
