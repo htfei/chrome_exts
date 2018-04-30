@@ -252,10 +252,15 @@ function parseAtomFeedItem(xmlstr){
             var updated = list[i].getElementsByTagName('updated')[0].innerHTML;
             var updatedtimestamp = Math.round(new Date(updated).getTime() / 1000);
 
-            var desc = list[i].getElementsByTagName('summary')[0].innerHTML;
-            var descfix = removeCDATA(desc);
-
             /* 可选项解析 */
+            var desc = list[i].getElementsByTagName('summary');
+            if(desc.length == 0 ){
+                desc = "";
+            }else{
+                desc = list[i].getElementsByTagName('summary')[0].innerHTML;
+            }
+            var descfix = removeCDATA(desc);
+         
             var category = list[i].getElementsByTagName('category');
             if(category.length == 0 ){
                 //console.log("这个item没有 category");
@@ -280,21 +285,22 @@ function parseAtomFeedItem(xmlstr){
             items.push([linkfix, titlefix, updatedtimestamp, rssurl, descfix, categoryfix, contentfix]);
         }
     }
-    console.log(items);
+    //console.log(items);
     return items;
 }
 
-function parseRssItem(rssstr){
+/* function parseRssItem(rssstr){
     console.log(" parseRssItem ..");
     
-}
+} */
+
 //解析items
 function parseXmlstr(rssxml, rssurl) {
-    console.log(rssxml); //err console.log(rssxml.innerHTML);
+    //console.log(rssxml); //err console.log(rssxml.innerHTML);
     if (rssxml) {
         var items = [];
         var type = rssxml.getElementsByTagName('rss');
-        if(type){
+        if(type.length >=1 ) {
             var list = rssxml.getElementsByTagName('item');
         
             for (i = 0; i < list.length; i++) {
@@ -341,9 +347,9 @@ function parseXmlstr(rssxml, rssurl) {
                 items.push([linkfix, titlefix, pubtimestamp, rssurl, descfix, categoryfix, contentfix]);
             }
         }
-        else if(rssxml.getElementsByTagName('feed')){
+        else{ // if(rssxml.getElementsByTagName('feed').length >=1)
             items = parseAtomFeedItem(rssxml);
-            console.log(items);
+            //console.log(items);
         }
 
         items2websql(items);
