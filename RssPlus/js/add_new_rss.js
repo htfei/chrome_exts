@@ -9,7 +9,7 @@ if (feeds.length > 0)
     for (i = 0; i < feeds.length; i++)
     {
         html += "<li>";
-        html +=   '<a href="'+feeds[i].url+'" title="'+feeds[i].type+'" target="_blank">'+feeds[i].title+'</a><input type="text" /><input type="button" class="add_btn" value="添加" />';
+        html +=   '<a href="'+feeds[i].url+'" title="'+feeds[i].type+'" target="_blank">'+feeds[i].title+'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="add_btn" value="添加" />';
         html += "</li>";
     }
     html += "</ul>";
@@ -22,7 +22,7 @@ if (feeds.length > 0)
         console.log(obj);
         var rssurl = obj.childNodes[0].href;
         var rsstitle = obj.childNodes[0].innerText;
-        var rssdir = obj.childNodes[1].value;
+        var rssdir = "";
         db.transaction(function (tx) {
             tx.executeSql('INSERT OR REPLACE INTO Rss (rss,title,dir) VALUES (?, ?, ?)', [rssurl, rsstitle, rssdir],
                 function (tx, results) {
@@ -32,9 +32,6 @@ if (feeds.length > 0)
                     alert('添加失败!' + error.message)
                 });
         });
-
-        
     });
-
 }
 
