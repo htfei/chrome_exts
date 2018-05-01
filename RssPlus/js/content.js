@@ -41,17 +41,19 @@ function getFeedsURLs() {
     }
     console.log(feeds_urls);
 
-    
-    if(feeds_urls.length >= 1){
-        var feeds_urls_msg={
-            cmd:"got_feeds_urls",
-            ctx:feeds_urls
+
+    if (feeds_urls.length >= 1) {
+        var feeds_urls_msg = {
+            cmd: "got_feeds_urls",
+            page_url: location.href,
+            ctx: feeds_urls,
         }
-        //发送消息到popup.js
+        //发送消息到background.js
         chrome.runtime.sendMessage(feeds_urls_msg, function (response) {
             console.log(response);
-        }); 
+        });
     }
 }
 
+//页面加载后检测rss，发送给background.js
 getFeedsURLs();

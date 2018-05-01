@@ -2,21 +2,21 @@ var db = openDatabase('myrssdb', '1.0', 'I can rss everthing !', 2 * 1024 * 1024
 
 function loadPopup() {
     //上次最后的访问页面
-    if (localStorage.lastBodystr && localStorage.lastBodystr.length >= 1000) {
-        document.getElementById('body').innerHTML = localStorage.lastBodystr;
-    } else {
-        loadRssfromWebsql();
-    }
+    //if (localStorage.lastBodystr && localStorage.lastBodystr.length >= 1000) {
+    //    document.getElementById('body').innerHTML = localStorage.lastBodystr;
+    //} else {
+    loadRssfromWebsql();
+    //}
 }
 
 //点击rss列表时加载标题及条目
-function sethead(rssTitle,rssUrl) {
-    localStorage.headstr = '<p style="margin:0 0 0px; background-color:#f0ffff;" data-rssUrl="' + rssUrl  + '" data-title="' + rssTitle + '">'+
-    '<a id="goback" class="btn" title="后退" >后退</a>' +   
-    '<a id="head" class="btn" >' + rssTitle + '</a>' + 
-    '<a id="updateRss" class="btn" title="立刻更新当前的rss源" >刷新</a>' + 
-    // '<a id="makerssread" class="btn" title="将该RSS源标记为已读" >已读</a>' +  //TODO 无效，暂不启用
-    '</p><div>';
+function sethead(rssTitle, rssUrl) {
+    localStorage.headstr = '<p style="margin:0 0 0px; background-color:#f0ffff;" data-rssUrl="' + rssUrl + '" data-title="' + rssTitle + '">' +
+        '<a id="goback" class="btn" title="后退" >后退</a>' +
+        '<a id="head" class="btn" >' + rssTitle + '</a>' +
+        '<a id="updateRss" class="btn" title="立刻更新当前的rss源" >刷新</a>' +
+        // '<a id="makerssread" class="btn" title="将该RSS源标记为已读" >已读</a>' +  //TODO 无效，暂不启用
+        '</p><div>';
 }
 
 function loadItemsfromWebsql(rssUrl, index, nums) {
@@ -64,7 +64,7 @@ function makeItemRead(itemUrl) {
                 });
                 //插入数据后更新未读条数
                 tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
-    
+
                 changeicobar();
             }
         }, null);
@@ -84,7 +84,7 @@ function makeRssRead(rssUrl) {
 }
 //标记目录为已读
 function makeDirRead(dirstr) {
-    console.log("标记目录为已读",dirstr);
+    console.log("标记目录为已读", dirstr);
     db.transaction(function (tx) {
         tx.executeSql('update Feeds set isread = 1 WHERE Feeds.rssUrl = (SELECT rss FROM Rss WHERE dir = ? and Feeds.rssUrl = Rss.rss)', [dirstr], null, function (tx, error) {
             alert('失败!', error.message)
@@ -143,8 +143,8 @@ function loadRssfromWebsql() {
                     '<a id="setrss" class="btn" title="设置" href="./../options.html">设置</a>' +
                     //'<a id="listh" class="btn" title="列表">列表</a>' +
                     //'<a id="star" class="btn">收藏</a>' + 
-                    '<a id="update" class="btn">刷新</a>'+
-                    '<a id="addrss" class="btn" title="设置" href="./../add_new_rss.html">添加</a>' +
+                    '<a id="update" class="btn">刷新</a>' +
+                    '<a id="addrss" class="btn" title="添加新的rss源" href="./../add_new_rss.html">添加</a>' +
                     '</p><div>';
 
                 for (i = 0; i < len; i++) {
@@ -180,7 +180,7 @@ function loadRssfromWebsql() {
                             if (unreadNums && unreadNums > 0) {
                                 document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item list-group-item-success" data-toggle="collapse"  href="#' + dir + '"><img src="/images/folder-icon.png" width="16" height="16"/>  ' + dir + '<span id="' + dir + 'nums" class="badge pull-right btn" title="将目录标记为已读">' + unreadNums + '</span></div>';
                             } else {
-                                document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item list-group-item-success" data-toggle="collapse"  href="#' + dir + '"><img src="/images/folder-icon.png" width="16" height="16"/>  '+ dir + '</div>';
+                                document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item list-group-item-success" data-toggle="collapse"  href="#' + dir + '"><img src="/images/folder-icon.png" width="16" height="16"/>  ' + dir + '</div>';
                             }
 
                             var obj = document.createElement('div');
@@ -216,7 +216,7 @@ function items2websql(items) {
 
 /*从<![CDATA[%s]]>中取出%s*/
 function removeCDATA(fstr) {
-    return fstr.replace("<![CDATA[", "").replace("]]>", "").replace('<p><sub><i>-- Delivered by <a href="http://feed43.com/">Feed43</a> service</i></sub></p>',"")
+    return fstr.replace("<![CDATA[", "").replace("]]>", "").replace('<p><sub><i>-- Delivered by <a href="http://feed43.com/">Feed43</a> service</i></sub></p>', "")
 }
 
 //必须加https://，否则默认前缀为chrome-extension://dhjefkpchmfdghfipcdmaodhigmfbpef
@@ -227,27 +227,27 @@ function addhttphead(url) {
         } else {
             return 'https://' + url;
         }
-    }else{
+    } else {
         return url;
-    }   
+    }
 }
 
-function parseAtomFeedItem(xmlstr){
+function parseAtomFeedItem(xmlstr) {
     console.log(" parseAtomFeedItem ..");
     var rssurl = xmlstr.getElementsByTagName('id')[0].innerHTML;
 
     var items = [];
-    if(xmlstr.getElementsByTagName('feed')){
+    if (xmlstr.getElementsByTagName('feed')) {
         var list = xmlstr.getElementsByTagName('entry');
-    
+
         for (i = 0; i < list.length; i++) {
 
-            var link = list[i].getElementsByTagName('link')[0].getAttribute('href');         
+            var link = list[i].getElementsByTagName('link')[0].getAttribute('href');
             linkfix = addhttphead(link);
 
             var title = list[i].getElementsByTagName('title')[0].innerHTML;
-            var titlefix = removeCDATA(title);                   
-            
+            var titlefix = removeCDATA(title);
+
             var published = list[i].getElementsByTagName('published')[0].innerHTML;
             var pubtimestamp = Math.round(new Date(published).getTime() / 1000);
 
@@ -256,28 +256,28 @@ function parseAtomFeedItem(xmlstr){
 
             /* 可选项解析 */
             var desc = list[i].getElementsByTagName('summary');
-            if(desc.length == 0 ){
+            if (desc.length == 0) {
                 desc = "";
-            }else{
+            } else {
                 desc = list[i].getElementsByTagName('summary')[0].innerHTML;
             }
             var descfix = removeCDATA(desc);
-         
+
             var category = list[i].getElementsByTagName('category');
-            if(category.length == 0 ){
+            if (category.length == 0) {
                 //console.log("这个item没有 category");
                 category = "";
-            }else{
-                category = category[0].getAttribute('term');//list类型,待优化
+            } else {
+                category = category[0].getAttribute('term'); //list类型,待优化
             }
             var categoryfix = removeCDATA(category);
 
             var content = list[i].getElementsByTagName('content');
-            if(content.length == 0 ){
+            if (content.length == 0) {
                 console.log("这个item没有 content");
                 content = "";
-            }else{
-                content = content[0].innerHTML; 
+            } else {
+                content = content[0].innerHTML;
             }
             var contentfix = removeCDATA(content);
 
@@ -302,23 +302,23 @@ function parseXmlstr(rssxml, rssurl) {
     if (rssxml) {
         var items = [];
         var type = rssxml.getElementsByTagName('rss');
-        if(type.length >=1 ) {
+        if (type.length >= 1) {
             var list = rssxml.getElementsByTagName('item');
-        
+
             for (i = 0; i < list.length; i++) {
-    
-                var link = list[i].getElementsByTagName('link')[0].innerHTML;         
+
+                var link = list[i].getElementsByTagName('link')[0].innerHTML;
                 linkfix = addhttphead(link);
-    
+
                 var title = list[i].getElementsByTagName('title')[0].innerHTML;
                 var titlefix = removeCDATA(title);
-    
+
                 var desc = list[i].getElementsByTagName('description')[0].innerHTML;
                 var descfix = removeCDATA(desc);
-                   
+
                 /* 可选项解析 */
                 var pub = list[i].getElementsByTagName('pubDate');
-                if(pub.length == 0 ){
+                if (pub.length == 0) {
                     console.log("这是一个坏的items!");
                     continue;
                 }
@@ -326,19 +326,19 @@ function parseXmlstr(rssxml, rssurl) {
                 var pubtimestamp = Math.round(new Date(pubdate).getTime() / 1000);
 
                 var category = list[i].getElementsByTagName('category');
-                if(category.length == 0 ){
+                if (category.length == 0) {
                     //console.log("这个item没有 category");
                     category = "";
-                }else{
+                } else {
                     category = category[0].innerHTML;
                 }
                 var categoryfix = removeCDATA(category);
 
                 var content = list[i].getElementsByTagName('content:encoded');
-                if(content.length == 0 ){
+                if (content.length == 0) {
                     //console.log("这个item没有 content");
                     content = "";
-                }else{
+                } else {
                     content = content[0].innerHTML;
                 }
                 var contentfix = removeCDATA(content);
@@ -348,8 +348,7 @@ function parseXmlstr(rssxml, rssurl) {
                 //executeSql第一条执行完毕之前for循环已经结束了，故只插入了一条记录，需先保存起来在一次插入
                 items.push([linkfix, titlefix, pubtimestamp, rssurl, descfix, categoryfix, contentfix]);
             }
-        }
-        else{ // if(rssxml.getElementsByTagName('feed').length >=1)
+        } else { // if(rssxml.getElementsByTagName('feed').length >=1)
             items = parseAtomFeedItem(rssxml);
             //console.log(items);
         }
@@ -424,5 +423,3 @@ function init() {
 
     });
 }
-
-

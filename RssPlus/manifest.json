@@ -4,14 +4,14 @@
     "version": "1.0",
     "description": "万物皆可订阅！",
     "icons": {
-        "16": "images/rss_button.png",
-        "48": "images/rss_button.png",
-        "128": "images/rss_button.png"
+        "16": "images/icon.png",
+        "48": "images/icon.png",
+        "128": "images/icon.png"
     },
     "browser_action": {
         "default_icon": {
-            "19": "images/rss_button.png",
-            "38": "images/rss_button.png"
+            "19": "images/icon.png",
+            "38": "images/icon.png"
         },
         "default_title": "Rss订阅追踪器,万物皆可订阅！",
         "default_popup": "popup.html"
