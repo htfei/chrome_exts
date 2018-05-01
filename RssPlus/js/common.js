@@ -140,10 +140,12 @@ function loadRssfromWebsql() {
 
                 document.getElementById('rss').innerHTML =
                     '<p style="margin:0 0 0px; background-color:#f0ffff; text-align:center">' +
-                    '<a id="addrss" class="btn" title="设置" href="./../options.html">设置</a>' +
+                    '<a id="setrss" class="btn" title="设置" href="./../options.html">设置</a>' +
                     //'<a id="listh" class="btn" title="列表">列表</a>' +
-                    //'<a id="star" class="btn">收藏</a>' +
-                    '<a id="update" class="btn">刷新</a></p><div>';
+                    //'<a id="star" class="btn">收藏</a>' + 
+                    '<a id="update" class="btn">刷新</a>'+
+                    '<a id="addrss" class="btn" title="设置" href="./../add_new_rss.html">添加</a>' +
+                    '</p><div>';
 
                 for (i = 0; i < len; i++) {
                     var rss = results.rows.item(i).rss;
