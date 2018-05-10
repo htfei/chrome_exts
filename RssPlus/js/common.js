@@ -2,11 +2,11 @@ var db = openDatabase('myrssdb', '1.0', 'I can rss everthing !', 2 * 1024 * 1024
 
 function loadPopup() {
     //上次最后的访问页面
-    //if (localStorage.lastBodystr && localStorage.lastBodystr.length >= 1000) {
-    //    document.getElementById('body').innerHTML = localStorage.lastBodystr;
-    //} else {
+    if (localStorage.lastBodystr && localStorage.lastBodystr.length >= 1000) {
+        document.getElementById('body').innerHTML = localStorage.lastBodystr;
+    } else {
     loadRssfromWebsql();
-    //}
+    }
 }
 
 //点击rss列表时加载标题及条目

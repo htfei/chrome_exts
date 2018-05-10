@@ -49,6 +49,7 @@ window.onclick = function (e) {
         httpRequest(rssUrl, parseXmlstr);
 
         localStorage.itemstr = "";
+        localStorage.lastBodystr ="";
         loadItemsfromWebsql(rssUrl, 0, onceNums); //0到10条
     }
     //后退
