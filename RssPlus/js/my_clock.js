@@ -4,7 +4,7 @@ document.write("<script language=javascript src='js/common.js'></script>");
 
 
 //loadPopup();
-setTimeout("loadPopup()",100);//等待common.js加载完毕
+setTimeout("loadPopup()",200);//等待common.js加载完毕
 
 
 //一次加载的数量
@@ -19,10 +19,11 @@ window.onclick = function (e) {
     //加载items列表
     if (rssUrl = e.target.getAttribute('data-rss')) {   
            
-        localStorage.lastBodystrtemp =localStorage.lastBodystr;//后退时需要用到
+        //localStorage.lastBodystrtemp =localStorage.lastBodystr;//后退时需要用到
 
         var rssTitle = e.target.getAttribute('data-title');
-        sethead(rssTitle,rssUrl);
+        var rssico = e.target.getAttribute('data-ico');
+        sethead(rssTitle,rssUrl,rssico);
         loadItemsfromWebsql(rssUrl, 0, onceNums); //0到10条
         //隐藏rss列表
         document.getElementById('rss').innerHTML = ""; 
@@ -36,7 +37,7 @@ window.onclick = function (e) {
     }
     //刷新
     if (e.target.id == "update") {
-        rss_request();
+        //rss_request();
         localStorage.lastBodystr ="";
         this.console.log("刷新页面, 重新生成popup页面...");
         loadRssfromWebsql();
@@ -52,14 +53,14 @@ window.onclick = function (e) {
         localStorage.lastBodystr ="";
         loadItemsfromWebsql(rssUrl, 0, onceNums); //0到10条
     }
-    //后退
+    /*//后退
     if (e.target.id == "goback") {
         localStorage.lastBodystr =localStorage.lastBodystrtemp;
         localStorage.headstr = "";
         localStorage.itemstr = "";
         localStorage.footstr = "";
         loadPopup();
-    }
+    }*/
     //访问item（同时标记已读）
     if (e.target.href) {     
         makeItemRead(e.target.href);

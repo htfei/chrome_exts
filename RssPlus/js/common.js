@@ -10,9 +10,10 @@ function loadPopup() {
 }
 
 //点击rss列表时加载标题及条目
-function sethead(rssTitle, rssUrl) {
-    localStorage.headstr = '<p style="margin:0 0 0px; background-color:#f0ffff;" data-rssUrl="' + rssUrl + '" data-title="' + rssTitle + '">' +
-        '<a id="goback" class="btn" title="后退" >后退</a>' +
+function sethead(rssTitle, rssUrl, rssico) {
+    localStorage.headstr = '<p style="margin:0 0 0px; background-color:#90EE90; text-align:center" data-rssUrl="' + rssUrl + '" data-title="' + rssTitle + '">' +
+        //'<a id="goback" class="btn" title="后退" >后退</a>' + //有bug，不启用
+        '<img src ="'+ rssico +'" height="16" width="16"/>&nbsp;&nbsp;' + 
         '<a id="head" class="btn" >' + rssTitle + '</a>' +
         '<a id="updateRss" class="btn" title="立刻更新当前的rss源" >刷新</a>' +
         // '<a id="makerssread" class="btn" title="将该RSS源标记为已读" >已读</a>' +  //TODO 无效，暂不启用
@@ -34,14 +35,14 @@ function loadItemsfromWebsql(rssUrl, index, nums) {
                         //var description = results.rows.item(i).description;
                         //description = description.substr(0,200);
                         if (isread == 1) {
-                            localStorage.itemstr += '<a class="list-group-item list-group-item-warning" href="' + itemurl + '" >' + title + '</a>';
+                            localStorage.itemstr += '<a class="list-group-item" href="' + itemurl + '" >' + title + '</a>';
                         } else {
-                            localStorage.itemstr += '<a class="list-group-item list-group-item-warning" href="' + itemurl + '" ><span class="badge pull-right" title="标记为已读">新</span>' + title + '</a>';
+                            localStorage.itemstr += '<a class="list-group-item" href="' + itemurl + '" ><span class="badge pull-right" title="标记为已读">新</span>' + title + '</a>';
                         }
                     }
-                    localStorage.footstr = '<a id="loadmore" class="list-group-item list-group-item-warning btn" style="text-align: center;" data-rssUrl="' + rssUrl + '" data-index="' + index + '">加载更多</a></div>';
+                    localStorage.footstr = '<a id="loadmore" class="list-group-item btn" style="text-align: center;" data-rssUrl="' + rssUrl + '" data-index="' + index + '">加载更多</a></div>';
                 } else {
-                    localStorage.footstr = '<a id="nothing" class="list-group-item list-group-item-warning btn" style="text-align: center;" title="点击返回主界面" >暂无更新！</a></div>';
+                    localStorage.footstr = '<a id="nothing" class="list-group-item btn" style="text-align: center;" title="点击返回主界面" >暂无更新！</a></div>';
                 }
                 //console.log(localStorage.itemstr);
                 document.getElementById('item').innerHTML = localStorage.headstr + localStorage.itemstr + localStorage.footstr;
@@ -139,7 +140,7 @@ function loadRssfromWebsql() {
                 var nodirstr = "";
 
                 document.getElementById('rss').innerHTML =
-                    '<p style="margin:0 0 0px; background-color:#f0ffff; text-align:center">' +
+                    '<p style="margin:0 0 0px; background-color:#90EE90; text-align:center">' +
                     '<a id="setrss" class="btn" title="设置" href="./../options.html">设置</a>' +
                     //'<a id="listh" class="btn" title="列表">列表</a>' +
                     //'<a id="star" class="btn">收藏</a>' + 
@@ -152,12 +153,18 @@ function loadRssfromWebsql() {
                     var title = results.rows.item(i).title;
                     var unreadNums = results.rows.item(i).unreadNums;
                     var dir = results.rows.item(i).dir;
+                    var ico = results.rows.item(i).ico;
+                    console.log(ico);
+                    if(ico == null){
+                        ico = "./../images/icon.png";
+                    }
+
 
                     //rsslist
                     if (unreadNums && unreadNums > 0) {
-                        var rss1 = '<a class="list-group-item list-group-item-warning btn" style="text-align: left;" data-rss="' + rss + '" data-title="' + title + '"><span class="badge pull-right" title="将该RSS源标记为已读">' + unreadNums + '</span>' + title + '</a>';
+                        var rss1 = '<div class="list-group-item btn" style="text-align: left;" data-rss="' + rss + '" data-title="' + title + '"data-ico="' + ico + '"><img src ="'+ ico +'" height="16" width="16"/>&nbsp;&nbsp;<span class="badge pull-right" title="将该RSS源标记为已读">' + unreadNums + '</span>' + title + '</div>';
                     } else {
-                        var rss1 = '<a class="list-group-item list-group-item-warning btn" style="text-align: left;" data-rss="' + rss + '" data-title="' + title + '">' + title + '</a>';
+                        var rss1 = '<div class="list-group-item btn" style="text-align: left;" data-rss="' + rss + '" data-title="' + title + '"data-ico="' + ico + '"><img src ="'+ ico +'" height="16" width="16"/>&nbsp;&nbsp;' + title + '</div>';
                     }
 
                     if (dir) {
@@ -178,9 +185,9 @@ function loadRssfromWebsql() {
                             dirstr += dir;
                             //未添加则先加目录在添加
                             if (unreadNums && unreadNums > 0) {
-                                document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item list-group-item-success" data-toggle="collapse"  href="#' + dir + '"><img src="/images/folder-icon.png" width="16" height="16"/>  ' + dir + '<span id="' + dir + 'nums" class="badge pull-right btn" title="将目录标记为已读">' + unreadNums + '</span></div>';
+                                document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item" style="text-align: left;background-color:#F0FFFF;" data-toggle="collapse"  href="#' + dir + '"><img src="/images/folder-icon.png" width="16" height="16"/>&nbsp;&nbsp;' + dir + '<span id="' + dir + 'nums" class="badge pull-right btn" title="将目录标记为已读">' + unreadNums + '</span></div>';
                             } else {
-                                document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item list-group-item-success" data-toggle="collapse"  href="#' + dir + '"><img src="/images/folder-icon.png" width="16" height="16"/>  ' + dir + '</div>';
+                                document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item" style="text-align: left;background-color:#F0FFFF;" data-toggle="collapse"  href="#' + dir + '"><img src="/images/folder-icon.png" width="16" height="16"/>&nbsp;&nbsp;' + dir + '</div>';
                             }
 
                             var obj = document.createElement('div');
@@ -413,7 +420,7 @@ function init() {
     db.transaction(function (tx) {
 
         //新建表
-        tx.executeSql('CREATE TABLE IF NOT EXISTS Rss (rss unique, title,unreadNums,dir,pubtimestamp)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS Rss (rss unique, title,unreadNums,dir,ico,pubtimestamp)');
         tx.executeSql('CREATE TABLE IF NOT EXISTS Feeds (url unique, title, pubtimestamp,isread,rssUrl,description,category,content)');
 
         //插入一个rss源

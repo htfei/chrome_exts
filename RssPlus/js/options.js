@@ -7,8 +7,9 @@ document.getElementById('save').onclick = function () {
     var rssurl = document.getElementById('rssurl').value;
     var rsstitle = document.getElementById('rsstitle').value;
     var rssdir = document.getElementById('rssdir').value;
+    var rssico = document.getElementById('rssico').value;
     db.transaction(function (tx) {
-        tx.executeSql('INSERT OR REPLACE INTO Rss (rss,title,dir) VALUES (?, ?, ?)', [rssurl, rsstitle, rssdir],
+        tx.executeSql('INSERT OR REPLACE INTO Rss (rss,title,ico,dir) VALUES (?, ?, ?, ?)', [rssurl, rsstitle,rssico, rssdir],
             function (tx, results) {
                 alert('添加成功!');
             },
@@ -67,7 +68,8 @@ function loadRss() {
                     var rss = results.rows.item(i).rss;
                     var title = results.rows.item(i).title;
                     var dir = results.rows.item(i).dir;
-                    divstr += '<tr><td>' + dir + '</td><td>' + title + '</td><td>' + rss + '</td><td><input type="button" class="up_btn" value="编辑" /></td></tr>';
+                    var ico = results.rows.item(i).ico;
+                    divstr += '<tr><td>' + dir + '</td><td>' + title + '</td><td>' + rss + '</td><td>' + ico + '</td><td><input type="button" class="up_btn" value="编辑" /></td></tr>';
                 }
                 divstr += '</tbody></table>';
                 document.getElementById('rss').innerHTML = divstr ;
@@ -79,6 +81,7 @@ function loadRss() {
                     document.getElementById('rssurl').value = obj.childNodes[2].innerHTML;
                     document.getElementById('rsstitle').value = obj.childNodes[1].innerHTML;
                     document.getElementById('rssdir').value = obj.childNodes[0].innerHTML;
+                    document.getElementById('rssico').value = obj.childNodes[3].innerHTML;
                     console.log(obj);
                 });
             },

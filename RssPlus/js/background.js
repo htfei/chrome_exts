@@ -23,12 +23,16 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
         sendResponse("from background: ok,i will change ico right now !");
 
         //将message.ctx存入localStorage    
-        var key = message.page_url;
-        var value = JSON.stringify(message.ctx);
+        var key = message.host;
+        var value = JSON.stringify({
+            date:Date().toString(),
+            ico:message.ico,
+            ctx:message.ctx
+        });
         console.log(key);
         console.log(value);
-        localStorage.setItem(key, value);
-        localStorage.feeds_urls = key;
+        localStorage.setItem(key, value); //TODO: 若同一个host下发现新的rss，则现在会替换掉之前的rss,考虑是否需要增量添加
+        localStorage.now_feed_lists = key;
     }
 });
 
@@ -47,9 +51,9 @@ chrome.tabs.onSelectionChanged.addListener(function (tabId, selectInfo) {
         console.log(mykey);
         var myvalue = localStorage.getItem(mykey);
         if (myvalue) {
-            var myrss = JSON.parse(myvalue);
-            console.log(myrss);
-            console.log(myrss.length);
+            //var myrss = JSON.parse(myvalue);
+            //console.log(myrss);
+            //console.log(myrss.length);
             //将图标换成带“+”的
             chrome.browserAction.setIcon({
                     path: {
@@ -58,7 +62,7 @@ chrome.tabs.onSelectionChanged.addListener(function (tabId, selectInfo) {
                     }
                 },
                 setIconCallback);
-            localStorage.feeds_urls = mykey;
+            localStorage.now_feed_lists = mykey;
         } else {
             //将图标换成不带“+”的
             chrome.browserAction.setIcon({
@@ -70,7 +74,7 @@ chrome.tabs.onSelectionChanged.addListener(function (tabId, selectInfo) {
 
             if (mykey.indexOf("chrome-extension:") < 0 ) {
                 //当前url不为扩展url时，
-                localStorage.feeds_urls = 0;
+                localStorage.now_feed_lists = 0;
             }
         }
     });
