@@ -165,7 +165,7 @@ function loadRssfromWebsql() {
                     var unreadNums = results.rows.item(i).unreadNums;
                     var dir = results.rows.item(i).dir;
                     var ico = results.rows.item(i).ico;
-                    //console.log(ico);
+                    //console.log(title);
                     if(ico == null){
                         ico = "./../images/icon.png";
                     }
@@ -204,7 +204,8 @@ function loadRssfromWebsql() {
                             var obj = document.createElement('div');
                             obj.id = dir;
                             obj.classList = "panel-collapse collapse in;";
-                            obj.innerHTML = rss1;
+                            //console.log(rss1);
+                            obj.innerHTML = rss1;//TODO: 报错无影响，原因未知 2018.08.11
                             document.getElementById('rss').innerHTML += obj.outerHTML;
                         }
                     } else {
@@ -250,9 +251,11 @@ function addhttphead(url) {
     }
 }
 
-function parseAtomFeedItem(xmlstr) {
-    console.log(" parseAtomFeedItem ..");
-    var rssurl = xmlstr.getElementsByTagName('id')[0].innerHTML;
+function parseAtomFeedItem(xmlstr,rssurl) {
+    console.log(" parseAtomFeedItem :",rssurl);
+
+    //var rssurl = xmlstr.getElementsByTagName('id')[0].innerHTML;
+    //这个id不一定是rssUrl,只是唯一标识，此处导致部分atom更新失败,已改为参数传入
 
     var items = [];
     if (xmlstr.getElementsByTagName('feed')) {
@@ -266,7 +269,8 @@ function parseAtomFeedItem(xmlstr) {
             var title = list[i].getElementsByTagName('title')[0].innerHTML;
             var titlefix = removeCDATA(title);
 
-            var published = list[i].getElementsByTagName('published')[0].innerHTML;
+            var published_node = list[i].getElementsByTagName('published');
+            var published = published_node.length?published_node[0].innerHTML:null; //若不存在guid，则guid_node也会有对象，但长度为0
             var pubtimestamp = Math.round(new Date(published).getTime() / 1000);
 
             var updated = list[i].getElementsByTagName('updated')[0].innerHTML;
@@ -282,7 +286,7 @@ function parseAtomFeedItem(xmlstr) {
             var descfix = removeCDATA(desc);
 
             var guid_node = list[i].getElementsByTagName('guid');
-            var guid = guid_node?guid_node[0].innerHTML:'';
+            var guid = guid_node.length?guid_node[0].innerHTML:'';//若不存在guid，则guid_node也会有对象，但长度为0
 
             var category = list[i].getElementsByTagName('category');
             if (category.length == 0) {
@@ -305,10 +309,10 @@ function parseAtomFeedItem(xmlstr) {
 
             //console.log("item",i,titlefix);
             //executeSql第一条执行完毕之前for循环已经结束了，故只插入了一条记录，需先保存起来在一次插入
-            items.push([linkfix, titlefix, updatedtimestamp, rssurl, descfix, categoryfix, contentfix,guid]);
+            items.push([linkfix, titlefix, updatedtimestamp, rssurl, descfix, categoryfix, contentfix, guid]);
         }
     }
-    //console.log(items);
+    console.log(items);
     return items;
 }
 
@@ -338,7 +342,7 @@ function parseXmlstr(rssxml, rssurl) {
                 var descfix = removeCDATA(desc);
 
                 var guid_node = list[i].getElementsByTagName('guid');
-                var guid = guid_node?guid_node[0].innerHTML:'';
+                var guid = guid_node.length?guid_node[0].innerHTML:'';
 
 
                 /* 可选项解析 */
@@ -374,7 +378,7 @@ function parseXmlstr(rssxml, rssurl) {
                 items.push([linkfix, titlefix, pubtimestamp, rssurl, descfix, categoryfix, contentfix, guid]);
             }
         } else { // if(rssxml.getElementsByTagName('feed').length >=1)
-            items = parseAtomFeedItem(rssxml);
+            items = parseAtomFeedItem(rssxml,rssurl);
             //console.log(items);
         }
 
