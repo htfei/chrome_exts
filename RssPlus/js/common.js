@@ -11,10 +11,10 @@ function loadPopup() {
 
 //点击rss列表时加载标题及条目
 function sethead(rssTitle, rssUrl, rssico) {
-    localStorage.headstr = '<p style="margin:0 0 0px; background-color:#90EE90; text-align:center" data-rssUrl="' + rssUrl + '" data-title="' + rssTitle + '">' +
+    localStorage.headstr = '<p style="margin:0 0 0px; background-color:#FFFFFF;" data-rssUrl="' + rssUrl + '" data-title="' + rssTitle + '">' +
         //'<a id="goback" class="btn" title="后退" >后退</a>' + //有bug，不启用
-        '<img src ="'+ rssico +'" height="16" width="16"/>&nbsp;&nbsp;' + 
-        '<a id="head" class="btn" >' + rssTitle + '</a>' +
+        '&nbsp;&nbsp;&nbsp;&nbsp;<img src ="'+ rssico +'" height="16" width="16"/>' + 
+        '<a id="head" class="btn" style="font-size: 14px;" >' + rssTitle + '</a>' +
         '<a id="updateRss" class="btn" title="立刻更新当前的rss源" >刷新</a>' +
         // '<a id="makerssread" class="btn" title="将该RSS源标记为已读" >已读</a>' +  //TODO 无效，暂不启用
         '</p><div>';
@@ -140,13 +140,24 @@ function loadRssfromWebsql() {
                 var nodirstr = "";
 
                 document.getElementById('rss').innerHTML =
-                    '<p style="margin:0 0 0px; background-color:#90EE90; text-align:center">' +
-                    '<a id="setrss" class="btn" title="设置" href="./../options.html">设置</a>' +
-                    //'<a id="listh" class="btn" title="列表">列表</a>' +
-                    //'<a id="star" class="btn">收藏</a>' + 
-                    '<a id="update" class="btn">刷新</a>' +
-                    '<a id="addrss" class="btn" title="添加新的rss源" href="./../add_new_rss.html">添加</a>' +
-                    '</p><div>';
+                `
+                <div class="dropdown " style="background-color:#FFFFFF;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <img src ="./../images/icon.png" height="16" width="16"/>
+                    <span style="font-size: 14px;line-height:36px">&nbsp;&nbsp;RSS订阅器</span>
+                    <button class="btn btn-default dropdown-toggle " type="button" id="menu1" data-toggle="dropdown" style="float:right">+
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right " role="menu" aria-labelledby="menu1" style="min-width:40px;">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" id="setrss" class="btn" title="设置"  href="./../options.html">设置</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" id="update" class="btn">刷新</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" id="addrss" class="btn" title="添加新的rss源" href="./../add_new_rss.html">添加</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">关于</a></li>
+                    </ul>
+                </div>
+                <div>
+                `;
 
                 for (i = 0; i < len; i++) {
                     var rss = results.rows.item(i).rss;
@@ -154,7 +165,7 @@ function loadRssfromWebsql() {
                     var unreadNums = results.rows.item(i).unreadNums;
                     var dir = results.rows.item(i).dir;
                     var ico = results.rows.item(i).ico;
-                    console.log(ico);
+                    //console.log(ico);
                     if(ico == null){
                         ico = "./../images/icon.png";
                     }
@@ -185,9 +196,9 @@ function loadRssfromWebsql() {
                             dirstr += dir;
                             //未添加则先加目录在添加
                             if (unreadNums && unreadNums > 0) {
-                                document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item" style="text-align: left;background-color:#F0FFFF;" data-toggle="collapse"  href="#' + dir + '"><img src="/images/folder-icon.png" width="16" height="16"/>&nbsp;&nbsp;' + dir + '<span id="' + dir + 'nums" class="badge pull-right btn" title="将目录标记为已读">' + unreadNums + '</span></div>';
+                                document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item" style="text-align: left;background-color:#EEEEEE;" data-toggle="collapse"  href="#' + dir + '"><img src="/images/folder-icon.png" width="16" height="16"/>&nbsp;&nbsp;' + dir + '<span id="' + dir + 'nums" class="badge pull-right btn" title="将目录标记为已读">' + unreadNums + '</span></div>';
                             } else {
-                                document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item" style="text-align: left;background-color:#F0FFFF;" data-toggle="collapse"  href="#' + dir + '"><img src="/images/folder-icon.png" width="16" height="16"/>&nbsp;&nbsp;' + dir + '</div>';
+                                document.getElementById('rss').innerHTML += '<div id="' + dir + 'head" class="list-group-item" style="text-align: left;background-color:#EEEEEE;" data-toggle="collapse"  href="#' + dir + '"><img src="/images/folder-icon.png" width="16" height="16"/>&nbsp;&nbsp;' + dir + '</div>';
                             }
 
                             var obj = document.createElement('div');
@@ -212,7 +223,7 @@ function loadRssfromWebsql() {
 function items2websql(items) {
     db.transaction(function (tx) {
         for (i = 0; i < items.length; i++) {
-            tx.executeSql('INSERT OR IGNORE INTO Feeds (url,title,pubtimestamp,rssUrl,description,category,content) VALUES (?,?,?,?,?,?,?)', items[i],
+            tx.executeSql('INSERT OR IGNORE INTO Feeds (url,title,pubtimestamp,rssUrl,description,category,content,guid) VALUES (?,?,?,?,?,?,?,?)', items[i],
                 null,
                 function (tx, error) {
                     console.log('添加数据失败: ' + error.message)
@@ -270,6 +281,9 @@ function parseAtomFeedItem(xmlstr) {
             }
             var descfix = removeCDATA(desc);
 
+            var guid_node = list[i].getElementsByTagName('guid');
+            var guid = guid_node?guid_node[0].innerHTML:'';
+
             var category = list[i].getElementsByTagName('category');
             if (category.length == 0) {
                 //console.log("这个item没有 category");
@@ -291,7 +305,7 @@ function parseAtomFeedItem(xmlstr) {
 
             //console.log("item",i,titlefix);
             //executeSql第一条执行完毕之前for循环已经结束了，故只插入了一条记录，需先保存起来在一次插入
-            items.push([linkfix, titlefix, updatedtimestamp, rssurl, descfix, categoryfix, contentfix]);
+            items.push([linkfix, titlefix, updatedtimestamp, rssurl, descfix, categoryfix, contentfix,guid]);
         }
     }
     //console.log(items);
@@ -315,13 +329,17 @@ function parseXmlstr(rssxml, rssurl) {
             for (i = 0; i < list.length; i++) {
 
                 var link = list[i].getElementsByTagName('link')[0].innerHTML;
-                linkfix = addhttphead(link);
+                linkfix = addhttphead(link).split("#")[0];//只保留#号前面的部分
 
                 var title = list[i].getElementsByTagName('title')[0].innerHTML;
                 var titlefix = removeCDATA(title);
 
                 var desc = list[i].getElementsByTagName('description')[0].innerHTML;
                 var descfix = removeCDATA(desc);
+
+                var guid_node = list[i].getElementsByTagName('guid');
+                var guid = guid_node?guid_node[0].innerHTML:'';
+
 
                 /* 可选项解析 */
                 var pub = list[i].getElementsByTagName('pubDate');
@@ -353,7 +371,7 @@ function parseXmlstr(rssxml, rssurl) {
 
                 //console.log("item",i,titlefix);
                 //executeSql第一条执行完毕之前for循环已经结束了，故只插入了一条记录，需先保存起来在一次插入
-                items.push([linkfix, titlefix, pubtimestamp, rssurl, descfix, categoryfix, contentfix]);
+                items.push([linkfix, titlefix, pubtimestamp, rssurl, descfix, categoryfix, contentfix, guid]);
             }
         } else { // if(rssxml.getElementsByTagName('feed').length >=1)
             items = parseAtomFeedItem(rssxml);
@@ -399,7 +417,7 @@ function rss_request() {
                 for (i = 0; i < len; i++) {
                     var rssUrl = results.rows.item(i).rss;
                     var title = results.rows.item(i).title;
-                    //console.log("请求",title,rssUrl);
+                    console.log("请求",title,rssUrl);
                     httpRequest(rssUrl, parseXmlstr);
                 }
             },
