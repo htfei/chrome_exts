@@ -13,14 +13,10 @@ var onceNums = localStorage.onceNums ? localStorage.onceNums : 10;
 //绑定点击事件
 window.onclick = function (e) {
 
-    //离开之间保存页面，下次直接加载该页面
-    
+    this.localStorage.lastBodystr = '';
 
     //加载items列表
     if (rssUrl = e.target.getAttribute('data-rss')) {   
-           
-        //localStorage.lastBodystrtemp =localStorage.lastBodystr;//后退时需要用到
-
         var rssTitle = e.target.getAttribute('data-title');
         var rssico = e.target.getAttribute('data-ico');
         sethead(rssTitle,rssUrl,rssico);
@@ -38,7 +34,6 @@ window.onclick = function (e) {
     //刷新
     if (e.target.id == "update") {
         //rss_request();
-        localStorage.lastBodystr ="";
         this.console.log("刷新页面, 重新生成popup页面...");
         loadRssfromWebsql();
     }
@@ -50,21 +45,14 @@ window.onclick = function (e) {
         httpRequest(rssUrl, parseXmlstr);
 
         localStorage.itemstr = "";
-        localStorage.lastBodystr ="";
         loadItemsfromWebsql(rssUrl, 0, onceNums); //0到10条
     }
-    /*//后退
-    if (e.target.id == "goback") {
-        localStorage.lastBodystr =localStorage.lastBodystrtemp;
-        localStorage.headstr = "";
-        localStorage.itemstr = "";
-        localStorage.footstr = "";
-        loadPopup();
-    }*/
     //访问item（同时标记已读）
     if (e.target.href) {     
         makeItemRead(e.target.href);
-        e.target.removeChild(e.target.firstChild);
+        if(e.target.firstChild.nodeName == 'SPAN'){
+            e.target.removeChild(e.target.firstChild);
+        }
         this.localStorage.lastBodystr = document.getElementById('body').innerHTML;
         chrome.tabs.create({
             url: e.target.href
@@ -78,7 +66,6 @@ window.onclick = function (e) {
         localStorage.footstr = "";
         document.getElementById('item').innerHTML = "";
         loadRssfromWebsql();
-        //document.getElementById('rss').innerHTML = localStorage.rssstr;
     }
     //将对应item标记为已读
     if (e.target.getAttribute('title') == '标记为已读') {
@@ -87,14 +74,10 @@ window.onclick = function (e) {
     }
     if (e.target.getAttribute('title') == '将该RSS源标记为已读') {
         makeRssRead(e.target.parentNode.getAttribute('data-rss'));
-        e.target.parentNode.removeChild(e.target);
+        loadRssfromWebsql();
     }
     if (e.target.getAttribute('title') == '将目录标记为已读') {
         makeDirRead(e.target.id.replace("nums", ""));
-        e.target.parentNode.removeChild(e.target);
-    } else {
-        //this.console.log(e.target);
-    }
-
-    this.localStorage.lastBodystr = document.getElementById('body').innerHTML;
+        loadRssfromWebsql();
+    } 
 }

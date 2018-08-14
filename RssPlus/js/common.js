@@ -12,11 +12,9 @@ function loadPopup() {
 //点击rss列表时加载标题及条目
 function sethead(rssTitle, rssUrl, rssico) {
     localStorage.headstr = '<p style="margin:0 0 0px; background-color:#FFFFFF;" data-rssUrl="' + rssUrl + '" data-title="' + rssTitle + '">' +
-        //'<a id="goback" class="btn" title="后退" >后退</a>' + //有bug，不启用
         '&nbsp;&nbsp;&nbsp;&nbsp;<img src ="'+ rssico +'" height="16" width="16"/>' + 
         '<a id="head" class="btn" style="font-size: 14px;" >' + rssTitle + '</a>' +
         '<a id="updateRss" class="btn" title="立刻更新当前的rss源" >刷新</a>' +
-        // '<a id="makerssread" class="btn" title="将该RSS源标记为已读" >已读</a>' +  //TODO 无效，暂不启用
         '</p><div>';
 }
 
@@ -90,8 +88,8 @@ function makeDirRead(dirstr) {
         tx.executeSql('update Feeds set isread = 1 WHERE Feeds.rssUrl = (SELECT rss FROM Rss WHERE dir = ? and Feeds.rssUrl = Rss.rss)', [dirstr], null, function (tx, error) {
             alert('失败!', error.message)
         });
-        //插入数据后更新未读条数//2018.03.19 sql语句待优化：将指定目录类下的所有rss的unreadnums设为0.而不是更新所有
-        tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
+        //插入数据后更新未读条数//2018.03.19 sql语句待优化：将指定目录类下的所有rss的unreadnums设为0.而不是更新所有,2018.08.14更新
+        tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND  dir = ?  AND Feeds.rssUrl = Rss.rss)', [dirstr]);
         changeicobar();
     });
 }
@@ -188,7 +186,8 @@ function loadRssfromWebsql() {
                             var a = document.getElementById(dir + 'nums');
                             if (a) {
                                 a.innerHTML = Number(a.innerHTML) + unreadNums;
-                            } else {
+                            } 
+                            else if( unreadNums > 0 ){
                                 document.getElementById(dir + 'head').innerHTML += ('<span id="' + dir + 'nums" class="badge pull-right btn" title="将目录标记为已读">' + unreadNums + '</span>');
                             }
 
