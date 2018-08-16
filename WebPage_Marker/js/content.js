@@ -10,7 +10,7 @@ window.onmouseover = function(e){
       chrome.runtime.sendMessage(targ.href, function(response){
           //console.log(response);
           var str = "["+response.host + "]被收藏"+response.like+"个页面，被拉黑"+response.hate+"个页面。";
-          targ.title = str;
+          //targ.title = str;暂不启用
       });
     }
 }
