@@ -1,5 +1,8 @@
 # 万物皆可订阅！
 
+![image](http://ww1.sinaimg.cn/large/0071ouepgy1fucs4f190sj30820enq34.jpg)
+![image](http://ww1.sinaimg.cn/large/0071ouepgy1fucs5lqyb7j30820hbq3a.jpg)
+
 ## 功能
 
 订阅rss源，指定页面区域，微信公众号，天气预报，比特币，股票黄金等第三方API接口
@@ -58,7 +61,7 @@
 
 ### 2018.08.11
 
->>TODO:
+>TODO:
 
     feed43生成的rss，帖子类型的一个帖子会生成多条item,应该改为1个item;(问题发现于：光谷社区，地铁族 的rss消息众多有重复)(尝试使用item.guid解决)
         将url中#后面的内容去掉即可，已改动完毕。2018.08.11
@@ -66,3 +69,7 @@
     直接在chrome中调试xml;
     rss标准解析库的发现与使用;
     没有未读条目时，有时目录会显示0的<span>;点击按钮会使本条目消失；2018.08.14已修复
+
+### 2018.08.17
+
+1. 新增检查xml页面是否为rss源的功能
