@@ -19,8 +19,8 @@ function getFeedsURLs() {
         'text/rdf'
     ];
     var links = document.querySelectorAll("link[type]"); //获取当前页面所有的有type属性的<link>节点
-    console.log(links);
-    console.log(links.length);
+    //console.log(links);
+    //console.log(links.length);
     for (var i = 0; i < links.length; i++) {
 
         //有type属性且属于数组中的某一个
@@ -82,3 +82,38 @@ function getFeedsURLs() {
 
 //页面加载后检测rss，发送给background.js
 getFeedsURLs();
+
+//2.若页面本身就是xml文件，则判断是否为rss源
+fetch(location.href)
+    .then(response => response.text())
+    .then(function (data) {
+        var parser = new DOMParser();
+        var rssxml = parser.parseFromString(data, "text/xml");
+        var type = rssxml.getElementsByTagName('rss');
+        if (type.length >= 1) {
+            var feed_lists = [];
+            var feed_ico = "";
+            var feed_title = rssxml.getElementsByTagName('title')[0].childNodes[0].nodeValue;
+            var feed_url = rssxml.getElementsByTagName('link')[0].childNodes[0].nodeValue;
+            console.log(feed_title, feed_url);
+
+            var feed = {
+                type: "text/xml",
+                url: feed_url,
+                title: feed_title
+            };
+            feed_lists.push(feed);
+            var feeds_urls_msg = {
+                cmd: "got_feeds_urls",
+                host: location.hostname,
+                ico: feed_ico,
+                ctx: feed_lists,
+            }
+            //发送消息到background.js
+            chrome.runtime.sendMessage(feeds_urls_msg, function (response) {
+                console.log(response);
+            });
+
+        }
+    })
+    .catch(e => console.log("Oops, error", e));
