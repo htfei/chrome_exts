@@ -20,6 +20,7 @@ window.onclick = function (e) {
         var rssTitle = e.target.getAttribute('data-title');
         var rssico = e.target.getAttribute('data-ico');
         sethead(rssTitle,rssUrl,rssico);
+        localStorage.itemstr ="";
         loadItemsfromWebsql(rssUrl, 0, onceNums); //0到10条
         //隐藏rss列表
         document.getElementById('rss').innerHTML = ""; 
