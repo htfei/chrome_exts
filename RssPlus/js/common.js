@@ -448,10 +448,10 @@ function init() {
         tx.executeSql('CREATE TABLE IF NOT EXISTS Rss (id,rss unique, title,unreadNums,dir,ico,pubtimestamp)');
         tx.executeSql('CREATE TABLE IF NOT EXISTS Feeds (id,rssid,url unique, title, pubtimestamp,isread,rssUrl,description,category,content,guid)');
 
-        //插入一个rss源
-        tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title,ico) VALUES (?, ?, ?)', ["http://www.ndrc.gov.cn/xwzx/xwfb/rss.xml", "发改委新闻发布","http://www.ndrc.gov.cn/images/guobiao01.png"]);
-        tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title,dir,ico) VALUES (?, ?, ?, ?)', ["https://feed43.com/2770086871034514.xml", "抽屉24h最热榜","新闻","https://dig.chouti.com/images/chouti.ico"]);
-        tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title,dir,ico) VALUES (?, ?, ?, ?)', ["https://rsshub.app/bilibili/bangumi/24588", "工作细胞","bilibili","https://i0.hdslb.com/bfs/bangumi/80edca06302d6e36f6f4948dea0fd09b940c5a91.png@144w_144h.webp"]);
+        //插入一个rss源(若开启，则每次都尝试添加，即删不了了)
+        //tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title,ico) VALUES (?, ?, ?)', ["http://www.ndrc.gov.cn/xwzx/xwfb/rss.xml", "发改委新闻发布","http://www.ndrc.gov.cn/images/guobiao01.png"]);
+        //tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title,dir,ico) VALUES (?, ?, ?, ?)', ["https://feed43.com/2770086871034514.xml", "抽屉24h最热榜","新闻","https://dig.chouti.com/images/chouti.ico"]);
+        //tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title,dir,ico) VALUES (?, ?, ?, ?)', ["https://rsshub.app/bilibili/bangumi/24588", "工作细胞","bilibili","https://i0.hdslb.com/bfs/bangumi/80edca06302d6e36f6f4948dea0fd09b940c5a91.png@144w_144h.webp"]);
 
 
     });
