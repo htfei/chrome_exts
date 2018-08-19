@@ -332,7 +332,11 @@ function parseXmlstr(rssxml, rssurl) {
             for (i = 0; i < list.length; i++) {
 
                 var link = list[i].getElementsByTagName('link')[0].innerHTML;
-                linkfix = addhttphead(link).split("#")[0];//只保留#号前面的部分
+                if(rssurl == 'http://www.feed43.com/4677052036764060.xml'){
+                    linkfix = addhttphead(link).split("#")[0];//光谷社区等一个帖子多个reply，只保留一个;//只保留#号前面的部分
+                }else{
+                    linkfix = addhttphead(link);//bilibili等番剧分集，要保留多个(不作处理);
+                }
 
                 var title = list[i].getElementsByTagName('title')[0].innerHTML;
                 var titlefix = removeCDATA(title);
@@ -441,13 +445,14 @@ function init() {
     db.transaction(function (tx) {
 
         //新建表
-        tx.executeSql('CREATE TABLE IF NOT EXISTS Rss (rss unique, title,unreadNums,dir,ico,pubtimestamp)');
-        tx.executeSql('CREATE TABLE IF NOT EXISTS Feeds (url unique, title, pubtimestamp,isread,rssUrl,description,category,content)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS Rss (id,rss unique, title,unreadNums,dir,ico,pubtimestamp)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS Feeds (id,rssid,url unique, title, pubtimestamp,isread,rssUrl,description,category,content,guid)');
 
         //插入一个rss源
-        //tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title) VALUES (?, ?)', ["https://feed43.com/5123185481381181.xml", "网易新闻24H排行榜"]);
-        //tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title) VALUES (?, ?)', ["https://feed43.com/2770086871034514.xml", "抽屉24h最热"]);
-        //tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title) VALUES (?, ?)', ["https://feed43.com/3680851688572686.xml", "天涯实时热帖榜"]);
+        tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title,ico) VALUES (?, ?, ?)', ["http://www.ndrc.gov.cn/xwzx/xwfb/rss.xml", "发改委新闻发布","http://www.ndrc.gov.cn/images/guobiao01.png"]);
+        tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title,dir,ico) VALUES (?, ?, ?, ?)', ["https://feed43.com/2770086871034514.xml", "抽屉24h最热","新闻","https://dig.chouti.com/images/chouti.ico"]);
+        tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title,dir,ico) VALUES (?, ?, ?, ?)', ["https://rsshub.app/bilibili/bangumi/24588", "工作细胞","bilibili","https://i0.hdslb.com/bfs/bangumi/80edca06302d6e36f6f4948dea0fd09b940c5a91.png@144w_144h.webp"]);
+
 
     });
 }
