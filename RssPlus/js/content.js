@@ -94,7 +94,7 @@ fetch(location.href)
             var feed_lists = [];
             var feed_ico = "";
             var feed_title = rssxml.getElementsByTagName('title')[0].childNodes[0].nodeValue;
-            var feed_url = rssxml.getElementsByTagName('link')[0].childNodes[0].nodeValue;
+            var feed_url = location.href;//rssxml.getElementsByTagName('link')[0].childNodes[0].nodeValue;//rsshub生成的rss源此link为源地址而不是rss地址
             console.log(feed_title, feed_url);
 
             var feed = {

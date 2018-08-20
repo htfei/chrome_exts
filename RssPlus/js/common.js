@@ -164,7 +164,7 @@ function loadRssfromWebsql() {
                     var dir = results.rows.item(i).dir;
                     var ico = results.rows.item(i).ico;
                     //console.log(title);
-                    if(ico == null){
+                    if(ico == null || ico == ""){
                         ico = "./../images/icon.png";
                     }
 

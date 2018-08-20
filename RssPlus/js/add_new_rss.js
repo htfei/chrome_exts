@@ -22,7 +22,7 @@ if (now_feed_lists != 0) {
         $('.add_btn').click(function () {
             var obj = this.parentNode; //input.li      
             console.log(obj);
-            var rssico = obj.childNodes[0].src;
+            var rssico = "";//obj.childNodes[0].src;//TODO:此处有bug，获取的值为‘chrome-extension://dhjefkpchmfdghfipcdmaodhigmfbpef/add_new_rss.html’
             var rssurl = obj.childNodes[1].href;
             var rsstitle = obj.childNodes[1].innerText;
             var rssdir = "";
