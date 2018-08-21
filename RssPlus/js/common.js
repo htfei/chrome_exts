@@ -89,7 +89,7 @@ function makeDirRead(dirstr) {
             alert('失败!', error.message)
         });
         //插入数据后更新未读条数//2018.03.19 sql语句待优化：将指定目录类下的所有rss的unreadnums设为0.而不是更新所有,2018.08.14更新
-        tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND  dir = ?  AND Feeds.rssUrl = Rss.rss)', [dirstr]);
+        tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
         changeicobar();
     });
 }
@@ -349,13 +349,12 @@ function parseXmlstr(rssxml, rssurl) {
 
 
                 /* 可选项解析 */
+                var pubtimestamp = 0;
                 var pub = list[i].getElementsByTagName('pubDate');
-                if (pub.length == 0) {
-                    console.log("这是一个坏的items!");
-                    continue;
+                if (pub.length != 0) {
+                    var pubdate = pub[0].innerHTML;
+                    pubtimestamp = Math.round(new Date(pubdate).getTime() / 1000);
                 }
-                var pubdate = pub[0].innerHTML;
-                var pubtimestamp = Math.round(new Date(pubdate).getTime() / 1000);
 
                 var category = list[i].getElementsByTagName('category');
                 if (category.length == 0) {
