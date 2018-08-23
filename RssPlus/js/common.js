@@ -30,15 +30,16 @@ function loadItemsfromWebsql(rssUrl, index, nums) {
                         var title = results.rows.item(i).title;
                         //title =title.substr(0,30);
                         var isread = results.rows.item(i).isread;
-                        //var description = results.rows.item(i).description;
-                        //description = description.substr(0,200);
+                        var description = results.rows.item(i).description;
+                        description = '<div style="width:100%" class="list-group-item list-group-item-warning">'+ description.substr(0,200) + '</div>';
+                        //description = localStorage.show_desc?description:"";
                         if (isread == 1) {
-                            localStorage.itemstr += '<a class="list-group-item" href="' + itemurl + '" >' + title + '</a>';
+                            localStorage.itemstr += '<a class="list-group-item list-group-item-info" href="' + itemurl + '" >' + title + '</a>' + description ;
                         } else {
-                            localStorage.itemstr += '<a class="list-group-item" href="' + itemurl + '" ><span class="badge pull-right" title="标记为已读">新</span>' + title + '</a>';
+                            localStorage.itemstr += '<a class="list-group-item list-group-item-info" href="' + itemurl + '" ><span class="badge pull-right" title="标记为已读">新</span>' + title + '</a>' + description;
                         }
                     }
-                    localStorage.footstr = '<a id="loadmore" class="list-group-item btn" style="text-align: center;" data-rssUrl="' + rssUrl + '" data-index="' + index + '">加载更多</a></div>';
+                    localStorage.footstr = '<a id="loadmore" class="list-group-item btn list-group-item-success" style="text-align: center;" data-rssUrl="' + rssUrl + '" data-index="' + index + '">加载更多</a></div>';
                 } else {
                     localStorage.footstr = '<a id="nothing" class="list-group-item btn" style="text-align: center;" title="点击返回主界面" >暂无更新！</a></div>';
                 }
