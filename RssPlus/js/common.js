@@ -278,32 +278,18 @@ function parseAtomFeedItem(xmlstr,rssurl) {
 
             /* 可选项解析 */
             var desc = list[i].getElementsByTagName('summary');
-            if (desc.length == 0) {
-                desc = "";
-            } else {
-                desc = list[i].getElementsByTagName('summary')[0].innerHTML;
-            }
+            var category = desc.length?list[i].getElementsByTagName('summary')[0].innerHTML:"";
             var descfix = removeCDATA(desc);
 
             var guid_node = list[i].getElementsByTagName('guid');
             var guid = guid_node.length?guid_node[0].innerHTML:'';//若不存在guid，则guid_node也会有对象，但长度为0
 
             var category = list[i].getElementsByTagName('category');
-            if (category.length == 0) {
-                //console.log("这个item没有 category");
-                category = "";
-            } else {
-                category = category[0].getAttribute('term'); //list类型,待优化
-            }
+            var category = category.length?category[0].getAttribute('term'):"";//list类型,待优化
             var categoryfix = removeCDATA(category);
 
             var content = list[i].getElementsByTagName('content');
-            if (content.length == 0) {
-                console.log("这个item没有 content");
-                content = "";
-            } else {
-                content = content[0].innerHTML;
-            }
+            var category = content.length?content[0].innerHTML:"";
             var contentfix = removeCDATA(content);
 
 
@@ -316,10 +302,6 @@ function parseAtomFeedItem(xmlstr,rssurl) {
     return items;
 }
 
-/* function parseRssItem(rssstr){
-    console.log(" parseRssItem ..");
-    
-} */
 
 //解析items
 function parseXmlstr(rssxml, rssurl) {
@@ -349,32 +331,19 @@ function parseXmlstr(rssxml, rssurl) {
                 var guid = guid_node.length?guid_node[0].innerHTML:'';
 
 
-                /* 可选项解析 */
-                var pubtimestamp = 0;
+                /* 根据pubtimestamp加载最新的items，该项若没有则取当前值*/
                 var pub = list[i].getElementsByTagName('pubDate');
-                if (pub.length != 0) {
-                    var pubdate = pub[0].innerHTML;
-                    pubtimestamp = Math.round(new Date(pubdate).getTime() / 1000);
-                }
+                var pubdate = pub.length?pub[0].innerHTML:null; //若不存在guid，则guid_node也会有对象，但长度为0
+                var pubtimestamp = Math.round(new Date(pubdate).getTime() / 1000);
 
+                /* 可选项解析 */ 
                 var category = list[i].getElementsByTagName('category');
-                if (category.length == 0) {
-                    //console.log("这个item没有 category");
-                    category = "";
-                } else {
-                    category = category[0].innerHTML;
-                }
+                var category = category.length?category[0].innerHTML:"";
                 var categoryfix = removeCDATA(category);
 
                 var content = list[i].getElementsByTagName('content:encoded');
-                if (content.length == 0) {
-                    //console.log("这个item没有 content");
-                    content = "";
-                } else {
-                    content = content[0].innerHTML;
-                }
+                var category = content.length?content[0].innerHTML:"";
                 var contentfix = removeCDATA(content);
-
 
                 //console.log("item",i,titlefix);
                 //executeSql第一条执行完毕之前for循环已经结束了，故只插入了一条记录，需先保存起来在一次插入
