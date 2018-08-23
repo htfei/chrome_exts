@@ -54,6 +54,14 @@ document.getElementById('onceNumsbtn').onclick = function (){
     alert('设置成功!');
 }
 
+//设置是否加载items描述信息
+document.getElementById('loadDescbtn').onclick = function (){
+    var loadDesc = document.getElementById('loadDesc').value;
+    localStorage.loadDesc = Number(loadDesc);
+    alert('设置成功!');
+}
+
+
 
 //页面加载时读取rss列表
 function loadRss() {

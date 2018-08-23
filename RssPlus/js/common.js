@@ -31,8 +31,9 @@ function loadItemsfromWebsql(rssUrl, index, nums) {
                         //title =title.substr(0,30);
                         var isread = results.rows.item(i).isread;
                         var description = results.rows.item(i).description;
-                        description = '<div style="width:100%" class="list-group-item list-group-item-warning">'+ description.substr(0,200) + '</div>';
-                        //description = localStorage.show_desc?description:"";
+                        description = '<div style="width:100%" class="list-group-item list-group-item-warning">'+ description + '</div>';
+                        //不能截断否则将导致内部元素无结束标记,体现为下一个items变为子元素了，而且越来越小
+                        description = localStorage.loadDesc?description:"";
                         if (isread == 1) {
                             localStorage.itemstr += '<a class="list-group-item list-group-item-info" href="' + itemurl + '" >' + title + '</a>' + description ;
                         } else {
@@ -132,6 +133,10 @@ function changeicobar() {
 //页面加载时读取rss源列表
 function loadRssfromWebsql() {
     db.transaction(function (tx) {
+        //插入数据后更新未读条数
+        tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
+        //更换图标下的bar
+        changeicobar();
         tx.executeSql('SELECT * FROM Rss', [],
             function (tx, results) {
                 var len = results.rows.length;
@@ -216,6 +221,7 @@ function loadRssfromWebsql() {
                 document.getElementById('rss').innerHTML += (nodirstr + "</div>");
                 localStorage.rssstr = document.getElementById('rss').innerHTML;
             }, null);
+        
     });
 }
 
