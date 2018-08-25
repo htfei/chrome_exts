@@ -61,12 +61,23 @@ document.getElementById('loadDescbtn').onclick = function (){
     alert('设置成功!');
 }
 
+//设置是否加载items描述信息
+document.getElementById('loadDescimgmaxbtn').onclick = function (){
+    var loadDescimgmax = document.getElementById('loadDescimgmax').value;
+    localStorage.loadDescimgmax = Number(loadDescimgmax);
+    alert('设置成功!');
+}
+
 
 
 //页面加载时读取rss列表
 function loadRss() {
+
     document.getElementById('reqtime').value = localStorage.reqtime?localStorage.reqtime:5;
     document.getElementById('onceNums').value = localStorage.onceNums?localStorage.onceNums:5;
+    document.getElementById('loadDesc').value = localStorage.loadDesc?localStorage.loadDesc:1;
+    document.getElementById('loadDescimgmax').value = localStorage.loadDescimgmax?localStorage.loadDescimgmax:300;
+
     db.transaction(function (tx) {
         tx.executeSql('SELECT * FROM Rss', [],
             function (tx, results) {

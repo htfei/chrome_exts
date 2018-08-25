@@ -31,7 +31,7 @@ function loadItemsfromWebsql(rssUrl, index, nums) {
                         //title =title.substr(0,30);
                         var isread = results.rows.item(i).isread;
                         var description = results.rows.item(i).description;
-                        description = '<div style="width:100%" class="list-group-item list-group-item-warning">'+ description + '</div>';
+                        description = '<div class="list-group-item list-group-item-warning">'+ description + '</div>';
                         //不能截断否则将导致内部元素无结束标记,体现为下一个items变为子元素了，而且越来越小
                         description = localStorage.loadDesc?description:"";
                         if (isread == 1) {
@@ -46,6 +46,11 @@ function loadItemsfromWebsql(rssUrl, index, nums) {
                 }
                 //console.log(localStorage.itemstr);
                 document.getElementById('item').innerHTML = localStorage.headstr + localStorage.itemstr + localStorage.footstr;
+                loadDescimgmax = localStorage.loadDescimgmax?localStorage.loadDescimgmax:300;
+                img_max_width_str = 'max-width: '+loadDescimgmax+'px;';//'max-width: 265px;'
+                [].map.call(document.getElementsByTagName('img'), function(img){
+                    img.setAttribute('style', img_max_width_str);
+                  });
             },
             function (tx, error) {
                 console.log('失败!', error.message)
