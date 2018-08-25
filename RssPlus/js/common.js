@@ -345,7 +345,7 @@ function parseXmlstr(rssxml, rssurl) {
                 /* 根据pubtimestamp加载最新的items，该项若没有则取当前值*/
                 var pub = list[i].getElementsByTagName('pubDate');
                 var pubdate = pub.length?pub[0].innerHTML:null; //若不存在guid，则guid_node也会有对象，但长度为0
-                var pubtimestamp = Math.round(new Date(pubdate).getTime() / 1000);
+                var pubtimestamp = pubdate?Math.round(new Date(pubdate).getTime() / 1000):Math.round(new Date().getTime() / 1000);
 
                 /* 可选项解析 */ 
                 var category = list[i].getElementsByTagName('category');
