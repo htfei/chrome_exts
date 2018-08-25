@@ -295,7 +295,7 @@ function parseAtomFeedItem(xmlstr,rssurl) {
             var categoryfix = removeCDATA(category);
 
             var content = list[i].getElementsByTagName('content');
-            var category = content.length?content[0].innerHTML:"";
+            var content = content.length?content[0].innerHTML:"";
             var contentfix = removeCDATA(content);
 
 
@@ -348,7 +348,7 @@ function parseXmlstr(rssxml, rssurl) {
                 var categoryfix = removeCDATA(category);
 
                 var content = list[i].getElementsByTagName('content:encoded');
-                var category = content.length?content[0].innerHTML:"";
+                var content = content.length?content[0].innerHTML:"";
                 var contentfix = removeCDATA(content);
 
                 //console.log("item",i,titlefix);
