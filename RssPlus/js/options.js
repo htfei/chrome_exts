@@ -61,11 +61,14 @@ document.getElementById('loadDescbtn').onclick = function (){
     alert('设置成功!');
 }
 
-//设置是否加载items描述信息
-document.getElementById('loadDescimgmaxbtn').onclick = function (){
-    var loadDescimgmax = document.getElementById('loadDescimgmax').value;
-    localStorage.loadDescimgmax = Number(loadDescimgmax);
-    alert('设置成功!');
+//目录重命名
+document.getElementById('dirRenamebtn').onclick = function (){
+
+    var dirOldname = document.getElementById('dirOldname').value;
+    var dirNewname = document.getElementById('dirNewname').value;
+    db.transaction(function (tx) {
+        tx.executeSql('UPDATE Rss SET dir = ? WHERE dir = ?;',[dirNewname,dirOldname],alert('目录重命名成功!'),null); 
+    });
 }
 
 
