@@ -289,7 +289,7 @@ function parseAtomFeedItem(xmlstr,rssurl) {
 
             /* 可选项解析 */
             var desc = list[i].getElementsByTagName('summary');
-            var category = desc.length?list[i].getElementsByTagName('summary')[0].innerHTML:"";
+            var desc = desc.length?list[i].getElementsByTagName('summary')[0].innerHTML:"";
             var descfix = removeCDATA(desc);
 
             var guid_node = list[i].getElementsByTagName('guid');
