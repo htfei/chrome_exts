@@ -165,7 +165,6 @@ function loadRssfromWebsql() {
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">关于</a></li>
                     </ul>
                 </div>
-                <div>
                 `;
 
                 for (i = 0; i < len; i++) {
@@ -223,7 +222,7 @@ function loadRssfromWebsql() {
                         nodirstr += rss1;
                     }
                 }
-                document.getElementById('rss').innerHTML += (nodirstr + "</div>");
+                document.getElementById('rss').innerHTML += nodirstr;
                 localStorage.rssstr = document.getElementById('rss').innerHTML;
             }, null);
         
