@@ -61,6 +61,13 @@ document.getElementById('loadDescbtn').onclick = function (){
     alert('设置成功!');
 }
 
+//设置是否加载已读的items条目
+document.getElementById('loadisReadbtn').onclick = function (){
+    var loadisRead = document.getElementById('loadisRead').value;
+    localStorage.loadisRead = Number(loadisRead);
+    alert('设置成功!');
+}
+
 //目录重命名
 document.getElementById('dirRenamebtn').onclick = function (){
 
@@ -79,6 +86,7 @@ function loadRss() {
     document.getElementById('reqtime').value = localStorage.reqtime?localStorage.reqtime:5;
     document.getElementById('onceNums').value = localStorage.onceNums?localStorage.onceNums:5;
     document.getElementById('loadDesc').value = localStorage.loadDesc?localStorage.loadDesc:1;
+    document.getElementById('loadisRead').value = localStorage.loadisRead?localStorage.loadisRead:1;
     document.getElementById('loadDescimgmax').value = localStorage.loadDescimgmax?localStorage.loadDescimgmax:300;
 
     db.transaction(function (tx) {

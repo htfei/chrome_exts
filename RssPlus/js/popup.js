@@ -29,14 +29,21 @@ window.onclick = function (e) {
     if (e.target.id == 'loadmore') {
         var rssUrl = e.target.getAttribute('data-rssUrl');
         var index = e.target.getAttribute('data-index');
-        index = Number(index) + onceNums;
+        index = Number(index) + Number(onceNums);
         loadItemsfromWebsql(rssUrl, index, onceNums); //10到20条 ... 
+    }
+    //标记当前列表为已读
+    if (e.target.id == 'nothing') {
+        var rssUrl = e.target.getAttribute('data-rssUrl');
+        makeRssRead(rssUrl);
+        loadRssfromWebsql();
     }
     //刷新
     if (e.target.id == "update") {
-        //rss_request();
+        rss_request();
         this.console.log("刷新页面, 重新生成popup页面...");
-        loadRssfromWebsql();
+        setTimeout("loadRssfromWebsql()",3000);//等待common.js加载完毕
+        //loadRssfromWebsql();
     }
     //刷新RSS
     if (e.target.id == "updateRss") {
@@ -46,7 +53,8 @@ window.onclick = function (e) {
         httpRequest(rssUrl, parseXmlstr);
 
         localStorage.itemstr = "";
-        loadItemsfromWebsql(rssUrl, 0, onceNums); //0到10条
+        setTimeout("loadItemsfromWebsql(rssUrl, 0, onceNums);",3000);//等待common.js加载完毕
+        //loadItemsfromWebsql(rssUrl, 0, onceNums); //0到10条
     }
     //访问item（同时标记已读）
     if (e.target.href) {     
@@ -75,7 +83,8 @@ window.onclick = function (e) {
     }
     if (e.target.getAttribute('title') == '将该RSS源标记为已读') {
         makeRssRead(e.target.parentNode.getAttribute('data-rss'));
-        loadRssfromWebsql();
+        e.target.parentNode.removeChild(e.target);
+        //loadRssfromWebsql();
     }
     if (e.target.getAttribute('title') == '将目录标记为已读') {
         makeDirRead(e.target.id.replace("nums", ""));

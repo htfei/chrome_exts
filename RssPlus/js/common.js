@@ -20,10 +20,20 @@ function sethead(rssTitle, rssUrl, rssico) {
 
 function loadItemsfromWebsql(rssUrl, index, nums) {
     //console.log("loadItemsfromWebsql=====",rssUrl,index);
+    var loadisRead= localStorage.loadisRead?localStorage.loadisRead:0;//是否加载已读的items
+    var sqlstr = "";
+    if(loadisRead == 1 ){
+        sqlstr = 'SELECT * FROM Feeds where rssUrl = ? ORDER BY pubtimestamp DESC LIMIT ?,?';
+    }
+    else{
+        sqlstr = 'SELECT * FROM Feeds where rssUrl = ? and isread ISNULL ORDER BY pubtimestamp DESC LIMIT ?,?';
+    }
+    console.log(loadisRead,sqlstr, [rssUrl, index, nums]);
     db.transaction(function (tx) {
-        tx.executeSql('SELECT * FROM Feeds where rssUrl = ? ORDER BY pubtimestamp DESC LIMIT ?,?', [rssUrl, index, nums], function (tx, results) {
+        tx.executeSql(sqlstr, [rssUrl, index, nums], function (tx, results) {
                 var len = results.rows.length;
-                //console.log(len);           
+                console.log(len);//bug:若只加载未读开启，没有未读时，sql查询结果为空，但len的值还是10，猜测和limit有关           
+                //追加items
                 if (len) {
                     for (i = 0; i < len; i++) {
                         var itemurl = results.rows.item(i).url;
@@ -35,14 +45,19 @@ function loadItemsfromWebsql(rssUrl, index, nums) {
                         //不能截断否则将导致内部元素无结束标记,体现为下一个items变为子元素了，而且越来越小
                         description = localStorage.loadDesc?description:"";
                         if (isread == 1) {
-                            localStorage.itemstr += '<a class="list-group-item list-group-item-info" href="' + itemurl + '" >' + title + '</a>' + description ;
+                            if( loadisRead == 1 ){
+                                localStorage.itemstr += '<a class="list-group-item list-group-item-info" href="' + itemurl + '" >' + title + '</a>' + description ;
+                            }  
                         } else {
                             localStorage.itemstr += '<a class="list-group-item list-group-item-info" href="' + itemurl + '" ><span class="badge pull-right" title="标记为已读">新</span>' + title + '</a>' + description;
                         }
                     }
+                }
+                //修改尾部
+                if (len >= 10 ) {
                     localStorage.footstr = '<a id="loadmore" class="list-group-item btn list-group-item-success" style="text-align: center;" data-rssUrl="' + rssUrl + '" data-index="' + index + '">加载更多</a></div>';
                 } else {
-                    localStorage.footstr = '<a id="nothing" class="list-group-item btn" style="text-align: center;" title="点击返回主界面" >暂无更新！</a></div>';
+                    localStorage.footstr = '<a id="nothing" class="list-group-item btn" style="text-align: center;" title="标记当前列表为已读" data-rssUrl="' + rssUrl + '">标记当前列表为已读</a></div>';
                 }
                 //console.log(localStorage.itemstr);
                 document.getElementById('item').innerHTML = localStorage.headstr + localStorage.itemstr + localStorage.footstr;
@@ -69,7 +84,7 @@ function makeItemRead(itemUrl) {
                     console.log('失败!', error.message)
                 });
                 //插入数据后更新未读条数
-                tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
+                tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(url) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
 
                 changeicobar();
             }
@@ -85,6 +100,9 @@ function makeRssRead(rssUrl) {
         tx.executeSql('update Rss set unreadNums = 0 where rss = ?', [rssUrl], null, function (tx, error) {
             console.log('失败!', error.message)
         });
+        //插入数据后更新未读条数
+        tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(url) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
+
         changeicobar();
     });
 }
@@ -96,7 +114,8 @@ function makeDirRead(dirstr) {
             alert('失败!', error.message)
         });
         //插入数据后更新未读条数//2018.03.19 sql语句待优化：将指定目录类下的所有rss的unreadnums设为0.而不是更新所有,2018.08.14更新
-        tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
+        tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(url) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
+
         changeicobar();
     });
 }
@@ -106,7 +125,7 @@ function makeDirRead(dirstr) {
 //更换图标下的bar
 function changeicobar() {
     db.transaction(function (tx) {
-        tx.executeSql('SELECT COUNT(*) as nums FROM Feeds WHERE isread IS NULL', [], function (tx, results) {
+        tx.executeSql('SELECT COUNT(url) as nums FROM Feeds WHERE isread IS NULL', [], function (tx, results) {
                 var nums = results.rows.item(0).nums;
                 console.log("unreadnums", nums);
                 if (nums > 0) {
@@ -139,7 +158,7 @@ function changeicobar() {
 function loadRssfromWebsql() {
     db.transaction(function (tx) {
         //插入数据后更新未读条数
-        tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
+        tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(url) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
         //更换图标下的bar
         changeicobar();
         tx.executeSql('SELECT * FROM Rss', [],
@@ -397,7 +416,7 @@ function testcallback(rssxml, rssurl) {
 function rss_request() {
     console.log("开始请求rss源数据...")
     db.transaction(function (tx) {
-        tx.executeSql('SELECT rss FROM Rss', [], function (tx, results) {
+        tx.executeSql('SELECT rss,title FROM Rss', [], function (tx, results) {
                 var len = results.rows.length;
                 //console.log(len);
                 for (i = 0; i < len; i++) {
@@ -411,7 +430,7 @@ function rss_request() {
                 console.log('查询数据失败: ', error.message)
             });
         //插入数据后更新未读条数
-        tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(*) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
+        tx.executeSql('UPDATE Rss SET unreadNums = ( SELECT COUNT(url) FROM Feeds WHERE isread IS NULL AND Feeds.rssUrl = Rss.rss)', []);
         //更换图标下的bar
         changeicobar();
         //loadRssfromWebsql();
