@@ -6,6 +6,21 @@
     <link rel="stylesheet" href="ext/bootstrap.min.css">
     <script type="text/javascript" src="ext/jquery.min.js"></script>
     <script src="ext/bootstrap.min.js"></script>   
+    <style>
+    .upload{
+        padding: 4px 10px;
+        position: relative;
+        border: 1px solid #999;
+        text-decoration: none;
+    }
+    .change{
+        position: absolute;
+        overflow: hidden;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+    </style>
 </head>
 
 <body>
@@ -23,7 +38,15 @@
             <input type="text" id="rssico" size='60' /> (选填)</p>
         <input type="button" id="save" value="添加rss源（若存在则更新）" />
         <br/>
+        
         <br/>
+        <b>导入导出 </b>
+        <a href="javascript:;" class="upload">导入opml文件
+            <input class="change" type="file" id="loadfile" accept=".json"/>
+        </a>
+        <input  class="upload" type="button" id="export_file" value="导出opml文件" /><br/><br/>
+        <br/>
+
         <input type="button" id="clearfeeds" value="清空feeds缓存(慎用)" />
         <br/>
         <br/>

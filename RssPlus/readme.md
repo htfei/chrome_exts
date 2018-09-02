@@ -82,3 +82,19 @@ todo:
     标题栏顶层浮动;
     导入导出opml文件;
     识别该rss源时，无法获取标题，待查找原因： 'http://www.ruanyifeng.com/blog/atom.xml' ,目前已知按html解析了
+
+### 2018.09.03
+
+    新增导出所有rss源到opml文件的功能(完整支持：包括目录分组，图标，linkurl，标题，rssurl,post数量，请求间隔)
+        目前linkurl没取，需要添加字段
+        考虑增加 显示详情，展示模式，等自定义属性，前提：研究opml是否支持扩展
+
+另:feeder.co 获取rss图标的方式：
+    根据rss中的<link>https://github.com/DIYgod/RSSHub</link>
+    找到host = github.com
+    然后自带解析图标服务： 
+        https://icons.feeder.co/github.com
+        https://icons.feeder.co/www.blackglory.me
+    
+
+
