@@ -123,21 +123,61 @@ function loadRss() {
 loadRss();
 
 
+//储存rss到websql
+function rss2websql(rsslist) {
+    console.log(rsslist);
+    db.transaction(function (tx) {
+        for (i = 0; i < rsslist.length; i++) {
+            tx.executeSql('INSERT OR REPLACE INTO Rss (rss,title,ico,dir) VALUES (?, ?, ?, ?)', rsslist[i],
+            null,
+            function (tx, error) {
+                alert('导入opml失败! Error: ' + error.message)
+            });
+        }
+        alert('导入成功！');
+        location.reload();
+    });
+}
+
 //导入表单文件到localStorage，并刷新页面
 document.getElementById('loadfile').onchange = function jsReadFiles() {
-    //show_log("jsReadFiles...");
     if (this.files.length) {
         var file = this.files[0];
         var reader = new FileReader();
         reader.onload = function () {
-            var json = JSON.parse(this.result);
-            //show_log(json.tools[0].key);
-            for (var i = 0; i < json.tools.length; i++) {
-                var key = json.tools[i].key;
-                var value = json.tools[i].value;
-                localStorage.setItem(key, value);
-            }
-            location.reload();
+            //console.log(this.result);
+            domParser = new  DOMParser();
+            xmlDoc = domParser.parseFromString(this.result, 'text/xml');
+            //console.log(xmlDoc);
+
+            var rssstr = xmlDoc.getElementsByTagName('outline');
+            var rsslist = [];
+            console.log(rssstr.length);
+            for (i = 0; i < rssstr.length; i++) {
+                if(rssstr[i].attributes['xmlUrl']){
+                    //todo:兼容性处理，若不存在以下某个属性，可以能导致导入失败;
+                    //var text = rssstr[i].attributes['text'].value;
+                    var title = rssstr[i].attributes['title'].value;
+                    //var type = rssstr[i].attributes['type'].value;
+                    var xmlUrl = rssstr[i].attributes['xmlUrl'].value;
+                    //var htmlUrl = rssstr[i].attributes['htmlUrl'].value;
+                    //var numPosts = rssstr[i].attributes['rssfr-numPosts'].value;
+                    var favicon = rssstr[i].attributes['rssfr-favicon'];
+                    favicon = favicon?favicon.value:"";
+                    //var useNotifications = rssstr[i].attributes['rssfr-useNotifications'].value;
+                    //var updateInterval = rssstr[i].attributes['rssfr-updateInterval'].value;
+
+                    var dir = rssstr[i].parentNode.attributes['title']
+                    dir = dir?dir.value:"";
+
+                    rsslist.push([xmlUrl,title,favicon,dir]);
+                    
+                }
+                if(i == rssstr.length-1){
+                    rss2websql(rsslist);
+                }        
+            }         
+            //location.reload();
         };
         reader.readAsText(file);
     }
