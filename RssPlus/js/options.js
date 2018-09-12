@@ -24,8 +24,8 @@ document.getElementById('del').onclick = function () {
     db.transaction(function (tx) {
         tx.executeSql('DELETE FROM Rss WHERE rss = ?;', [rssurl],
             function (tx, results) {
-                tx.executeSql('DELETE FROM Feeds WHERE rssUrl = ?;', [rssurl], null, null);
-                alert('删除成功!');
+                tx.executeSql('DELETE FROM Feeds WHERE rssUrl not in (SELECT rss from Rss);', [], alert('删除成功!'), null);
+                //alert('删除成功!');
             },
             function (tx, error) {
                 alert('删除失败!' + error.message);
