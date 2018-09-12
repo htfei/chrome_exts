@@ -129,10 +129,10 @@ function rss2websql(rsslist) {
     db.transaction(function (tx) {
         for (i = 0; i < rsslist.length; i++) {
             tx.executeSql('INSERT OR REPLACE INTO Rss (rss,title,ico,dir) VALUES (?, ?, ?, ?)', rsslist[i],
-            null,
-            function (tx, error) {
-                alert('导入opml失败! Error: ' + error.message)
-            });
+                null,
+                function (tx, error) {
+                    alert('导入opml失败! Error: ' + error.message)
+                });
         }
         alert('导入成功！');
         location.reload();
@@ -146,7 +146,7 @@ document.getElementById('loadfile').onchange = function jsReadFiles() {
         var reader = new FileReader();
         reader.onload = function () {
             //console.log(this.result);
-            domParser = new  DOMParser();
+            domParser = new DOMParser();
             xmlDoc = domParser.parseFromString(this.result, 'text/xml');
             //console.log(xmlDoc);
 
@@ -154,7 +154,7 @@ document.getElementById('loadfile').onchange = function jsReadFiles() {
             var rsslist = [];
             console.log(rssstr.length);
             for (i = 0; i < rssstr.length; i++) {
-                if(rssstr[i].attributes['xmlUrl']){
+                if (rssstr[i].attributes['xmlUrl']) {
                     //todo:兼容性处理，若不存在以下某个属性，可以能导致导入失败;
                     //var text = rssstr[i].attributes['text'].value;
                     var title = rssstr[i].attributes['title'].value;
@@ -163,20 +163,20 @@ document.getElementById('loadfile').onchange = function jsReadFiles() {
                     //var htmlUrl = rssstr[i].attributes['htmlUrl'].value;
                     //var numPosts = rssstr[i].attributes['rssfr-numPosts'].value;
                     var favicon = rssstr[i].attributes['rssfr-favicon'];
-                    favicon = favicon?favicon.value:"";
+                    favicon = favicon ? favicon.value : "";
                     //var useNotifications = rssstr[i].attributes['rssfr-useNotifications'].value;
                     //var updateInterval = rssstr[i].attributes['rssfr-updateInterval'].value;
 
                     var dir = rssstr[i].parentNode.attributes['title']
-                    dir = dir?dir.value:"";
+                    dir = dir ? dir.value : "";
 
-                    rsslist.push([xmlUrl,title,favicon,dir]);
-                    
+                    rsslist.push([xmlUrl, title, favicon, dir]);
+
                 }
-                if(i == rssstr.length-1){
+                if (i == rssstr.length - 1) {
                     rss2websql(rsslist);
-                }        
-            }         
+                }
+            }
             //location.reload();
         };
         reader.readAsText(file);
@@ -208,7 +208,7 @@ function str2EntityReference(str) {
     return entitystr;
 }
 document.getElementById('export_file').onclick = function () {
-    var date = new Date().toLocaleString();//.replace(/\//g,'-');//此处可以不处理,下载文件名中的/:等特殊字符会被自动替换为_
+    var date = new Date().toLocaleString(); //.replace(/\//g,'-');//此处可以不处理,下载文件名中的/:等特殊字符会被自动替换为_
     var name = "RssPlus_" + date + ".opml";
     var opml_str = `<?xml version="1.0" encoding="UTF-8"?>
     <opml version="1.0">
