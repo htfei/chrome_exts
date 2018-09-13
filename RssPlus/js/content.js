@@ -1,3 +1,4 @@
+
 /**
  * Get RSS feeds URLs
  */
@@ -25,10 +26,10 @@ function getFeedsURLs() {
 
         //有type属性且属于数组中的某一个
         //indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。如果要检索的字符串值没有出现，则该方法返回 -1。
-        if (links[i].hasAttribute('type') && types.indexOf(links[i].getAttribute('type')) !== -1) {     
-            
+        if (links[i].hasAttribute('type') && types.indexOf(links[i].getAttribute('type')) !== -1) {
+
             feed_url = links[i].getAttribute('href');
-            if (feed_url.indexOf("//") == 0)    // url以 // 开头，需要补全 http: 
+            if (feed_url.indexOf("//") == 0) // url以 // 开头，需要补全 http: 
                 feed_url = "http:" + feed_url;
             else if (/^(http|https):\/\//i.test(feed_url)) //若url中包含 http:// 或者 https:// ,则保持不变
                 feed_url = feed_url;
@@ -37,11 +38,13 @@ function getFeedsURLs() {
 
 
             feed_title = links[i].getAttribute('title')
-            if ( ['RSS','RSS news feed'].indexOf(feed_title) !== -1 )    // title是这2个的话无意义，换成网页标题
+            if (['RSS', 'RSS news feed'].indexOf(feed_title) !== -1) // title是这2个的话无意义，换成网页标题
                 feed_title = document.title;
+
             var feed = {
                 type: links[i].getAttribute('type'),
                 url: feed_url,
+                link:location.href,
                 title: feed_title
             };
 
@@ -49,9 +52,9 @@ function getFeedsURLs() {
         }
 
         //网页图标
-        if(links[i].hasAttribute('type') && links[i].getAttribute('type') =='image/x-icon'){
+        if (links[i].hasAttribute('type') && links[i].getAttribute('type') == 'image/x-icon') {
             feed_ico = links[i].getAttribute('href');
-            if (feed_ico.indexOf("//") == 0)    // url以 // 开头，需要补全 http: 
+            if (feed_ico.indexOf("//") == 0) // url以 // 开头，需要补全 http: 
                 feed_ico = "http:" + feed_ico;
             else if (/^(http|https):\/\//i.test(feed_ico)) //若url中包含 http:// 或者 https:// ,则保持不变
                 feed_ico = feed_ico;
@@ -69,9 +72,9 @@ function getFeedsURLs() {
     if (feed_lists.length >= 1) {
         var feeds_urls_msg = {
             cmd: "got_feeds_urls",
-            host: location.hostname, //location.href, 同一网站下的多个页面会返回同一个feed,若用href做key，将产生大量不必要的重复;
+            key: location.hostname, //location.href, 同一网站下的多个页面会返回同一个feed,若用href做key，将产生大量不必要的重复;
             ico: feed_ico,
-            ctx: feed_lists,
+            ctx: feed_lists
         }
         //发送消息到background.js
         chrome.runtime.sendMessage(feeds_urls_msg, function (response) {
@@ -94,20 +97,22 @@ fetch(location.href)
             var feed_lists = [];
             var feed_ico = "";
             var feed_title = rssxml.getElementsByTagName('title')[0].childNodes[0].nodeValue;
-            var feed_url = location.href;//rssxml.getElementsByTagName('link')[0].childNodes[0].nodeValue;//rsshub生成的rss源此link为源地址而不是rss地址
+            var feed_url = location.href; 
+            var feed_htmlurl = rssxml.getElementsByTagName('link')[0].childNodes[0].nodeValue;
             console.log(feed_title, feed_url);
 
             var feed = {
                 type: "text/xml",
                 url: feed_url,
+                link:feed_htmlurl,
                 title: feed_title
             };
             feed_lists.push(feed);
             var feeds_urls_msg = {
                 cmd: "got_feeds_urls",
-                host: location.hostname,
+                key: location.hostname,
                 ico: feed_ico,
-                ctx: feed_lists,
+                ctx: feed_lists
             }
             //发送消息到background.js
             chrome.runtime.sendMessage(feeds_urls_msg, function (response) {
@@ -117,3 +122,11 @@ fetch(location.href)
         }
     })
     .catch(e => console.log("Oops, error", e));
+
+
+/*//标签切换到当前页面时//没起作用
+chrome.tabs.onSelectionChanged.addListener(function (tabId, selectInfo) {
+    chrome.tabs.getSelected(selectInfo.windowId, function (tab) {
+        console.log("contentjs:", tab.url);
+    });
+});*/

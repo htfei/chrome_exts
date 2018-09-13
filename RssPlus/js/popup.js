@@ -9,6 +9,8 @@ setTimeout("loadPopup()",200);//等待common.js加载完毕
 
 //一次加载的数量
 var onceNums = localStorage.onceNums ? localStorage.onceNums : 10;
+//当前加载的rssUrl
+var nowRssUrl = "";
 
 //绑定点击事件
 window.onclick = function (e) {
@@ -47,14 +49,54 @@ window.onclick = function (e) {
     }
     //刷新RSS
     if (e.target.id == "updateRss") {
-        console.log("刷新单个Rss源, 3s后重新生成popup页面...");     
+        console.log("刷新单个Rss源, 3s后重新生成popup页面...");       
+        let rssUrl = e.target.parentNode.getAttribute('data-rssUrl');
+        nowRssUrl = rssUrl;
 
-        var rssUrl = e.target.parentNode.getAttribute('data-rssUrl');
+        /*fetch(rssUrl)
+            .then(function (response) {
+                var parser = new DOMParser();
+                var rssxml = parser.parseFromString(response.text(), "text/xml");
+                return (rssxml,response.url);
+            })
+            .then(function (rssxml,rssUrl) {//BUG:2个参数均为空
+                console.log(rssxml);
+                console.log(rssUrl);
+                parseXmlstr(rssxml,rssUrl);
+                return rssUrl;
+            })
+            .then(function(rssUrl){
+                localStorage.itemstr = "";
+                loadItemsfromWebsql(rssUrl, 0, onceNums); //0到10条
+            })
+            .catch(e => console.log("Oops, error", e));*/
+
+        /*(async () =>{
+            try {
+                  let response = await fetch(rssUrl);
+                  let data = await response.text();
+                  var parser = new DOMParser();
+                  var rssxml = await parser.parseFromString(data, "text/xml");
+                  console.log(rssUrl);
+                  parseXmlstr(rssxml,rssurl);//TODO: BUG:rssurl获取失败,上一步获取成功 2018.09.12
+
+                  localStorage.itemstr = "";
+                  console.log(rssUrl);
+                  loadItemsfromWebsql(rssUrl, 0, onceNums); //0到10条
+
+            }catch(e) {
+                console.log("Oops, error", e);
+            }
+        })();*/
+
+        //BUG: 第一次刷新，提示rssUrl未定义，后退在加载即可显示 2018.09.12//已经解决，使用全局变量
         httpRequest(rssUrl, parseXmlstr);
-
         localStorage.itemstr = "";
-        setTimeout("loadItemsfromWebsql(rssUrl, 0, onceNums);",3000);//等待common.js加载完毕
-        //loadItemsfromWebsql(rssUrl, 0, onceNums); //0到10条
+        console.log(rssUrl);
+        setTimeout("loadItemsfromWebsql(nowRssUrl, 0, onceNums);",1000);//等待common.js加载完毕//rssUrl未定义，后退在加载即可
+        //loadItemsfromWebsql(rssUrl, 0, onceNums); //0到10条//先执行
+
+
     }
     //访问item（同时标记已读）
     if (e.target.href) {     
@@ -89,5 +131,20 @@ window.onclick = function (e) {
     if (e.target.getAttribute('title') == '将目录标记为已读') {
         makeDirRead(e.target.id.replace("nums", ""));
         loadRssfromWebsql();
+    } 
+    if (e.target.getAttribute('title') == '订阅这个新发现的rss源！') {
+        var rssurl = e.target.parentNode.getAttribute('data-rss');
+        var rsstitle = e.target.parentNode.getAttribute('data-title');
+        var rssico = e.target.parentNode.getAttribute('data-ico');  
+        var rssdir = "";
+        db.transaction(function (tx) {
+            tx.executeSql('INSERT OR REPLACE INTO Rss (rss,title,ico,dir) VALUES (?, ?, ?, ?)', [rssurl, rsstitle,rssico, rssdir],
+                function (tx, results) {
+                    alert('添加成功!');
+                },
+                function (tx, error) {
+                    alert('添加失败!' + error.message)
+                });
+        });
     } 
 }
