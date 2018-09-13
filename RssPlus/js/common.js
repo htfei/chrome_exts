@@ -33,7 +33,7 @@ function loadPopup() {
     }
 
     //上次最后的访问页面
-    if (localStorage.itemstr !=0 && now_feed_lists == 0) {
+    if (localStorage.itemstr != 0 && now_feed_lists == 0) {
         document.getElementById('item').innerHTML = localStorage.headstr + localStorage.itemstr + localStorage.footstr;
     } else {
         loadRssfromWebsql();
@@ -58,11 +58,11 @@ function loadItemsfromWebsql(rssUrl, index, nums) {
     } else {
         sqlstr = 'SELECT * FROM Feeds where rssUrl = ? and isread ISNULL ORDER BY pubtimestamp DESC LIMIT ?,?';
     }
-    console.log(loadisRead, sqlstr, [rssUrl, index, nums]);
+    //console.log(loadisRead, sqlstr, [rssUrl, index, nums]);
     db.transaction(function (tx) {
         tx.executeSql(sqlstr, [rssUrl, index, nums], function (tx, results) {
                 var len = results.rows.length;
-                console.log(len); //bug:若只加载未读开启，没有未读时，sql查询结果为空，但len的值还是10，猜测和limit有关           
+                //console.log(len); //bug:若只加载未读开启，没有未读时，sql查询结果为空，但len的值还是10，猜测和limit有关           
                 //追加items
                 if (len) {
                     for (i = 0; i < len; i++) {
@@ -338,7 +338,7 @@ function items2websql(items) {
 
 /*从<![CDATA[%s]]>中取出%s*/
 function removeCDATA(fstr) {
-    return fstr.replace("<![CDATA[", "").replace("]]>", "").replace('<p><sub><i>-- Delivered by <a href="http://feed43.com/">Feed43</a> service</i></sub></p>', "")
+    return fstr.replace("<![CDATA[", "").replace("]]>", "").replace('<p><sub><i>-- Delivered by <a href="http://feed43.com/">Feed43</a> service</i></sub></p>', "").replace(' - Made with love by RSSHub(https://github.com/DIYgod/RSSHub)',"")
 }
 
 //必须加https://，否则默认前缀为chrome-extension://dhjefkpchmfdghfipcdmaodhigmfbpef
@@ -401,28 +401,60 @@ function parseAtomFeedItem(xmlstr, rssurl) {
             items.push([linkfix, titlefix, updatedtimestamp, rssurl, descfix, categoryfix, contentfix, guid]);
         }
     }
-    console.log(items);
+    //console.log(items);
     return items;
 }
 
+
+//更新rss源的update时间和link信息等
+function rssupdate2websql(rssxml, rssurl) {
+
+    if (rssxml) {
+        var type = rssxml.getElementsByTagName('rss');
+        var rssupdate = [];
+
+        //var rsstitle = rssxml.getElementsByTagName('title')[0].innerHTML;
+        var rsslink = rssxml.getElementsByTagName('link')[0].innerHTML;
+        
+        var rssdesc = rssxml.getElementsByTagName('description');
+        var rssdescfix = rssdesc.length ? rssdesc[0].innerHTML : "";
+        var rssdescfix = removeCDATA(rssdescfix);     
+       
+
+        var pub = rssxml.getElementsByTagName('lastBuildDate'); //rss  
+        pub = pub.length ? pub : rssxml.getElementsByTagName('pubDate'); //rss (特殊兼容:https://feed.iplaysoft.com/)  
+        pub = pub.length ? pub : rssxml.getElementsByTagName('updated'); //atom  
+        pub = pub.length ? pub[0].innerHTML : null ; 
+        pubstamp = Math.round(new Date(pub).getTime() / 1000);
+
+        //var generator = rssxml.getElementsByTagName('generator')[0].innerHTML;
+        //var ttl = rssxml.getElementsByTagName('ttl')[0].innerHTML;
+
+        rssupdate = [rsslink, rssdescfix, pubstamp, rssurl];
+        db.transaction(function (tx) {
+            tx.executeSql('update Rss set link=?, description=?, pubtimestamp=? where rss =? ', rssupdate,
+                null,
+                function (tx, error) {
+                    console.log('更新rss源失败: ' + error.message)
+                });
+        });
+    }
+
+    //----------------------------------------------------------------------
+}
 
 //解析items
 function parseXmlstr(rssxml, rssurl) {
     //console.log(rssurl); //err console.log(rssxml.innerHTML);
     //console.log(rssxml);
+
+    rssupdate2websql(rssxml, rssurl);
+
     if (rssxml) {
         var items = [];
         var type = rssxml.getElementsByTagName('rss');
+
         if (type.length >= 1) {
-            //var rsstitle = rssxml.getElementsByTagName('title')[0].innerHTML;
-            //var rsslink = rssxml.getElementsByTagName('link')[0].innerHTML;
-            //var rssdesc = rssxml.getElementsByTagName('description')[0].innerHTML;
-
-            //var lastBuildDate = rssxml.getElementsByTagName('lastBuildDate')[0].innerHTML;
-            //var lBDatetimestamp = Math.round(new Date(lastBuildDate).getTime() / 1000);
-
-            //var generator = rssxml.getElementsByTagName('generator')[0].innerHTML;
-            //var ttl = rssxml.getElementsByTagName('ttl')[0].innerHTML;
 
             var list = rssxml.getElementsByTagName('item');
 
@@ -528,7 +560,7 @@ function init() {
     db.transaction(function (tx) {
 
         //新建表
-        tx.executeSql('CREATE TABLE IF NOT EXISTS Rss (id,rss unique, title,unreadNums,dir,ico,pubtimestamp)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS Rss (id,rss unique,title,dir,unreadNums,pubtimestamp,link,description,ico)');
         tx.executeSql('CREATE TABLE IF NOT EXISTS Feeds (id,rssid,url unique, title, pubtimestamp,isread,rssUrl,description,category,content,guid)');
 
         //插入一个rss源(若开启，则每次都尝试添加，即删不了了)

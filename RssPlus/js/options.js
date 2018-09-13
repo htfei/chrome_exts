@@ -12,6 +12,7 @@ document.getElementById('save').onclick = function () {
         tx.executeSql('INSERT OR REPLACE INTO Rss (rss,title,ico,dir) VALUES (?, ?, ?, ?)', [rssurl, rsstitle, rssico, rssdir],
             function (tx, results) {
                 alert('添加成功!');
+                location.reload();
             },
             function (tx, error) {
                 alert('添加失败!' + error.message)
@@ -93,13 +94,23 @@ function loadRss() {
         tx.executeSql('SELECT * FROM Rss', [],
             function (tx, results) {
                 var divstr = '<table class="table table-striped table-hover table-condensed">' +
-                    '<caption>管理订阅的RSS源(开发中)</caption><thead><tr><th>管理</th><th>目录</th><th>名称</th><th>RSS链接</th><th>RSS图标</th></tr></thead><tbody>';
+                    '<caption>管理订阅的RSS源(开发中)</caption><thead><tr><th width="70px">管理</th><th width="100px">目录</th><th width="400px">RSS源</th><th width="200px">最近更新</th><th>描述</th></tr></thead><tbody>';
                 for (i = 0; i < results.rows.length; i++) {
                     var rss = results.rows.item(i).rss;
                     var title = results.rows.item(i).title;
                     var dir = results.rows.item(i).dir;
                     var ico = results.rows.item(i).ico;
-                    divstr += '<tr><td><input type="button" class="up_btn" value="编辑" /></td><td>' + dir + '</td><td>' + title + '</td><td>' + rss + '</td><td>' + ico + '</td></tr>';
+                    var icofix = (ico=="")?"./../images/icon.png":ico;
+                    var link = results.rows.item(i).link;
+                    var description = results.rows.item(i).description;
+                    var descriptionfix = description?description.length>100?description.substr(0, 100)+"...":description:"";
+                    var pubtimestamp = results.rows.item(i).pubtimestamp;
+                    var pubdate = new Date();
+                    pubdate.setTime(pubtimestamp * 1000);
+                    //console.log(pubdate.toLocaleString());
+                    divstr += '<tr><td><input type="button" class="up_btn" value="编辑" /></td><td>' + dir + 
+                    '</td><td><a href="' + link + '"><img src="' + icofix + '" height="18" width="18"/></a>&nbsp;&nbsp;<a href="'  + rss + '">'+ title + 
+                    '</a><td>' + pubdate.toLocaleString() + '</td><td>'+ descriptionfix + '</td></tr>';
                 }
                 divstr += '</tbody></table>';
                 document.getElementById('rss').innerHTML = divstr;
@@ -108,10 +119,10 @@ function loadRss() {
                     //此处不能使用 document.getElementsByClassName('up_btn').onclick = function(){ ，因为得到的是数组，无法直接调用onclick,需要循环绑定
                     //该函数放到loadRss()外面无效，猜测executeSql查询数据库处理延后，导致该函数先执行时'.up_btn'还未生成，绑定失败，但是无提示信息？
                     var obj = this.parentNode.parentNode; //input.td.tr
-                    document.getElementById('rssurl').value = obj.childNodes[3].innerHTML;
-                    document.getElementById('rsstitle').value = obj.childNodes[2].innerHTML;
                     document.getElementById('rssdir').value = obj.childNodes[1].innerHTML;
-                    document.getElementById('rssico').value = obj.childNodes[4].innerHTML;
+                    document.getElementById('rssico').value = obj.childNodes[2].childNodes[0].childNodes[0].src;
+                    document.getElementById('rssurl').value = obj.childNodes[2].childNodes[2].href;
+                    document.getElementById('rsstitle').value = obj.childNodes[2].childNodes[2].innerHTML;
                     console.log(obj);
                 });
             },
