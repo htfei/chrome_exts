@@ -461,7 +461,7 @@ function parseXmlstr(rssxml, rssurl) {
             for (i = 0; i < list.length; i++) {
 
                 var link = list[i].getElementsByTagName('link')[0].innerHTML;
-                if (rssurl == 'http://www.feed43.com/4677052036764060.xml') {
+                if (rssurl == 'http://feed43.com/4677052036764060.xml') {
                     linkfix = addhttphead(link).split("#")[0]; //光谷社区等一个帖子多个reply，只保留一个;//只保留#号前面的部分
                 } else {
                     linkfix = addhttphead(link); //bilibili等番剧分集，要保留多个(不作处理);

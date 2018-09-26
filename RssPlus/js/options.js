@@ -25,7 +25,7 @@ document.getElementById('del').onclick = function () {
     db.transaction(function (tx) {
         tx.executeSql('DELETE FROM Rss WHERE rss = ?;', [rssurl],
             function (tx, results) {
-                tx.executeSql('DELETE FROM Feeds WHERE rssUrl not in (SELECT rss from Rss);', [], alert('删除成功!'), null);
+                tx.executeSql('DELETE FROM Feeds WHERE rssUrl not in (SELECT rss from Rss);', [], ()=>{alert('删除成功!');location.reload();}, null);
                 //alert('删除成功!');
             },
             function (tx, error) {
@@ -69,13 +69,20 @@ document.getElementById('loadisReadbtn').onclick = function () {
     alert('设置成功!');
 }
 
+//设置是否加载已读的img大小
+document.getElementById('loadDescimgmaxbtn').onclick = function () {
+    var loadDescimgmax = document.getElementById('loadDescimgmax').value;
+    localStorage.loadDescimgmax = Number(loadDescimgmax);
+    alert('设置成功!');
+}
+
 //目录重命名
 document.getElementById('dirRenamebtn').onclick = function () {
 
     var dirOldname = document.getElementById('dirOldname').value;
     var dirNewname = document.getElementById('dirNewname').value;
     db.transaction(function (tx) {
-        tx.executeSql('UPDATE Rss SET dir = ? WHERE dir = ?;', [dirNewname, dirOldname], alert('目录重命名成功!'), null);
+        tx.executeSql('UPDATE Rss SET dir = ? WHERE dir = ?;', [dirNewname, dirOldname], ()=>{alert('目录重命名成功!');location.reload();}, null);
     });
 }
 
