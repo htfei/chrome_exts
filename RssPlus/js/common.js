@@ -244,7 +244,7 @@ function loadRssfromWebsql() {
                 <div class="dropdown " style="background-color:#FFFFFF;">
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <img src ="./../images/icon.png" height="16" width="16"/>
-                    <span style="font-size: 14px;line-height:36px">&nbsp;&nbsp;RSS订阅器</span>
+                    <span style="font-size: 14px;line-height:36px"><a style='text-decoration:none;' href="./../home.html">&nbsp;&nbsp;RSS订阅器</a></span>
                     <button class="btn btn-default dropdown-toggle " type="button" id="menu1" data-toggle="dropdown" style="float:right">+
                         <span class="caret"></span>
                     </button>

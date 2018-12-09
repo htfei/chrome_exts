@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--https://blog.csdn.net/qq_36994134/article/details/70338441?utm_source=blogxgwz2-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Rss订阅器</title>  
+        <link rel="stylesheet" href="ext/bootstrap.min.css">
+        <script type="text/javascript" src="ext/jquery.min.js"></script>
+        <script src="ext/bootstrap.min.js"></script>   
+        <script src="ext/vue.min.js"></script>
+        <title></title>
+        <style>
+            body{
+                margin: 0;
+                padding: 0;
+                font: 14px "Hiragino Sans GB","Lucida Grande","微软雅黑",Helvetica,Arial,sans-serif;
+                word-break: break-all;
+                -webkit-tap-highlight-color: transparent;
+                background-color: #dce1e6;        
+            }
+
+            #wf{
+                margin-top: 50px;
+                position: relative;
+            }
+            #wf .unit{
+                position: absolute;
+                /* border: 1px solid black; */
+                width: 400px;
+                padding: 10px;
+                box-sizing: border-box;
+                display: block;
+                font-size: 13px;
+                line-height: 1.4;
+                color: #58666e;
+                background-color: #f4f6f8;
+                border-width: 0;
+                border-style: solid;
+                border-image: none;
+                border-color: #e4e4e4 #bebebd #bebebd #e4e4e4;
+                background: #fff;
+                box-shadow: 2px 2px 3px 0 #d0d0d0;
+            }
+            #wf .unit img{
+                max-width: 400px;
+            }
+            #title{
+                box-sizing: border-box;
+                line-height: 150%;
+                font-weight: 700;
+                color: #333!important;
+                font-size: 18px;
+                font-family: inherit;
+                cursor: pointer;
+                margin:5px 0px 0px 5px;
+            }
+            #desc{
+                /* padding: 0 10px; */
+                margin: 5px 0px 0px 0px;
+                margin-block-start: 1em;
+                margin-block-end: 1em;
+                margin-inline-start: 0px;
+                margin-inline-end: 0px;
+                color: #363f44;
+                cursor: pointer;
+
+            }
+            #descimg{
+                margin:5px 0px 0px -10px;
+                width: 400px;
+            }
+            #pubtime{
+                color: #141719;
+                text-decoration: none;
+                outline: 0;
+                font-size: 12px;
+                cursor: pointer;
+                background-color: transparent;
+                box-sizing: border-box;
+                line-height: 22px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <!-- <p>{{ message }}</p> -->
+            <div id="cbl">
+
+            </div>
+            <div id="wf">
+                <div v-for="item in items" class="unit">
+                    <div>
+                        <img v-bind:src="item.rssico" width="16"/>&nbsp;&nbsp;<span>{{ item.rsstitle }}</span>
+                    </div>
+                    <a style='text-decoration:none;' v-bind:href="item.itemurl" target='_blank'>
+                        <p id="title">{{ item.title }}</p>
+                        <img id="descimg" v-bind:src="item.descimg">
+                        <p id="desc">{{ item.desc }}</p>
+                    </a>
+                    <img src="images/time.png" />&nbsp;&nbsp;<a id= "pubtime">{{ item.pubtime }}</a>
+                </div>
+            </div>
+        </div>      
+        <script type="text/javascript" src="js/home.js" ></script>
+    </body>
+</html>
