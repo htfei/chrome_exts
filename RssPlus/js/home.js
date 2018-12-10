@@ -35,11 +35,12 @@ function getIMGfromString(string){
     for (var i = 0; i < arr.length; i++){
         var src = arr[i].match(srcReg);
         //获取图片地址
-        console.log('图片地址'+(i+1)+'：'+src[1]);
+        // console.log('图片地址'+(i+1)+'：'+src[1]);
         list.push(src[1]);
     }
     return list
 }
+
 function loadItemsfromWebsqlforhome(index, nums) {
     var sqlstr = `SELECT 
                     Rss.ico,
@@ -62,6 +63,9 @@ function loadItemsfromWebsqlforhome(index, nums) {
                     for (i = 0; i < len; i++) {
                         var itemval = {};
                         itemval.rssico = results.rows.item(i).ico;
+                        if (itemval.rssico == null || itemval.rssico == "") {
+                            itemval.rssico = "./../images/icon.png";
+                        }
                         itemval.rsstitle = results.rows.item(i).rsstitle;
                         itemval.itemurl = results.rows.item(i).url;
                         itemval.title = results.rows.item(i).title;
@@ -99,7 +103,7 @@ $(window).scroll(function () {
 //----------------
 var unit_wid = 400;
 var unit_edge = 30;
-var unit_rate = 0.9;
+var unit_rate = 0.95;
 // var unit_num = 10;
 
 
@@ -108,30 +112,13 @@ $(document).ready(function(){
     setTimeout("initial_position()",100);
 });
 
-function initial_position(){
-    var wf_wid = $(window).width()*unit_rate;
+function initial_position(fix=0){
+    var lfix = fix?fix:$('.nav').width();
+    var wd = $(window).width() - lfix;
+    // console.log(fix,lfix,wd)
+    var wf_wid = wd*unit_rate;
     var num = Math.floor(wf_wid / unit_wid);
-    var wf_edge = ($(window).width() - (unit_wid * num + unit_edge * (num - 1))) / 2;
-    var heightList = [];
-    for (var i = 0;i< num ;i++) {
-        heightList[i] = 0;
-    }
-    for (var j = 0;j < $('#wf .unit').length;j++) {
-        var col_minHeight = getMin(heightList).min;
-        var col_minIndex = getMin(heightList).index;
-        var initial_top = col_minHeight;
-        var initial_left = col_minIndex * (unit_wid + unit_edge) + wf_edge;
-        var unit = $('#wf .unit');
-        unit.eq(j).css({'top': initial_top + 'px','left': initial_left + 'px'});
-        heightList[col_minIndex] = col_minHeight + unit.eq(j).height() + unit_edge;
-    }
-    set_wfHeight(getMax(heightList));
-}
-
-$(window).resize(function(){
-    var wf_wid = $(window).width()*unit_rate;
-    var num = Math.floor(wf_wid / unit_wid);
-    var wf_edge = ($(window).width() - (unit_wid * num + unit_edge * (num - 1))) / 2;
+    var wf_edge = (wd - (unit_wid * num + unit_edge * (num - 1))) / 2;
     var heightList = [];
     for (var i = 0;i< num ;i++) {
         heightList[i] = 0;
@@ -140,12 +127,24 @@ $(window).resize(function(){
         var col_minHeight = getMin(heightList).min;
         var col_minIndex = getMin(heightList).index;
         var new_top = col_minHeight;
-        var new_left = col_minIndex * (unit_wid + unit_edge) + wf_edge;
+        var new_left = col_minIndex * (unit_wid + unit_edge) + wf_edge + lfix;
         var unit = $('#wf .unit');
-        unit.eq(j).stop().animate({'top': new_top + 'px','left': new_left + 'px'},300);
+        unit.eq(j).stop().animate({'top': new_top + 'px','left': new_left + 'px'},1000);
         heightList[col_minIndex] = col_minHeight + unit.eq(j).height() + unit_edge;
     }
     set_wfHeight(getMax(heightList));
+}
+
+$(window).resize(function(){
+    initial_position(0);
+});
+
+// 点击折叠侧边栏的时候，模块重新布局
+// BUG : 一堆奇形怪状的问题，home.js必须最后引用，否则这个函数可能失效
+$('.nav-top').click(function(){
+    // console.log($('.nav').width())
+    var fix = ($('.nav').width() > 60)?60:360;
+    initial_position(fix);
 });
 
 function set_wfHeight (max) {

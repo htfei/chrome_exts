@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<!--https://blog.csdn.net/qq_36994134/article/details/70338441?utm_source=blogxgwz2-->
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Rss订阅器</title>  
+        <title>RssPlus - 万物皆可订阅！</title>  
         <link rel="stylesheet" href="ext/bootstrap.min.css">
-        <script type="text/javascript" src="ext/jquery.min.js"></script>
-        <script src="ext/bootstrap.min.js"></script>   
-        <script src="ext/vue.min.js"></script>
+        <link rel="stylesheet" href="fonts/iconfont.css">                  
+        <link rel="stylesheet" href="ext/nav.css">
         <title></title>
         <style>
             body{
@@ -16,7 +14,8 @@
                 font: 14px "Hiragino Sans GB","Lucida Grande","微软雅黑",Helvetica,Arial,sans-serif;
                 word-break: break-all;
                 -webkit-tap-highlight-color: transparent;
-                background-color: #dce1e6;        
+                background-color: #dce1e6;    
+                float:left;    
             }
 
             #wf{
@@ -79,14 +78,45 @@
                 box-sizing: border-box;
                 line-height: 22px;
             }
+            .nav{
+                position: fixed;
+                z-index:999;
+            }
         </style>
     </head>
     <body>
+        <div id="app_nav" class="nav">
+            <div class="nav-top">
+                <div id="mini" style="border-bottom:1px solid rgba(255,255,255,.1)"><img src="images/mini.png" ></div>
+            </div>
+            <ul>
+                <li class="nav-item">
+                    <a href="javascript:;"><i class="my-icon nav-icon icon_1"></i><span>所有更新</span><i class="my-icon nav-more"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:;"><i class="my-icon nav-icon icon_2"></i><span>热门推荐</span><i class="my-icon nav-more"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:;"><i class="my-icon nav-icon icon_3"></i><span>关注的人</span><i class="my-icon nav-more"></i></a>
+                </li>  
+                <li class="nav-item" style="border-bottom:1px solid rgba(255,255,255,.1)">
+                    <a href="javascript:;"><i class="my-icon nav-icon icon_1"></i><span>我的收藏</span><i class="my-icon nav-more"></i></a>
+                </li> 
+
+                <li v-for="dir in dirlists" class="nav-item">
+                    <a href="javascript:;"><i class="my-icon nav-icon icon_1"></i><span>{{ dir }}</span><i class="my-icon nav-more"></i></a>
+                    <ul v-for="rss in rsslists">
+                        <li><a href="javascript:;"><span>{{ rss.title }}</span></a></li>
+                    </ul>
+                </li>
+                <!-- <li v-for="rss in rsslists" class="nav-item">
+                    <a href="javascript:;"><i class="my-icon nav-icon icon_1"></i><span>{{ rss.title }}</span><i class="my-icon nav-more"></i></a>
+                </li> -->
+            </ul>
+        </div>
+        <!-- fengexian -->
         <div id="app">
             <!-- <p>{{ message }}</p> -->
-            <div id="cbl">
-
-            </div>
             <div id="wf">
                 <div v-for="item in items" class="unit">
                     <div>
@@ -101,6 +131,11 @@
                 </div>
             </div>
         </div>      
+        <script type="text/javascript" src="ext/jquery.min.js"></script>
+        <!-- <script type="text/javascript" src="ext/bootstrap.min.js"></script>    -->
+        <script type="text/javascript" src="ext/nav.js"></script>
+        <script type="text/javascript" src="ext/vue.min.js"></script>
+        <script type="text/javascript" src="js/home_nav.js" ></script>
         <script type="text/javascript" src="js/home.js" ></script>
     </body>
 </html>
