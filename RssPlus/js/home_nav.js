@@ -13,7 +13,7 @@ var vm_nav = new Vue({
         site: {
           // getter
           get: function () {
-            return this.message + ' ' + this.rsslists
+            return this.message + ' ' + this.dirlists
           },
           // setter
           set: function (newValue) {
@@ -48,7 +48,7 @@ function loadRssfromWebsqlforhomenav() {
                     rss_l.push(rss_i);
                 }
                 
-                console.log(dir_l,rss_l);
+                // console.log(dir_l,rss_l);
                 vm_nav.dirlists = dir_l;
                 vm_nav.rsslists = rss_l;
 

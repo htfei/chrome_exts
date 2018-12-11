@@ -25,11 +25,14 @@ var vm = new Vue({
 });
 
 function getIMGfromString(string){
+    if(!string){//debug:null.match()报错 2018.12.11
+        return null;
+    }
     var imgReg = /<img.*?(?:>|\/>)/gi;
     var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
     var arr = string.match(imgReg);  // arr 为包含所有img标签的数组
     if(!arr){
-        return null
+        return null;
     }
     var list =[]
     for (var i = 0; i < arr.length; i++){
@@ -72,7 +75,7 @@ function loadItemsfromWebsqlforhome(index, nums) {
                         desc = results.rows.item(i).description;
                         imglist=getIMGfromString(desc);
                         itemval.descimg = imglist?imglist[0]:"";//若存在则提取第一张jpg
-                        itemval.desc = desc.replace(/<.*?>/g, "");//删除所有标签
+                        itemval.desc = desc?desc.replace(/<.*?>/g, ""):"点击查看详情";//删除所有标签
                         ptmstamp = results.rows.item(i).pubtimestamp;
                         itemval.pubtime = new Date(ptmstamp*1000).toLocaleString();
                         itemsval.push(itemval);
@@ -87,14 +90,16 @@ function loadItemsfromWebsqlforhome(index, nums) {
     });
 }
 
+//此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
+//BUG：滚三次没效果了?各种奇怪问题。//DEBUG:==改为>=,MD滚远了
 $(window).scroll(function () {
     var scrollTop = $(this).scrollTop();
     var scrollHeight = $(document).height();
     var windowHeight = $(this).height();
-    if (scrollTop + windowHeight == scrollHeight) {
-        //此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
+    // console.log(scrollTop,windowHeight,scrollHeight);
+    if (scrollTop + windowHeight >= scrollHeight - 10) {
         index += nums;
-        console.log(index,nums);
+        // console.log(index,nums);
         loadItemsfromWebsqlforhome(index,nums);
         setTimeout("initial_position()",100);
     }
