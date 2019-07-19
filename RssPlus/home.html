@@ -8,7 +8,7 @@
             body{
                 margin: 0;
                 padding: 0;
-                font: 14px "Hiragino Sans GB","Lucida Grande","微软雅黑",Helvetica,Arial,sans-serif;
+                font: 16px "Hiragino Sans GB","Lucida Grande","微软雅黑",Helvetica,Arial,sans-serif;
                 word-break: break-all;
                 -webkit-tap-highlight-color: transparent;
                 background-color: #dce1e6;    
@@ -27,8 +27,8 @@
                 padding: 10px;
                 box-sizing: border-box;
                 display: block;
-                font-size: 13px;
-                line-height: 1.4;
+                font-size: 14px;
+                /*line-height: 1.4;*/
                 color: #58666e;
                 background-color: #f4f6f8;
                 border-width: 0;
@@ -66,37 +66,58 @@
                 margin:5px 0px 0px -10px;
                 width: 400px;
             }
+            .clearfix{
+                /*word-break: break-all;*/
+            }
             .titlepubtime{
                 color: #141719;
                 /*text-decoration: none;*/
-                outline: 0;
-                font-size: 14px;
+                /*outline: 0;*/
+                /*font-size: 16px;*/
                 cursor: pointer;
-                background-color: transparent;
-                box-sizing: border-box;
-                line-height: 22px;
+                /*background-color: transparent;*/
+                /*box-sizing: border-box;*/
+                /*line-height: 22px;*/
+            }
+            .pull-right{
+                float: right!important;
+                /*box-sizing: border-box;*/
+                /*display: block;*/
+                /*font-size: 14px;*/
+                /*line-height: 1.4;*/
             }
         </style>
     </head>
     <body>
         <div id="app">
-            <!-- <p>{{ message }}</p> -->
-            <div id="cbl">
-
-            </div>
             <div id="wf">
                 <div v-for="item in items" class="unit">
                     <div>
-                        <img v-bind:src="item.rssico" width="16"/>&nbsp;&nbsp;<span>{{ item.rsstitle }}</span>
+                        <a v-bind:href="item.rsslink" target='_blank'>
+                            <img v-bind:src="item.rssico" width="16" title="点击访问当前rss对应网站"/>
+                        </a>
+                        &nbsp;&nbsp;
+                        <a v-on:click="loadrss(item.rssid)" title="点击加载本rss所有消息" class= "titlepubtime" style='text-decoration:none;' >{{ item.rsstitle }}</a>
                     </div>
-                    <a style='text-decoration:none;' v-bind:href="item.itemurl" target='_blank'>
+                    <a v-bind:href="item.itemurl" style='text-decoration:none;' target='_blank'>
                         <p id="title">{{ item.title }}</p>
                         <img id="descimg" v-bind:src="item.descimg">
                         <p id="desc">{{ item.desc }}</p>
                     </a>
-                    <img src="images/time.png" />&nbsp;&nbsp;<a id= "pubtime">{{ item.pubtime }}</a>
+                    <div class="clearfix">
+                        <img src="images/079-clock.png" width="16"/>&nbsp;
+                        <a v-bind:href="item.itemurl" class= "titlepubtime" style='text-decoration:none;' target='_blank'>{{ item.timestr }}</a>
+                        <div class="pull-right">
+                            <img src="images/173-bin.png" width="16"/>&nbsp;
+                            <img src="images/216-star-empty.png" width="16"/>&nbsp;
+                            <img src="images/149-cog.png" width="16"/>&nbsp;
+                        </div>
+                    </div>
                 </div>
             </div>
+            <!-- <div class="footer">
+                <a>全部标记为已读，并切换至下个订阅</a>
+            </div> -->
         </div>      
         <script type="text/javascript" src="ext/jquery.min.js"></script>
         <script type="text/javascript" src="ext/bootstrap.min.js"></script>   

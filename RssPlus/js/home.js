@@ -1,6 +1,9 @@
 var db = openDatabase('myrssdb', '1.0', 'I can rss everthing !', 2 * 1024 * 1024);
 var index = 0 ;
 var nums = 20 ;
+var nowstamp = Date.parse(new Date())/1000;//单位秒
+var rssid = null;
+var hasloadall = false;
 
 var itemsval = [];
 var vm = new Vue({
@@ -9,17 +12,22 @@ var vm = new Vue({
       message: 'Hello Vue.js!',
       items: itemsval
     },
-    computed: {
-        site: {
-          // getter
-          get: function () {
-            return this.message + ' ' + this.items
-          },
-          // setter
-          set: function (newValue) {
-              this.message = 'Hello Vue.js!';
-              this.items = newValue
-          }
+    methods:{
+        loadrss:function(item_rssid){
+            if(rssid == item_rssid){
+                // console.log("当前rssid就是"+ item_rssid +",不需要切换!");
+                // return ;
+                rssid = null;//再次点击切换所有
+            }
+            else{
+                rssid = item_rssid;
+            }
+            // console.log(rssid);
+            itemsval = [];
+            vm.site = [];
+            hasloadall = false;
+            loadItemsfromWebsqlforhome(index,nums,rssid);
+            setTimeout("initial_position()",100); 
         }
     }
 });
@@ -44,11 +52,10 @@ function getIMGfromString(string){
     return list
 }
 
-var nowstamp = Date.parse(new Date())/1000;//单位秒
 
 //将时间显示优化
 function beautimey(ptmstamp){
-    var xt = (nowstamp - ptmstamp)/60 ;//相差分钟数
+    var xt = Math.round((nowstamp - ptmstamp)/60) ;//相差分钟数
     if(xt < 60)
         return xt + "分钟前"
     else if(xt/60 < 24)
@@ -68,9 +75,11 @@ function beautimey(ptmstamp){
     }
 }
 
-function loadItemsfromWebsqlforhome(index, nums) {
+function loadItemsfromWebsqlforhome(index, nums, rssid = null) {
+    var rssidstr = rssid?"and Rss.id="+rssid:"";
     var sqlstr = `SELECT 
                     Rss.ico,
+                    Rss.id,
                     Rss.link,
                     Rss.rss,
                     Rss.title as rsstitle,
@@ -80,14 +89,17 @@ function loadItemsfromWebsqlforhome(index, nums) {
                     Feeds.pubtimestamp
                 FROM Feeds 
                 LEFT JOIN Rss ON Feeds.rssUrl = Rss.rss
-                where isread ISNULL
-                ORDER BY Feeds.pubtimestamp DESC 
+                where isread ISNULL `
+                + rssidstr +
+                ` ORDER BY Feeds.pubtimestamp DESC 
                 LIMIT ?,? `;
+    // console.log(sqlstr);
+    // console.log(index, nums, rssid);
     db.transaction(function (tx) {
         tx.executeSql(sqlstr, [index, nums], function (tx, results) {
                 var len = results.rows.length;
-                //console.log(len); 
-
+                // console.log(len); 
+                // console.log(sqlstr);
                 if (len) {
                     for (i = 0; i < len; i++) {
                         var itemval = {};
@@ -96,6 +108,7 @@ function loadItemsfromWebsqlforhome(index, nums) {
                             itemval.rssico = "./../images/icon.png";
                         }
                         itemval.rsstitle = results.rows.item(i).rsstitle;
+                        itemval.rssid = results.rows.item(i).id;
                         itemval.rsslink = results.rows.item(i).link;
                         itemval.rssfeed = results.rows.item(i).rss;
                         itemval.itemurl = results.rows.item(i).url;
@@ -103,13 +116,18 @@ function loadItemsfromWebsqlforhome(index, nums) {
                         desc = results.rows.item(i).description;
                         imglist=getIMGfromString(desc);
                         itemval.descimg = imglist?imglist[0]:"";//若存在则提取第一张jpg
-                        itemval.desc = desc?desc.replace(/<.*?>/g, ""):"点击查看详情";//删除所有标签
+                        fdesc = desc?desc.replace(/<.*?>/g, ""):"点击查看详情";//删除所有标签
+                        itemval.desc = fdesc.length > 100 ? fdesc.substring(0,100)+"...":fdesc; //最大100个字符
                         ptmstamp = results.rows.item(i).pubtimestamp;
                         itemval.timestr = beautimey(ptmstamp);//new Date(ptmstamp*1000).toLocaleString();
                         itemsval.push(itemval);
                     }              
-                    //console.log(itemsval);
-                    vm.site = itemsval;
+                    // console.log(itemsval);
+                    vm.items = itemsval;
+                    if(len<nums){
+                        console.log("已全部加载完毕!");
+                        hasloadall = true;
+                    }
                 }
             },
             function (tx, error) {
@@ -121,6 +139,10 @@ function loadItemsfromWebsqlforhome(index, nums) {
 //此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
 //BUG：滚三次没效果了?各种奇怪问题。//DEBUG:==改为>=,MD滚远了
 $(window).scroll(function () {
+    if(hasloadall){
+        console.log("已全部加载完毕!不再执行滚动加载！");
+        return ;
+    }
     var scrollTop = $(this).scrollTop();
     var scrollHeight = $(document).height();
     var windowHeight = $(this).height();
@@ -128,11 +150,21 @@ $(window).scroll(function () {
     if (scrollTop + windowHeight >= scrollHeight - 10) {
         index += nums;
         // console.log(index,nums);
-        loadItemsfromWebsqlforhome(index,nums);
+        loadItemsfromWebsqlforhome(index,nums,rssid);
         setTimeout("initial_position()",100);
     }
 });
 
+//----------------
+// ready之前没有这些dom
+// $('.unit > div >a').click(function(){
+//     rssid = $(this).attr('id');
+//     console.log(rssid);
+//     itemsval = [];
+//     vm.site = [];
+//     loadItemsfromWebsqlforhome(index,nums,rssid);
+//     setTimeout("initial_position()",100);
+// });
 //----------------
 var unit_wid = 400;//单元格子宽度
 var unit_edge = 30;//单元格子间隔
@@ -140,7 +172,7 @@ var unit_rate = 0.90;
 
 
 $(document).ready(function(){
-    loadItemsfromWebsqlforhome(index,nums);
+    loadItemsfromWebsqlforhome(index,nums,rssid);
     setTimeout("initial_position()",100);
 });
 

@@ -20,8 +20,7 @@ document.getElementById('save').onclick = function () {
     });
 }
 //删除
-document.getElementById('del').onclick = function () {
-    var rssurl = document.getElementById('rssurl').value;
+function del_rss_by_rssurl(rssurl) {
     db.transaction(function (tx) {
         tx.executeSql('DELETE FROM Rss WHERE rss = ?;', [rssurl],
             function (tx, results) {
@@ -32,6 +31,11 @@ document.getElementById('del').onclick = function () {
                 alert('删除失败!' + error.message);
             });
     });
+}
+
+document.getElementById('del').onclick = function () {
+    var rssurl = document.getElementById('rssurl').value;
+    del_rss_by_rssurl(rssurl);
 }
 
 //清空feeds缓存
@@ -101,7 +105,7 @@ function loadRss() {
         tx.executeSql('SELECT * FROM Rss', [],
             function (tx, results) {
                 var divstr = '<table class="table table-striped table-hover table-condensed">' +
-                    '<caption>管理订阅的RSS源(开发中)</caption><thead><tr><th width="70px">管理</th><th width="100px">目录</th><th width="400px">RSS源</th><th width="200px">最近更新</th><th>描述</th></tr></thead><tbody>';
+                    '<caption>管理订阅的RSS源(开发中)</caption><thead><tr><th width="70px">管理</th><th width="100px">目录</th><th width="400px">RSS源</th><th width="200px">最近更新</th><th>描述</th><th>管理</th></tr></thead><tbody>';
                 for (i = 0; i < results.rows.length; i++) {
                     var rss = results.rows.item(i).rss;
                     var title = results.rows.item(i).title;
@@ -117,7 +121,7 @@ function loadRss() {
                     //console.log(pubdate.toLocaleString());
                     divstr += '<tr><td><input type="button" class="up_btn" value="编辑" /></td><td>' + dir + 
                     '</td><td><a href="' + link + '"><img src="' + icofix + '" height="18" width="18"/></a>&nbsp;&nbsp;<a href="'  + rss + '">'+ title + 
-                    '</a><td>' + pubdate.toLocaleString() + '</td><td>'+ descriptionfix + '</td></tr>';
+                    '</a><td>' + pubdate.toLocaleString() + '</td><td>'+ descriptionfix + '</td><td><input type="button" class="del_btn" value="删除" /></td></tr>';
                 }
                 divstr += '</tbody></table>';
                 document.getElementById('rss').innerHTML = divstr;
@@ -130,6 +134,13 @@ function loadRss() {
                     document.getElementById('rssico').value = obj.childNodes[2].childNodes[0].childNodes[0].src;
                     document.getElementById('rssurl').value = obj.childNodes[2].childNodes[2].href;
                     document.getElementById('rsstitle').value = obj.childNodes[2].childNodes[2].innerHTML;
+                    console.log(obj);
+                });
+                //删除某一项键值对
+                $('.del_btn').click(function () {
+                    var obj = this.parentNode.parentNode; //input.td.tr
+                    var rssurl = obj.childNodes[2].childNodes[2].href;
+                    del_rss_by_rssurl(rssurl);
                     console.log(obj);
                 });
             },
