@@ -1,3 +1,4 @@
+document.write("<script language=javascript src='js/common.js'></script>");
 var db = openDatabase('myrssdb', '1.0', 'I can rss everthing !', 2 * 1024 * 1024);
 var index = 0 ;
 var nums = 20 ;
@@ -28,9 +29,57 @@ var vm = new Vue({
             hasloadall = false;
             loadItemsfromWebsqlforhome(index,nums,rssid);
             setTimeout("initial_position()",100); 
+        },
+        deleteItem:function(itemurl,index){
+            del_feeds_by_itemurl(itemurl);
+            this.items.splice(index,1);
+            setTimeout("initial_position()",100); 
+        },
+        likeItem:function(itemurl,index){
+            //console.log(this.items[index].likes);
+            old_flag = this.items[index].likes?1:0;
+            this.items[index].likes = old_flag?0:1;
+            new_flag = this.items[index].likes?1:0;
+            likeItem_by_itemurl(itemurl,new_flag);
         }
     }
 });
+
+//like
+function likeItem_by_itemurl(itemurl,flag) {
+    db.transaction(function (tx, results) {
+        tx.executeSql(
+            'UPDATE Feeds SET likes = ? WHERE url  = ?;', [flag,itemurl],
+            ()=>{
+                //console.log('执行成功!');
+                if (flag == 1){
+                    sqlstr = 'INSERT OR IGNORE INTO item_likes SELECT * FROM Feeds WHERE url ="' + itemurl +'"';
+                    console.log(sqlstr);
+                    tx.executeSql(sqlstr,[],()=>{console.log('执行成功!');},function (tx, error) {alert('执行失败!' + error.message);});
+                }else{
+                    sqlstr = 'delete from item_likes WHERE url ="' + itemurl +'"';
+                    console.log(sqlstr);
+                    tx.executeSql(sqlstr,[],()=>{console.log('执行成功!');},function (tx, error) {alert('执行失败!' + error.message);});
+                }
+                //tx.executeSql(sqlstr,[],()=>{},function (tx, error) {alert('执行失败!' + error.message);});
+        }, //location.reload();
+            function (tx, error) {alert('执行失败!' + error.message);}
+        );
+    });
+
+
+}
+
+//删除
+function del_feeds_by_itemurl(itemurl) {
+    db.transaction(function (tx, results) {
+        tx.executeSql(
+            'DELETE FROM Feeds WHERE url =?;', [itemurl],
+            ()=>{console.log('删除成功!');}, //location.reload();
+            function (tx, error) {alert('删除失败!' + error.message);}
+        );
+    });
+}
 
 function getIMGfromString(string){
     if(!string){//debug:null.match()报错 2018.12.11
@@ -86,7 +135,8 @@ function loadItemsfromWebsqlforhome(index, nums, rssid = null) {
                     Feeds.title,
                     Feeds.description,
                     Feeds.url,
-                    Feeds.pubtimestamp
+                    Feeds.pubtimestamp,
+                    Feeds.likes
                 FROM Feeds 
                 LEFT JOIN Rss ON Feeds.rssUrl = Rss.rss
                 where isread ISNULL `
@@ -120,6 +170,7 @@ function loadItemsfromWebsqlforhome(index, nums, rssid = null) {
                         itemval.desc = fdesc.length > 100 ? fdesc.substring(0,100)+"...":fdesc; //最大100个字符
                         ptmstamp = results.rows.item(i).pubtimestamp;
                         itemval.timestr = beautimey(ptmstamp);//new Date(ptmstamp*1000).toLocaleString();
+                        itemval.likes = results.rows.item(i).likes;
                         itemsval.push(itemval);
                     }              
                     // console.log(itemsval);

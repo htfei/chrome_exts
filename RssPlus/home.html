@@ -91,27 +91,27 @@
     <body>
         <div id="app">
             <div id="wf">
-                <div v-for="item in items" class="unit">
+                <div v-for="(item,index) in items" class="unit">
                     <div>
                         <a v-bind:href="item.rsslink" target='_blank'>
                             <img v-bind:src="item.rssico" width="16" title="点击访问当前rss对应网站"/>
                         </a>
                         &nbsp;&nbsp;
-                        <a v-on:click="loadrss(item.rssid)" title="点击加载本rss所有消息" class= "titlepubtime" style='text-decoration:none;' >{{ item.rsstitle }}</a>
+                        <a v-on:click="loadrss(item.rssid)" title="只看该类or全部" class= "titlepubtime" style='text-decoration:none;' >{{ item.rsstitle }}</a>
+                        <a class="pull-right" style='text-decoration:none;cursor: pointer;'>
+                            <img src="images/173-bin.png" width="16" v-on:click="deleteItem(item.itemurl,index)" title="标记已读"/>&nbsp;
+                            <img v-if="item.likes" src="images/218-star-full.png" width="16" v-on:click="likeItem(item.itemurl,index,item.likes)" title="取消收藏"/>
+                            <img v-else src="images/216-star-empty.png" width="16" v-on:click="likeItem(item.itemurl,index,item.likes)" title="添加收藏"/>&nbsp;
+                        </a>
                     </div>
                     <a v-bind:href="item.itemurl" style='text-decoration:none;' target='_blank'>
                         <p id="title">{{ item.title }}</p>
-                        <img id="descimg" v-bind:src="item.descimg">
+                        <img id="descimg" v-bind:src="item.descimg" v-bind:href="item.descimg">
                         <p id="desc">{{ item.desc }}</p>
                     </a>
                     <div class="clearfix">
                         <img src="images/079-clock.png" width="16"/>&nbsp;
                         <a v-bind:href="item.itemurl" class= "titlepubtime" style='text-decoration:none;' target='_blank'>{{ item.timestr }}</a>
-                        <div class="pull-right">
-                            <img src="images/173-bin.png" width="16"/>&nbsp;
-                            <img src="images/216-star-empty.png" width="16"/>&nbsp;
-                            <img src="images/149-cog.png" width="16"/>&nbsp;
-                        </div>
                     </div>
                 </div>
             </div>
