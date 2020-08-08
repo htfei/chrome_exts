@@ -134,6 +134,7 @@ function loadItemsfromWebsqlforhome(index, nums, rssid = null) {
                     Rss.title as rsstitle,
                     Feeds.title,
                     Feeds.description,
+					Feeds.content,
                     Feeds.url,
                     Feeds.pubtimestamp,
                     Feeds.likes
@@ -154,7 +155,7 @@ function loadItemsfromWebsqlforhome(index, nums, rssid = null) {
                     for (i = 0; i < len; i++) {
                         var itemval = {};
                         itemval.rssico = results.rows.item(i).ico;
-                        if (itemval.rssico == null || itemval.rssico == "") {
+                        if (itemval.rssico == null || itemval.rssico == "" || itemval.rssico == "undefined") {
                             itemval.rssico = "./../images/icon.png";
                         }
                         itemval.rsstitle = results.rows.item(i).rsstitle;
@@ -163,11 +164,22 @@ function loadItemsfromWebsqlforhome(index, nums, rssid = null) {
                         itemval.rssfeed = results.rows.item(i).rss;
                         itemval.itemurl = results.rows.item(i).url;
                         itemval.title = results.rows.item(i).title;
-                        desc = results.rows.item(i).description;
+						
+						desc = results.rows.item(i).description;
                         imglist=getIMGfromString(desc);
+						//if(i==0){
+						//	console.log(desc);
+						//	console.log(imglist);
+						//}
+						if(!imglist){
+							content = results.rows.item(i).content;
+							imglist=getIMGfromString(content);
+						}
                         itemval.descimg = imglist?imglist[0]:"";//若存在则提取第一张jpg
+						
                         fdesc = desc?desc.replace(/<.*?>/g, ""):"点击查看详情";//删除所有标签
                         itemval.desc = fdesc.length > 100 ? fdesc.substring(0,100)+"...":fdesc; //最大100个字符
+						
                         ptmstamp = results.rows.item(i).pubtimestamp;
                         itemval.timestr = beautimey(ptmstamp);//new Date(ptmstamp*1000).toLocaleString();
                         itemval.likes = results.rows.item(i).likes;
