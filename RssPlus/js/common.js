@@ -70,7 +70,11 @@ function loadItemsfromWebsql(rssUrl, index, nums) {
                         var title = results.rows.item(i).title;
                         //title =title.substr(0,30);
                         var isread = results.rows.item(i).isread;
-                        var description = results.rows.item(i).description;
+                        var description = results.rows.item(i).description 
+						var content = results.rows.item(i).content;
+						if(description != content){
+							description += content;
+						}
                         description = '<div class="list-group-item list-group-item-warning">' + description + '</div>';
                         //不能截断否则将导致内部元素无结束标记,体现为下一个items变为子元素了，而且越来越小
                         description = localStorage.loadDesc ? description : "";
