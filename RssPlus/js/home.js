@@ -165,17 +165,17 @@ function loadItemsfromWebsqlforhome(index, nums, rssid = null) {
                         itemval.itemurl = results.rows.item(i).url;
                         itemval.title = results.rows.item(i).title;
 						
-						desc = results.rows.item(i).description;
-                        imglist=getIMGfromString(desc);
-						//if(i==0){
-						//	console.log(desc);
-						//	console.log(imglist);
-						//}
-						if(!imglist){
-							content = results.rows.item(i).content;
-							imglist=getIMGfromString(content);
-						}
+						//从description/content两个字段中取出所有的图片集合
+						desc 	= 	results.rows.item(i).description;
+						a		=	getIMGfromString(desc);
+						content = 	results.rows.item(i).content;
+						b		=	getIMGfromString(content);
+						a=a?a:[];
+						b=b?b:[];
+						imglist	=	a.concat(b.filter(v => !a.includes(v))); //取并集 [1,2,3] [1,3,4] => [1,2,3,4]
                         itemval.descimg = imglist?imglist[0]:"";//若存在则提取第一张jpg
+						//itemval.imglist	= imglist;	//加载所有的图片
+						itemval.imglist	= imglist.slice(0,5); //有些items图片太多了，在这加个上限（实测少于上限时会加载所有，不会报错）
 						
                         fdesc = desc?desc.replace(/<.*?>/g, ""):"点击查看详情";//删除所有标签
                         itemval.desc = fdesc.length > 100 ? fdesc.substring(0,100)+"...":fdesc; //最大100个字符

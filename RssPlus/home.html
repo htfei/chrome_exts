@@ -106,7 +106,10 @@
                     </div>
                     <a v-bind:href="item.itemurl" style='text-decoration:none;' target='_blank'>
                         <p id="title">{{ item.title }}</p>
-                        <img id="descimg" v-bind:src="item.descimg" v-bind:href="item.descimg">
+                        <!-- <img id="descimg" v-bind:src="item.descimg" v-bind:href="item.descimg">-->
+						<div v-for="(img,index) in item.imglist">
+							<img id="descimg" v-bind:src="img" v-bind:href="img">
+						</div>
                         <p id="desc">{{ item.desc }}</p>
                     </a>
                     <div class="clearfix">
