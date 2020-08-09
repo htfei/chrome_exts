@@ -42,7 +42,7 @@ function loadPopup() {
 
 //点击rss列表时加载标题及条目
 function sethead(rssTitle, rssUrl, rssico) {
-    localStorage.headstr = '<p style="margin:0 0 0px; background-color:#FFFFFF;" data-rssUrl="' + rssUrl + '" data-title="' + rssTitle + '">' +
+    localStorage.headstr = '<p style="z-index: 9999; position: fixed ! important; right: 0px; top: 0px; margin:0 0 0px; background-color:#FFFFFF;" data-rssUrl="' + rssUrl + '" data-title="' + rssTitle + '">' +
         '&nbsp;&nbsp;&nbsp;&nbsp;<img src ="' + rssico + '" height="16" width="16"/>' +
         '<a id="head" class="btn" style="font-size: 14px;" >' + rssTitle + '</a>' +
         '<a id="updateRss" class="btn" title="立刻更新当前的rss源" >刷新</a>' +
