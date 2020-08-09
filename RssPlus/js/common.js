@@ -33,7 +33,7 @@ function loadPopup() {
     }
 
     //上次最后的访问页面
-    if (localStorage.itemstr != 0 && now_feed_lists == 0) {
+    if (localStorage.itemstr && localStorage.itemstr != 0 && localStorage.itemstr !="" && now_feed_lists == 0) {
         document.getElementById('item').innerHTML = localStorage.headstr + localStorage.itemstr + localStorage.footstr;
     } else {
         loadRssfromWebsql();
@@ -195,10 +195,10 @@ function add_currentpage_rsslists() {
         //若已经订阅了则不再显示
         var feed_lists = JSON.parse(localStorage.getItem(now_feed_lists));
         //console.log(feed_lists);
-        feeds = feed_lists.ctx;
+        feeds = feed_lists && feed_lists.ctx?feed_lists.ctx:null;
 
         //加载当前页面新发现的rss
-        if (feeds.length > 0) {
+        if (feeds && feeds.length > 0) {
 
             var flag = 1; //新发现flag
             for (i = 0; i < feeds.length; i++) {
