@@ -175,7 +175,7 @@ function loadItemsfromWebsqlforhome(index, nums, rssid = null) {
 						imglist	=	a.concat(b.filter(v => !a.includes(v))); //取并集 [1,2,3] [1,3,4] => [1,2,3,4]
                         itemval.descimg = imglist?imglist[0]:"";//若存在则提取第一张jpg
 						//itemval.imglist	= imglist;	//加载所有的图片
-						itemval.imglist	= imglist.slice(0,5); //有些items图片太多了，在这加个上限（实测少于上限时会加载所有，不会报错）
+						itemval.imglist	= imglist.slice(0,1); //有些items图片太多了，在这加个上限5（实测少于上限时会加载所有，不会报错）
 						
                         fdesc = desc?desc.replace(/<.*?>/g, ""):"点击查看详情";//删除所有标签
                         itemval.desc = fdesc.length > 100 ? fdesc.substring(0,100)+"...":fdesc; //最大100个字符
