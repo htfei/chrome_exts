@@ -149,7 +149,19 @@ function makeDirRead(dirstr) {
         changeicobar();
     });
 }
+//全部标记为已读
+function makeAllRead() {
+    console.log("全部标记为已读");
+    db.transaction(function (tx) {
+        tx.executeSql('update Feeds set isread = 1', null, function (tx, error) {
+            alert('失败!', error.message)
+        });
+        //插入数据后更新未读条数//2018.03.19 sql语句待优化：将指定目录类下的所有rss的unreadnums设为0.而不是更新所有,2018.08.14更新
+        tx.executeSql('UPDATE Rss SET unreadNums = 0', []);
 
+        changeicobar();
+    });
+}
 
 //更换图标下的bar
 function changeicobar() {

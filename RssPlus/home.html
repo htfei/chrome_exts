@@ -133,7 +133,9 @@
         </div>
         <!-- fengexian -->
         <div id="app">
-            <!-- <p>{{ message }}</p> -->
+            <div align="center">
+                <button v-on:click="makeAllRead()" class="btn btn-primary" >全部标记已读</button>
+            </div>
             <div id="wf">
                 <div v-for="item in items" class="unit">
                     <div>
@@ -147,6 +149,11 @@
                     <img src="images/time.png" />&nbsp;&nbsp;<a id= "pubtime">{{ item.pubtime }}</a>
                 </div>
             </div>
+
+             <div align="center">
+                <button v-on:click="makeAllRead()" class="btn btn-primary" >全部标记已读</button>
+            </div>
+
         </div>      
         <script type="text/javascript" src="ext/jquery.min.js"></script>
         <!-- <script type="text/javascript" src="ext/bootstrap.min.js"></script>    -->
