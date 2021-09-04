@@ -4,6 +4,11 @@
         <meta charset="utf-8" />
         <title>RssPlus - 万物皆可订阅！</title>  
         <link rel="stylesheet" href="ext/bootstrap.min.css">
+
+        <link rel="stylesheet" href="fonts/iconfont.css">                  
+        <link rel="stylesheet" href="ext/nav.css">
+        <title></title>
+
         <style>
             body{
                 margin: 0;
@@ -12,8 +17,10 @@
                 word-break: break-all;
                 -webkit-tap-highlight-color: transparent;
                 background-color: #dce1e6;    
+
                 float:left;
                 text-decoration:none;
+
             }
 
             #wf{
@@ -86,10 +93,62 @@
                 /*font-size: 14px;*/
                 /*line-height: 1.4;*/
             }
+            .nav{
+                position: fixed;
+                z-index:999;
+            }
         </style>
     </head>
     <body>
+        <div id="app_nav" class="nav">
+            <div class="nav-top">
+                <div id="mini" style="border-bottom:1px solid rgba(255,255,255,.1)"><img src="images/mini.png" ></div>
+            </div>
+            <ul>
+                <li class="nav-item">
+                    <a href="javascript:;"><i class="my-icon nav-icon icon_1"></i><span>所有更新</span><i class="my-icon nav-more"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:;"><i class="my-icon nav-icon icon_2"></i><span>热门推荐</span><i class="my-icon nav-more"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:;"><i class="my-icon nav-icon icon_3"></i><span>关注的人</span><i class="my-icon nav-more"></i></a>
+                </li>  
+                <li class="nav-item" style="border-bottom:1px solid rgba(255,255,255,.1)">
+                    <a href="javascript:;"><i class="my-icon nav-icon icon_1"></i><span>我的收藏</span><i class="my-icon nav-more"></i></a>
+                </li> 
+                <li class="nav-item">
+	                <a href="javascript:;"><i class="my-icon nav-icon icon_1"></i><span>网站配置</span><i class="my-icon nav-more"></i></a>
+	                <ul>
+	                    <li><a href="javascript:;"><span>网站设置</span></a></li>
+	                    <li><a href="javascript:;"><span>友情链接</span></a></li>
+	                    <li><a href="javascript:;"><span>分类管理</span></a></li>
+	                    <li><a href="javascript:;"><span>系统日志</span></a></li>
+	                </ul>
+	            </li>
+                <li class="nav-item" v-for="rss in rsslists" >
+                    <a href="javascript:;"><i class="my-icon nav-icon icon_1"></i><span>{{ rss.title }}</span><i class="my-icon nav-more"></i></a>
+                    <ul>
+                        <li><a href="javascript:;"><span>{{ rss.title }}</span></a></li>
+                        <li><a href="javascript:;"><span>系统日志</span></a></li>
+                        <li><a href="javascript:;"><span>分类管理</span></a></li>
+	                    <li><a href="javascript:;"><span>系统日志</span></a></li>
+                    </ul>
+                </li>
+                <!-- <li v-for="dir in dirlists" class="nav-item">
+                    <a href="javascript:;"><i class="my-icon nav-icon icon_1"></i><span>{{ dir }}</span><i class="my-icon nav-more"></i></a>
+                    <ul v-for="rss in rsslists">
+                        <li><a href="javascript:;"><span>{{ rss.title }}</span></a></li>
+                    </ul>
+                </li> -->
+                <!-- <li v-for="rss in rsslists" class="nav-item">
+                    <a href="javascript:;"><i class="my-icon nav-icon icon_1"></i><span>{{ rss.title }}</span><i class="my-icon nav-more"></i></a>
+                </li> -->
+            </ul>
+        </div>
+        <!-- fengexian -->
         <div id="app">
+
             <div id="wf">
                 <div v-for="(item,index) in items" class="unit">
                     <div>

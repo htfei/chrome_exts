@@ -180,6 +180,7 @@ function loadItemsfromWebsqlforhome(index, nums, rssid = null) {
                         fdesc = desc?desc.replace(/<.*?>/g, ""):"点击查看详情";//删除所有标签
                         itemval.desc = fdesc.length > 100 ? fdesc.substring(0,100)+"...":fdesc; //最大100个字符
 						
+
                         ptmstamp = results.rows.item(i).pubtimestamp;
                         itemval.timestr = beautimey(ptmstamp);//new Date(ptmstamp*1000).toLocaleString();
                         itemval.likes = results.rows.item(i).likes;
@@ -232,6 +233,7 @@ $(window).scroll(function () {
 var unit_wid = 400;//单元格子宽度
 var unit_edge = 30;//单元格子间隔
 var unit_rate = 0.90;
+
 
 
 $(document).ready(function(){
