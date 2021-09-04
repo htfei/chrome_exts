@@ -1,12 +1,13 @@
 {
     "manifest_version": 2,
-    "name": "Save all images",
+    "name": "一键下载所有图片",
     "version": "1.0",
-    "description": "Save all images in current tab",
+    "description": "一键下载当前页面所有图片，Save all images in current tab",
     "background": {
         "scripts": ["background.js"],
         "persistent": false
     },
+    "icons": {"16": "images/ok.png","48": "images/ok.png","128": "images/ok.png"},
     "permissions": [
         "activeTab",
         "contextMenus",
