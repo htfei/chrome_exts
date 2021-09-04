@@ -33,7 +33,7 @@ function loadPopup() {
     }
 
     //上次最后的访问页面
-    if (localStorage.itemstr != 0 && now_feed_lists == 0) {
+    if (localStorage.itemstr && localStorage.itemstr != 0 && localStorage.itemstr !="" && now_feed_lists == 0) {
         document.getElementById('item').innerHTML = localStorage.headstr + localStorage.itemstr + localStorage.footstr;
     } else {
         loadRssfromWebsql();
@@ -42,7 +42,7 @@ function loadPopup() {
 
 //点击rss列表时加载标题及条目
 function sethead(rssTitle, rssUrl, rssico) {
-    localStorage.headstr = '<p style="margin:0 0 0px; background-color:#FFFFFF;" data-rssUrl="' + rssUrl + '" data-title="' + rssTitle + '">' +
+    localStorage.headstr = '<p style="z-index: 9999; position: fixed ! important; right: 0px; top: 0px; margin:0 0 0px; background-color:#FFFFFF;" data-rssUrl="' + rssUrl + '" data-title="' + rssTitle + '">' +
         '&nbsp;&nbsp;&nbsp;&nbsp;<img src ="' + rssico + '" height="16" width="16"/>' +
         '<a id="head" class="btn" style="font-size: 14px;" >' + rssTitle + '</a>' +
         '<a id="updateRss" class="btn" title="立刻更新当前的rss源" >刷新</a>' +
@@ -70,7 +70,11 @@ function loadItemsfromWebsql(rssUrl, index, nums) {
                         var title = results.rows.item(i).title;
                         //title =title.substr(0,30);
                         var isread = results.rows.item(i).isread;
-                        var description = results.rows.item(i).description;
+                        var description = results.rows.item(i).description 
+						var content = results.rows.item(i).content;
+						if(description != content){
+							description += content;
+						}
                         description = '<div class="list-group-item list-group-item-warning">' + description + '</div>';
                         //不能截断否则将导致内部元素无结束标记,体现为下一个items变为子元素了，而且越来越小
                         description = localStorage.loadDesc ? description : "";
@@ -203,10 +207,10 @@ function add_currentpage_rsslists() {
         //若已经订阅了则不再显示
         var feed_lists = JSON.parse(localStorage.getItem(now_feed_lists));
         //console.log(feed_lists);
-        feeds = feed_lists.ctx;
+        feeds = feed_lists && feed_lists.ctx?feed_lists.ctx:null;
 
         //加载当前页面新发现的rss
-        if (feeds.length > 0) {
+        if (feeds && feeds.length > 0) {
 
             var flag = 1; //新发现flag
             for (i = 0; i < feeds.length; i++) {

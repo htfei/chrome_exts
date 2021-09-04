@@ -3,9 +3,7 @@
 ![image](http://ww1.sinaimg.cn/large/0071ouepgy1fucs4f190sj30820enq34.jpg)
 ![image](http://ww1.sinaimg.cn/large/0071ouepgy1fucs5lqyb7j30820hbq3a.jpg)
 ![image](http://oyozv8xwp.bkt.clouddn.com/18-9-5/68508489.jpg)
-
 ![image](http://oyozv8xwp.bkt.clouddn.com/18-9-5/39593228.jpg)
-
 ![image](http://oyozv8xwp.bkt.clouddn.com/18-9-5/67230309.jpg)
 
 ## 基本功能
@@ -40,7 +38,7 @@
 
 ## 关于rss源的获取
 
-本插件支持自动当前页面的rss源,识别成功则图标上有个加号,点击[添加]按钮即可进入添加页面，选择自己需要的进行添加即可。
+本插件支持自动检测当前页面的rss源,识别成功则图标上有个加号,点击[添加]按钮即可进入添加页面，选择自己需要的进行添加即可。
 
 关于更多的订阅源,推荐使用 [RssHub](https://docs.rsshub.app/#%E9%B8%A3%E8%B0%A2) or Feed43
 
@@ -67,63 +65,3 @@
 ### 跟换图标时提示无效，报Icon invalid.错误？
 
 图片过大可能会导致报Icon invalid.错误。换成小图标解决。
-
-## 日志
-
-### 2018.05.01
-
-    新增当前页面的rss源检测功能
-
-    1. content.js检测到后通知background.js，由后者存入localstorage;
-    2. 待用户加载popup页面后点击添加，新标签打开添加页面，
-    3. 添加页面读取localstorage中新的rss列表，显示在页面上，提供给用户添加。
-    4. 点击“添加”按钮，则将对应rss存入websql。
-    5. 刷新popup页面即可看到新增的rss，可通过设置页面对其进一步修改配置。
-
-### 2018.08.09
-
-    1. 新增rss源图标显示
-    2. 界面优化调整
-
-### 2018.08.11
-
-    feed43生成的rss，帖子类型的一个帖子会生成多条item,应该改为1个item;(问题发现于：光谷社区，地铁族 的rss消息众多有重复)(尝试使用item.guid解决)
-        将url中#后面的内容去掉即可，已改动完毕。2018.08.11
-
-    TODO:博客园rss插入sql不全，待查找原因;
-
-    直接在chrome中调试xml;
-
-    TODO:rss标准解析库的发现与使用;
-
-    没有未读条目时，有时目录会显示0的<span>;点击按钮会使本条目消失；2018.08.14已修复
-
-### 2018.08.17
-
-    新增检查xml页面是否为rss源的功能
-
-### 2018.08.26
-
-    新增目录重命名功能
-    TODO:标题栏顶层浮动
-    导入导出opml文件;
-    TODO:识别该rss源时，无法获取标题，待查找原因： 'http://www.ruanyifeng.com/blog/atom.xml' ,目前已知按html解析了
-
-### 2018.09.03
-
-    新增导出所有rss源到opml文件的功能(完整支持：包括目录分组，图标，linkurl，标题，rssurl,post数量，请求间隔)
-        TODO:目前linkurl没取，需要添加字段
-        TODO:考虑增加 显示详情，展示模式，等自定义属性，前提：研究opml是否支持扩展
-
-    另:feeder.co 获取rss图标的方式：
-        根据rss中的<link>https://github.com/DIYgod/RSSHub</link>
-        找到host = github.com
-        然后自带解析图标服务,例：
-            https://icons.feeder.co/github.com
-            https://icons.feeder.co/www.blackglory.me
-
-### 2018.09.05
-
-    新增导入opml文件
-    修改readme文件
-    TODO:图标优先采用自定义,若无则采用rss源自带,若无则采用hostname图标,若无则采取默认插件图标
