@@ -1,0 +1,12 @@
+{
+    "manifest_version": 2,
+    "name": "内容事件",
+    "version": "1.0",
+    "description": "为页面内容注入新的事件",
+    "content_scripts": [
+        {
+            "matches": ["*://m.10010.com/*"],
+            "js": ["js/content_event.js"]
+        }
+    ]
+}
