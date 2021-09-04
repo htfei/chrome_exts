@@ -4,18 +4,23 @@
         <meta charset="utf-8" />
         <title>RssPlus - 万物皆可订阅！</title>  
         <link rel="stylesheet" href="ext/bootstrap.min.css">
+
         <link rel="stylesheet" href="fonts/iconfont.css">                  
         <link rel="stylesheet" href="ext/nav.css">
         <title></title>
+
         <style>
             body{
                 margin: 0;
                 padding: 0;
-                font: 14px "Hiragino Sans GB","Lucida Grande","微软雅黑",Helvetica,Arial,sans-serif;
+                font: 16px "Hiragino Sans GB","Lucida Grande","微软雅黑",Helvetica,Arial,sans-serif;
                 word-break: break-all;
                 -webkit-tap-highlight-color: transparent;
                 background-color: #dce1e6;    
-                float:left;    
+
+                float:left;
+                text-decoration:none;
+
             }
 
             #wf{
@@ -29,8 +34,8 @@
                 padding: 10px;
                 box-sizing: border-box;
                 display: block;
-                font-size: 13px;
-                line-height: 1.4;
+                font-size: 14px;
+                /*line-height: 1.4;*/
                 color: #58666e;
                 background-color: #f4f6f8;
                 border-width: 0;
@@ -66,17 +71,27 @@
             }
             #descimg{
                 margin:5px 0px 0px -10px;
-                width: 400px;
+                max-width: 100%;
             }
-            #pubtime{
+            .clearfix{
+                /*word-break: break-all;*/
+            }
+            .titlepubtime{
                 color: #141719;
-                text-decoration: none;
-                outline: 0;
-                font-size: 12px;
+                /*text-decoration: none;*/
+                /*outline: 0;*/
+                /*font-size: 16px;*/
                 cursor: pointer;
-                background-color: transparent;
-                box-sizing: border-box;
-                line-height: 22px;
+                /*background-color: transparent;*/
+                /*box-sizing: border-box;*/
+                /*line-height: 22px;*/
+            }
+            .pull-right{
+                float: right!important;
+                /*box-sizing: border-box;*/
+                /*display: block;*/
+                /*font-size: 14px;*/
+                /*line-height: 1.4;*/
             }
             .nav{
                 position: fixed;
@@ -133,26 +148,42 @@
         </div>
         <!-- fengexian -->
         <div id="app">
-            <!-- <p>{{ message }}</p> -->
+
             <div id="wf">
-                <div v-for="item in items" class="unit">
+                <div v-for="(item,index) in items" class="unit">
                     <div>
-                        <img v-bind:src="item.rssico" width="16"/>&nbsp;&nbsp;<span>{{ item.rsstitle }}</span>
+                        <a v-bind:href="item.rsslink" target='_blank'>
+                            <img v-bind:src="item.rssico" width="16" title="点击访问当前rss对应网站"/>
+                        </a>
+                        &nbsp;&nbsp;
+                        <a v-on:click="loadrss(item.rssid)" title="只看该类or全部" class= "titlepubtime" style='text-decoration:none;' >{{ item.rsstitle }}</a>
+                        <a class="pull-right" style='text-decoration:none;cursor: pointer;'>
+                            <img src="images/173-bin.png" width="16" v-on:click="deleteItem(item.itemurl,index)" title="标记已读"/>&nbsp;
+                            <img v-if="item.likes" src="images/218-star-full.png" width="16" v-on:click="likeItem(item.itemurl,index,item.likes)" title="取消收藏"/>
+                            <img v-else src="images/216-star-empty.png" width="16" v-on:click="likeItem(item.itemurl,index,item.likes)" title="添加收藏"/>&nbsp;
+                        </a>
                     </div>
-                    <a style='text-decoration:none;' v-bind:href="item.itemurl" target='_blank'>
+                    <a v-bind:href="item.itemurl" style='text-decoration:none;' target='_blank'>
                         <p id="title">{{ item.title }}</p>
-                        <img id="descimg" v-bind:src="item.descimg">
+                        <!-- <img id="descimg" v-bind:src="item.descimg" v-bind:href="item.descimg">-->
+						<div v-for="(img,index) in item.imglist">
+							<img id="descimg" v-bind:src="img" v-bind:href="img">
+						</div>
                         <p id="desc">{{ item.desc }}</p>
                     </a>
-                    <img src="images/time.png" />&nbsp;&nbsp;<a id= "pubtime">{{ item.pubtime }}</a>
+                    <div class="clearfix">
+                        <img src="images/079-clock.png" width="16"/>&nbsp;
+                        <a v-bind:href="item.itemurl" class= "titlepubtime" style='text-decoration:none;' target='_blank'>{{ item.timestr }}</a>
+                    </div>
                 </div>
             </div>
+            <!-- <div class="footer">
+                <a>全部标记为已读，并切换至下个订阅</a>
+            </div> -->
         </div>      
         <script type="text/javascript" src="ext/jquery.min.js"></script>
-        <!-- <script type="text/javascript" src="ext/bootstrap.min.js"></script>    -->
-        <script type="text/javascript" src="ext/nav.js"></script>
+        <script type="text/javascript" src="ext/bootstrap.min.js"></script>   
         <script type="text/javascript" src="ext/vue.min.js"></script>
-        <script type="text/javascript" src="js/home_nav.js" ></script>
         <script type="text/javascript" src="js/home.js" ></script>
     </body>
 </html>
