@@ -22,8 +22,8 @@ chrome.contextMenus.onClicked.addListener(function(info, tab){
           //console.log(dirname);
           chrome.downloads.download({
             url: url,
-            filename : dirname , 
-            conflictAction: 'uniquify',
+            filename : dirname.replaceAll(":","：") , 
+            conflictAction: 'uniquify',//唯一 ，覆盖 overwrite ，提示 prompt
             saveAs: false
           });
         });
