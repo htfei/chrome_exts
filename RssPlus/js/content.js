@@ -34,7 +34,7 @@ function getFeedsURLs() {
             else if (/^(http|https):\/\//i.test(feed_url)) //若url中包含 http:// 或者 https:// ,则保持不变
                 feed_url = feed_url;
             else
-                feed_url = url + "/" + feed_url.replace(/^\//g, '');
+                feed_url = document.location.href + "/" + feed_url.replace(/^\//g, '');
 
 
             feed_title = links[i].getAttribute('title')
@@ -66,7 +66,7 @@ function getFeedsURLs() {
 
 
     }
-    console.log(feed_lists);
+    //console.log(feed_lists);
 
 
     if (feed_lists.length >= 1) {
@@ -78,7 +78,7 @@ function getFeedsURLs() {
         }
         //发送消息到background.js
         chrome.runtime.sendMessage(feeds_urls_msg, function (response) {
-            console.log(response);
+            ;//console.log(response);
         });
     }
 }

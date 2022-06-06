@@ -42,7 +42,7 @@ function loadPopup() {
 
 //点击rss列表时加载标题及条目
 function sethead(rssTitle, rssUrl, rssico) {
-    localStorage.headstr = '<p style="z-index: 9999; position: fixed ! important; right: 0px; top: 0px; margin:0 0 0px; background-color:#FFFFFF;" data-rssUrl="' + rssUrl + '" data-title="' + rssTitle + '">' +
+    localStorage.headstr = '<p style="z-index: 9999;" data-rssUrl="' + rssUrl + '" data-title="' + rssTitle + '">' +
         '&nbsp;&nbsp;&nbsp;&nbsp;<img src ="' + rssico + '" height="16" width="16"/>' +
         '<a id="head" class="btn" style="font-size: 14px;" >' + rssTitle + '</a>' +
         '<a id="updateRss" class="btn" title="立刻更新当前的rss源" >刷新</a>' +
@@ -577,7 +577,8 @@ function init() {
 
         //新建表
         tx.executeSql('CREATE TABLE IF NOT EXISTS Rss (id,rss unique,title,dir,unreadNums,pubtimestamp,link,description,ico)');
-        tx.executeSql('CREATE TABLE IF NOT EXISTS Feeds (id,rssid,url unique, title, pubtimestamp,isread,rssUrl,description,category,content,guid)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS Feeds (id,rssid,url unique, title, pubtimestamp,isread,rssUrl,description,category,content,guid,likes)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS item_likes (id,rssid,url unique, title, pubtimestamp,isread,rssUrl,description,category,content,guid,likes)');
 
         //插入一个rss源(若开启，则每次都尝试添加，即删不了了)
         //tx.executeSql('INSERT OR IGNORE INTO Rss (rss,title,ico) VALUES (?, ?, ?)', ["http://www.ndrc.gov.cn/xwzx/xwfb/rss.xml", "发改委新闻发布","http://www.ndrc.gov.cn/images/guobiao01.png"]);
