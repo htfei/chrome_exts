@@ -2,7 +2,7 @@ chrome.runtime.onInstalled.addListener(function(){
   chrome.contextMenus.create({
     'id':'saveall',
     'type':'normal',
-    'title':'下载当前页面所有图片到 “下载/save_all_imges/页面标题” 文件夹下',
+    'title':'下载所有图片到目录：“下载/save_all_imges/标题” ',
   });
 });
 
@@ -31,3 +31,17 @@ chrome.contextMenus.onClicked.addListener(function(info, tab){
     });
   }
 });
+
+chrome.webRequest.onBeforeSendHeaders.addListener(function (details) {
+  for (var i = 0; i < details.requestHeaders.length; ++i) {
+    if (details.requestHeaders[i].name === 'Referer') {
+      details.requestHeaders[i].value = 'https://www.tujidao01.com/';
+      break;
+    }
+  }
+  return {
+    requestHeaders: details.requestHeaders
+  };
+}, {
+  urls: ['*://*.tujidao01.com/*']
+}, ['blocking', 'requestHeaders','extraHeaders']);

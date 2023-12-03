@@ -5,12 +5,13 @@
     "description": "一键下载当前页面所有图片，Save all images in current tab",
     "background": {
         "scripts": ["background.js"],
-        "persistent": false
+        "persistent": true
     },
     "icons": {"16": "images/ok.png","48": "images/ok.png","128": "images/ok.png"},
     "permissions": [
         "activeTab",
         "contextMenus",
-        "downloads"
+        "downloads",
+        "webRequest", "webRequestBlocking","*://*/*"
     ]
 }

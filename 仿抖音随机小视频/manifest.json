@@ -1,0 +1,27 @@
+{
+    "manifest_version": 3,
+    "name": "仿抖音随机小视频",
+    "description": "Like Douyin Random Video",
+    "version": "0.0.1",
+    "icons": {
+        "16": "logo/logo-16.png",
+        "48": "logo/logo-48.png",
+        "128": "logo/logo-128.png"
+    },
+    "options_page": "settings/settings.html",
+    "action": {
+        "default_title": "仿抖音随机小视频",
+        "default_popup": "popup/index.html"
+    },
+    "permissions": [],
+    "host_permissions": [
+        "*://*/*"
+    ],
+    "background": {
+        "service_worker": "service-worker.js"
+    },
+    "content_scripts": [{
+        "js": ["foreground.js"],
+        "matches": ["https://github.com/*"]
+    }]
+}
