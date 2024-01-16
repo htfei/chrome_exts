@@ -80,8 +80,8 @@ body {
   z-index: 997;
 }
 
-.avatar, .like, .comment, .collect, .share, .more {
-  margin-bottom: 0rem;
+.avatar, .like, .comment, .collect, .share, .more ,.avatar div{
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -90,15 +90,15 @@ body {
 .avatar img {
   position: relative;
   bottom: -1rem;
-  width: 70%;
+  width: 80%;
   border-radius: 50%;
 }
 .avatar svg {
-  width: 50%;
+  width: 40%;
   z-index: 999;
 }
 .ops .number {
   position: relative;
-  bottom: 0.5rem;
+  bottom: 0rem;
   color: #fff;
 }
