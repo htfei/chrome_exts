@@ -1,8 +1,312 @@
 var srclist = [
+  //以下为 CMS json接口（zyplayer）
+  {
+    "key": "1",
+    "name": "番号资源18+",
+    "api": "http://fhapi9.com/api.php/provide/vod/at/json/", //?ac=detail
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "type": 1,
+    "id": 25,
+    "isActive": true,
+    "resource": 74260
+  },
+  {
+    "key": "18069d15-5723-57c4-a294-0072102b0755",
+    "name": "美少女18+",
+    "api": "https://www.msnii.com/api/json.php",
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "type": 1,
+    "id": 24
+  },{
+    "key": "d13830ce-161c-5df4-80dc-57f6166b4453",
+    "name": "老鸭资源18+laoyazy.com",
+    "api": "https://api.apilyzy.com/api.php/provide/vod/",
+    "download": "",
+    "playUrl": "https://player.77lehuo.com/aliplayer/?url=",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "type": 1,
+    "id": 26,
+    "isActive": true,
+    "resource": 158769
+  },{
+    "key": "a37bc344-b64a-54ef-914f-0298db487505",
+    "name": "155资源18+",
+    "api": "https://155api.com/api.php/provide/vod/at/json/",
+    "download": "",
+    "playUrl": "https://www.155jx.com/?url=",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "type": 1,
+    "id": 27
+  },
+  {
+    "key": "9ffd796a-78c1-59d8-be16-ecae29ebe7b4",
+    "name": "大地todo18+",
+    "api": "https://dadiapi.com/feifei/index.php",
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "type": 1,
+    "id": 28
+  },
+  {
+    "key": "1bb65542-eb77-5f2d-94bd-19663585004d",
+    "name": "天堂资源",
+    "api": "http://vipmv.cc/api.php/provide/vod/",
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "type": 1,
+    "id": 29
+  },
+  {
+    "key": "d9d44512-8ac7-5b69-b4fa-432dd7096036",
+    "name": "呀哩呀哩",
+    "api": "https://www.yydm1.cc/api.php/provide/vod/",
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "isActive": true,
+    "type": 1,
+    "id": 30,
+    "resource": 16420
+  },
+  {
+    "key": "2ee10f9e-7bd3-5924-a0b2-8cf93fe4a278",
+    "name": "烟火资源",
+    "api": "https://m3u8.apiyhzy.com/api.php/provide/vod/",
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "isActive": true,
+    "type": 1,
+    "id": 31,
+    "resource": 98309
+  },
+  {
+    "key": "3f983823-8995-5c4f-88b2-46d6757240b4",
+    "name": "U酷资源",
+    "api": "https://api.ukuapi.com/api.php/provide/vod/",
+    "download": "",
+    "playUrl": "https://api.ukubf.com/m3u8/?url=",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "isActive": true,
+    "type": 1,
+    "id": 32,
+    "resource": 35392
+  },
+  {
+    "key": "fee8b2e3-295f-5384-a7a2-fa48fdb3292d",
+    "name": "飞速资源",
+    "api": "https://www.feisuzyapi.com/api.php/provide/vod/",
+    "download": "",
+    "playUrl": " https://www.feisuplayer.com/m3u8/?url=",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "isActive": true,
+    "type": 1,
+    "id": 33,
+    "resource": 56863
+  },
+  {
+    "key": "bbb1d23d-d971-53fa-9a8f-21f17b78cbbf",
+    "name": "淘片资源",
+    "api": "https://taopianapi.com/cjapi/mc/vod/json.html",
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "isActive": true,
+    "type": 1,
+    "id": 34
+  },
+  //以下为 CMS 老json接口 (ps: 实测zyplayer不支持该类型，新增type=100支持)
+  {
+    "key": "2",
+    "name": "🐞富二代",
+    "api": "http://f2dcj6.com/sapi/json?ac=videolist", //?ac=list|videolist &pg=&t=&wd=  &ids=106536,106535
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "type": 100, 
+    "id": 37,
+    "isActive": true
+  },{
+    "key": "c736df15-42a9-5d46-b160-400a23d60e8f",
+    "name": "字幕资源18+",
+    "api": "http://zmcj88.com/sapi/json?ac=videolist",
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "type": 100,
+    "id": 35,
+    "isActive": true
+  },
+  {
+    "key": "a8eec47d-182f-5105-ad59-3db4c061dd03",
+    "name": "myg资源18+",
+    "api": "http://mygzycj.com/sapi.php?ac=jsonvideolist",
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "type": 100,
+    "id": 36,
+    "isActive": true
+  },
+  {
+    "key": "ab79c5bb-5e8f-502c-9d48-0a5361f7758d",
+    "name": "博天堂资源18+",
+    "api": "http://bttcj.com/inc/jsonsapi.php?ac=videolist",
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "type": 100,
+    "id": 38,
+    "isActive": true
+  },
+  {
+    "key": "9269cb73-9d73-5005-a4ee-d50def95ef2a",
+    "name": "环亚资源18+",
+    "api": "http://wmcj8.com/inc/jsonsapi.php?ac=videolist",
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "type": 100,
+    "id": 39,
+    "isActive": true
+  },
+  {
+    "key": "607f398e-edec-59ab-ae97-82845988faa8",
+    "name": "99资源18+",
+    "api": "http://99zywcj.com/inc/jsonsapi.php?ac=videolist",
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "type": 100,
+    "id": 40,
+    "isActive": true
+  },
+  {
+    "key": "8ddd0886-b9fc-5ea6-bddd-aec61c78ab2d",
+    "name": "狼少年资源18+",
+    "api": "http://cjmygzy.com/inc/jsonsapi.php?ac=videolist",
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 1,
+    "status": true,
+    "type": 100,
+    "id": 41,
+    "isActive": true
+  },
+  {
+    "key": "3a655836-78b8-55d2-896c-60ee6c9814d6",
+    "name": "利来资源18+",
+    "api": "http://llzxcj.com/inc/json.php?ac=videolist",
+    "download": "",
+    "playUrl": "",
+    "group": "默认",
+    "search": 100,
+    "status": true,
+    "isActive": true,
+    "type": 1,
+    "id": 42
+  },
+  /*
+  //以下为 tvbox xml接口 (ps: 本程序不支持xml仅留作参考)
+  {
+    "key": "3",
+    "name": "💃美少女",
+    "type": 0,
+    "api": "https://www.msnii.com/api/xml.php",
+    "searchable": 1,
+    "quickSearch": 1,
+    "filterable": 1
+  },
+  */
+  //以下为 tvbox 老json接口 (ps: 实测tvbox不支持该类型，新增type=100支持)
+  {
+    "key": "4",
+    "name": "👯利来资源",
+    "type": 100,
+    "api": "http://llzxcj.com/inc/json.php?ac=videolist",
+    "playUrl": "",
+    "searchable": 1,
+    "quickSearch": 1,
+    "filterable": 0
+  },
       
   //0.spurl 就是视频源，可直接访问播放，无302跳转
   //format_url 是随机访问的，可能资源不存在，也可能随着网址更新，有新的id没收录
   //todo h5 video标签无法播放m3u8
+  { 
+    "name": "JableLive精选(直播)", 
+    "host": "https://zh.jablelive.com/",
+    "logo": "https://assets.strpst.com/assets/icons/mstile-310x310_jablelive.com.png",
+    "desc": "成人 直播 全球 8k+在线主播 网络中",
+    "format_url": "https://edge-hls.doppiocdn.com/hls/{idstr}/master/{idstr}_auto.m3u8",
+    "id_list": ["118274527","75923753","83306615","132789258","137783285","72418042","99604173","128424601","112816012",
+    /*欧美*/"27734927","106111138",
+    /*日本*/"84688920"],//精选主播
+    "video_type": "m3u8"//404说明没开播，403说明禁止访问此时需要先访问一下网站再用即可, 开vpn更流畅
+  },
+  { 
+    "name": "naked精选(直播)", 
+    "host": "https://www.naked.com/?model=mona-brainard",
+    "logo": "https://cdn5.vscdns.com/images/models/samples/4489672.jpg",
+    "desc": "naked 成人 直播 国外 300+在线主播 网络慢",
+    "format_url": "https://hls.vscdns.com/manifest.m3u8?key=nil&provider=cdn5&model_id={idstr}",
+    "id_list": ["1332848"/*teen*/,"1313097","1328331","1308252","1098549"/*teen bb stefany-white*/,"1311728","1313306","1336147",
+    "1329837","1324633"/*silvia-connettteen*/,"1336844","1336193","1232812"/*bb*/,"1306368"/*pp*/,"1173784"/*teen nn*/,
+  "1089283"/*teen violeta-carteer */,"1266209"/*pp zw mia-oceann*/,"1331345"/*cwen-burks teen 颜值*/],//精选主播
+    "video_type": "m3u8"
+  },
+  { 
+    "name": "Adult iptv(直播)", 
+    "host": "https://adultiptv.net/free-adult-iptv/",
+    "logo": "",//"https://files.adultiptv.net/adultiptvnet.jpg",
+    "desc": "成人 直播 国外 多频道 网速快",
+    "format_url": "https://live.adultiptv.net/{idstr}.m3u8",
+    "id_list": ["livecams","milf","bigdick","bigtits","fetish","pornstar",
+    "bigass","interracial","latina","pov","blowjob","teen","hardcore","cuckold","threesome","russian","lesbian","rough",
+    "gangbang","anal","compilation","brunette","blonde","gay","asian"],//所有频道列表
+    "video_type": "m3u8"
+  },
   { 
     "name": "ASMR", 
     "host": "https://www.866gw.com/fuliziyuan/",//狗窝福利 //"https://www.66hdw.com/", 好蛋网 盗版前者的资源
@@ -19,6 +323,15 @@ var srclist = [
     "desc": "极品 擦边 韩国",
     "format_url": "https://xztw.711888.xyz/mp4xjj1/20231017/{id}.gif",
     "id_range": [1, 236],//最新视频地址格式已修改，只有这么多了
+    "video_type": "mp4"
+  },
+  { 
+    "name": "水果派(vpn)", 
+    "host": "http://sgp1.info/",
+    "logo": "",
+    "desc": "解说 AV 传媒 需要梯子，有api可获取m3u8等信息",
+    "format_url": "http://sgp1.info/#/video?videoid={id}",
+    "id_range": [139, 1607],//最新视频地址格式已修改，只有这么多了
     "video_type": "mp4"
   },
 
@@ -237,7 +550,7 @@ $(document).ready(function () {
       /* 一上来就会触发一次，实测第二次触发时才是真的error */
       video.onerror = function change_videosrc(){
         error_cnt++;
-        if(error_cnt >= 2){
+        if(error_cnt >= 10){
           var i = parseInt(Math.random() * srclist.length);
           var slide = locked ? lock_node : srclist[i];//锁定的node or 随机选择一个
           console.log(`video${idx} 出错 ${error_cnt} 次，重新设置地址... 新视频源：${slide.name}`);
@@ -320,11 +633,23 @@ $(document).ready(function () {
     //设置某个node的视频源，获取真实地址并更新dom//入口函数，以下函数均被他调用
     function set_node_url(slide, index) {
       //console.log(slide,index);
-      if(slide.format_url){
-        spurl_id = GetRandomNum(slide.id_range[0], slide.id_range[1]);
-        spurl = slide.format_url.replace("{id}", spurl_id);
+      if (slide.api && slide.type==100) {
+        httpRequest(slide.api + `&page=${Math.floor(Math.random()*3000)}`, index, testcallback100);
+      }
+      else if (slide.api) {
+        httpRequest(slide.api + `?ac=detail&page=${Math.floor(Math.random()*3000)}`, index, testcallback0);
+      }
+      else if(slide.format_url){
+        if(slide.id_range){
+          spurl_id = GetRandomNum(slide.id_range[0], slide.id_range[1]);
+          spurl = slide.format_url.replaceAll("{id}", spurl_id);
+        }
+        else{
+          spurl_idstr = slide.id_list[Math.floor(Math.random() * slide.id_list.length)];
+          spurl = slide.format_url.replaceAll("{idstr}", spurl_idstr);
+        }
         console.log(`video${index} 视频源：${slide.name}, 随机视频地址: ${spurl}`);
-        add_video(slide, index, spurl);
+        add_video(slide.type, index, spurl);
         //判断是否已收藏
         var like_flag = like_list.includes(spurl);
         if(like_flag){this.querySelector(`#like${index} svg path`).setAttribute("fill", "red");}
@@ -337,25 +662,29 @@ $(document).ready(function () {
       }
     }
     //无需请求，直接就是视频地址，用hls.js播放m3u8视频
-    function add_video(slide, idx, m3u8url) {
+    function add_video(type, idx, url, bgimg = "") {
       //console.log('add_video 当前活动的Slide：', i);
       var video = document.getElementById(`video${idx}`);
-      video.setAttribute("data_src", m3u8url);
+      video.setAttribute("data_src", url);
+      video.setAttribute("poster", bgimg);
+      //判断是否已收藏
+      var like_flag = like_list.includes(url);
+      if(like_flag){this.querySelector(`#like${index} svg path`)?.setAttribute("fill", "red");}
 
-      if(slide.video_type == "mp4" || video.canPlayType('application/vnd.apple.mpegurl') != ''){
-        video.src = m3u8url;
-        video.addEventListener('canplay', function () {
+      if(type == "mp4" || video.canPlayType('application/vnd.apple.mpegurl') != ''){
+        video.src = url;
+        /*video.addEventListener('canplay', function () {
           video.play();
-        });
+        });*/
       }
       else if (Hls.isSupported()) {
         var hls = new Hls();
-        hls.loadSource(m3u8url);
+        hls.loadSource(url);
         hls.attachMedia(video);
-        hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+        /*hls.on(Hls.Events.MEDIA_ATTACHED, function () {
           video.muted = true;
           video.play();
-        });
+        });*/
       }
     }
     //发送请求，获取真实视频地址
@@ -370,44 +699,54 @@ $(document).ready(function () {
       }
       xhr.send();
     }
+    //请求后响应为一段json格式的字符串
+    function testcallback0(xhr, requrl, index) {
+      var jsondata = JSON.parse(xhr.responseText);
+      var idx = Math.floor(Math.random()*20);
+      var url = jsondata.list[idx].vod_play_url;
+      url = url.includes("$")?url.split("$")[1]:url; // 新json 接口
+      console.log(`video${index} 请求地址: ${requrl} , 返回json视频地址: ${url}`);
+      add_video("m3u8", index, url, jsondata.list[idx].vod_pic);
+      set_desc(index, `[${jsondata.list[idx].vod_class}]:${jsondata.list[idx].vod_name}`);
+    }
+    //请求后响应为一段json格式的字符串
+    function testcallback100(xhr, requrl, index) {
+      var jsondata = JSON.parse(xhr.responseText);
+      var idx = Math.floor(Math.random()*20);
+      var url = jsondata.data[idx].vpath; //老json 接口
+      console.log(`video${index} 请求地址: ${requrl} , 返回json视频地址: ${url}`);
+      add_video("m3u8", index, url, jsondata.data[idx].vod_pic);
+      set_desc(index, `[${jsondata.data[idx].category}]:${jsondata.data[idx].vod_title}`);
+    }
     //请求后响应为一段文字的api回调
     function testcallback(xhr, requrl, index) {
       var rsptext = xhr.responseText;
-      fixurl = rsptext.startsWith("//") ? ("http:" + rsptext) :      // "https://jiejie.uk/xjj/get/get0.php" 存在"//"开头的url
+      var url = rsptext.startsWith("//") ? ("http:" + rsptext) :      // "https://jiejie.uk/xjj/get/get0.php" 存在"//"开头的url
         rsptext.startsWith("https:http") ? rsptext.slice(6) :          // "https://jiejie.uk/xjj/get/get4.php" 存在这种错误的url
           rsptext.startsWith("http:http") ? rsptext.slice(5) :
             rsptext.startsWith("https://") ? rsptext :
               rsptext.startsWith("http://") ? rsptext :
                 "http://" + rsptext;
-      console.log(`video${index} 请求地址: ${requrl} , rsp视频地址(fix): ${fixurl}`);
-      var video = document.getElementById(`video${index}`);
-      if(video && fixurl){
-        video.src = fixurl;
-        video.setAttribute("data_src", fixurl);
-        //判断是否已收藏
-        var like_flag = like_list.includes(fixurl);
-        if(like_flag){this.querySelector(`#like${index} svg path`)?.setAttribute("fill", "red");}
-      }
+      console.log(`video${index} 请求地址: ${requrl} , rsp视频地址(fix): ${url}`);
+      add_video("mp4", index, url);
     }
     //请求后发生302重定向的api回调
     function testcallback2(xhr, requrl, index) {
-      video_url = xhr.responseURL
-      var video = document.getElementById(`video${index}`);
-      if(video && video_url){
-        video.src = video_url;
-        video.setAttribute("data_src", video_url);
-        //判断是否已收藏
-        var like_flag = like_list.includes(video_url);
-        if(like_flag){this.querySelector(`#like${index} svg path`)?.setAttribute("fill", "red");}
-      }
-      console.log(`video${index} 请求地址: ${requrl} , 302视频地址: ${video_url}`);
+      var url = xhr.responseURL;
+      console.log(`video${index} 请求地址: ${requrl} , 302视频地址: ${url}`);
+      add_video("mp4", index, url);
     }
 
-    //随机文字api的回调
-    function testcallback3(xhr, requrl, index) {
+    
+    function set_desc(index, desctext) {
       var idx = index < 2 ? index : 2;
       var desc = $(".desc_title")[idx];
-      desc && (desc.innerText = xhr.responseText);
+      desc && (desc.innerText = desctext);
+    }
+    //随机文字api的回调
+    function testcallback3(xhr, requrl, index) {
+      var desctext = xhr.responseText;
+      set_desc(index, desctext);
     }
     
 })
