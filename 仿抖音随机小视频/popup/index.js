@@ -669,7 +669,7 @@ $(document).ready(function () {
       video.setAttribute("poster", bgimg);
       //判断是否已收藏
       var like_flag = like_list.includes(url);
-      if(like_flag){this.querySelector(`#like${index} svg path`)?.setAttribute("fill", "red");}
+      if(like_flag){document.querySelector(`#like${idx} svg path`)?.setAttribute("fill", "red");}
 
       if(type == "mp4" || video.canPlayType('application/vnd.apple.mpegurl') != ''){
         video.src = url;
@@ -712,8 +712,9 @@ $(document).ready(function () {
     //请求后响应为一段json格式的字符串
     function testcallback100(xhr, requrl, index) {
       var jsondata = JSON.parse(xhr.responseText);
-      var idx = Math.floor(Math.random()*20);
+      var idx = Math.floor(Math.random()*20);//一般一次请求返回20条，随机选择一条视频
       var url = jsondata.data[idx].vpath; //老json 接口
+      url = url.includes("$")?url.split("$")[1]:url;
       console.log(`video${index} 请求地址: ${requrl} , 返回json视频地址: ${url}`);
       add_video("m3u8", index, url, jsondata.data[idx].vod_pic);
       set_desc(index, `[${jsondata.data[idx].category}]:${jsondata.data[idx].vod_title}`);
