@@ -1,0 +1,85 @@
+﻿<html>
+
+<head>
+    <title>管理rss源</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="ext/bootstrap.min.css">
+    <script type="text/javascript" src="ext/jquery.min.js"></script>
+    <script src="ext/bootstrap.min.js"></script>
+    <style>
+        .fileinput-button {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+            border: 1px solid #999;
+        }
+
+        .fileinput-button input{
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class='container-fluid'>
+        <p>管理rss源</p>
+        <br />
+        <b>导入导出 </b>
+        <span class="btn btn-sucess fileinput-button">
+            <span>导入opml文件</span>
+            <input type="file" id="loadfile" accept=".opml" />
+        </span>
+        <input  type="button" id="export_file" value="导出opml文件" /><br /><br />
+        <br />
+
+        <p>链接：
+            <input type="text" id="rssurl" size='60' />
+            <input type="button" id="del" value="删除rss源" />
+        </p>
+        <p>标题：
+            <input type="text" id="rsstitle" size='60' /></p>
+        <p>目录：
+            <input type="text" id="rssdir" size='60' /> (选填)</p>
+        <p>图标：
+            <input type="text" id="rssico" size='60' /> (选填)</p>
+        <input type="button" id="save" value="添加rss源（若存在则更新）" />
+        <br />
+        
+        <br />
+        <input type="button" id="clearfeeds" value="清空feeds缓存(慎用)" />
+        <br />
+        <br />
+        <p>
+            <input type="text" id="reqtime" />
+            <input type="button" id="reqtimebtn" value="设置自动请求rss源的时间间隔(分钟)" />
+        </p>
+        <p>
+            <input type="text" id="onceNums" />
+            <input type="button" id="onceNumsbtn" value="设置一次加载的items数量(默认10)" />
+        </p>
+        <p>
+            <input type="text" id="loadisRead" />
+            <input type="button" id="loadisReadbtn" value="设置是否加载已读的items条目(0/1)" />
+        </p>
+        <p>
+            <input type="text" id="loadDesc" />
+            <input type="button" id="loadDescbtn" value="设置是否加载预览(0/1)" />
+            <input type="text" id="loadDescimgmax" />
+            <input type="button" id="loadDescimgmaxbtn" value="设置预览中图片最大尺寸(默认300,单位px)" />
+        </p>
+        <p>
+            原名称：<input type="text" id="dirOldname" />
+            新名称：<input type="text" id="dirNewname" />
+            <input type="button" id="dirRenamebtn" value="目录重命名" />
+        </p>
+        <br />
+        <br />
+        <div id='rss'></div>
+    </div>
+    <script src="js/options.js"></script>
+</body>
+
+</html>
