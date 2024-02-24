@@ -17,40 +17,18 @@ var srclist18 = [
     "resource": 74260
   },
   {
-    "key": "18069d15-5723-57c4-a294-0072102b0755",
     "name": "💃美少女资源",
     "api": "https://www.msnii.com/api/json.php",
-    "download": "",
-    "playUrl": "",
-    "group": "默认",
-    "search": 1,
-    "status": true,
     "type": 1,
-    "id": 24
-  },{
-    "key": "d13830ce-161c-5df4-80dc-57f6166b4453",
+  },/*{
     "name": "🦆老鸭资源",
-    api: "https://api.apilyzy.com/api.php/provide/vod/",//?ac=detail&pg=2
-    "download": "",
-    "playUrl": "https://player.77lehuo.com/aliplayer/?url=",
-    "group": "默认",
-    "search": 1,
-    "status": true,
+    "api": "https://api.apilyzy.com/api.php/provide/vod/",//?ac=detail&pg=2
     "type": 1,
-    "id": 26,
-    "isActive": true,
-    "resource": 158769
-  },{
-    "key": "a37bc344-b64a-54ef-914f-0298db487505",
+  },*/
+  {
     "name": "🔢155资源",
     "api": "https://155api.com/api.php/provide/vod/at/json/",
-    "download": "",
-    "playUrl": "https://www.155jx.com/?url=",
-    "group": "默认",
-    "search": 1,
-    "status": true,
     "type": 1,
-    "id": 27
   },{
     "name": "🦊探探资源",
     "api": "https://apittzy.com/api.php/provide/vod/", //?ac=detail
@@ -221,15 +199,15 @@ var srclist18 = [
     "gangbang","anal","compilation","brunette","blonde","gay","asian"],//所有频道列表
     "video_type": "m3u8"
   },
-  /*{ 
+  { 
     "name": "ASMR", //失效
     "host": "https://www.866gw.com/fuliziyuan/",//狗窝福利 //"https://www.66hdw.com/", 好蛋网 盗版前者的资源
     "logo": "./imgs/asmr.svg",
     "desc": "ASMR 狗窝福利 好蛋网",
     "format_url": "https://88888888.sydwzpks.com:4433/88/{id}/index.m3u8",
-    "id_range": [1100, 4253],//685
+    "id_range": [1100, 4309],//685
     "video_type": "m3u8"
-  },*/
+  },
   { 
     "name": "BT8", 
     "host": "fb.qu8.top",
@@ -252,13 +230,61 @@ var srclist18 = [
 
 var srclist = [
   //1.spurl 就是视频源，可直接访问播放，访问后302跳转到随机地址（目前通过xhr获取重定向后的真实地址，便于收藏）
+
   //惜染  //todo:该站类似网盘，图片、视频资源众多
-  { name: "小姐姐", spurl: "https://hefollo.cn/apis.php?type=小姐姐视频"}, 
-  { name: "优质小姐姐", spurl: "https://hefollo.cn/api.php?type=优质小姐姐视频"},
-  { name: "抖音小姐姐", spurl: "https://hefollo.cn/api.php?type=抖音小姐姐视频"},
+  //{ name: "小姐姐", spurl: "https://hefollo.cn/apis.php?type=小姐姐视频"}, 
+  //{ name: "优质小姐姐", spurl: "https://hefollo.cn/api.php?type=优质小姐姐视频"},
+  //{ name: "抖音小姐姐", spurl: "https://hefollo.cn/api.php?type=抖音小姐姐视频"},
+
+  //遇见api，http://api.yujn.cn
+  { name: "快手小姐姐", spurl: "http://api.yujn.cn/api/ksxjjsp.php?type=video"},
+  { name: "遇见1", spurl: "http://api.yujn.cn/api/zzxjj.php?type=video"},
+  { name: "遇见2", spurl: "http://api.yujn.cn/api/xjj.php?type=video"},
+  { name: "遇见3", spurl: "http://api.yujn.cn/api/juhexjj.php?type=video"},
+  { name: "黑丝", spurl: "http://api.yujn.cn/api/heisis.php?type=video"},
+  { name: "白丝", spurl: "http://api.yujn.cn/api/baisis.php?type=video"},
+  { name: "漫展", spurl: "http://api.yujn.cn/api/manzhan.php?type=video"},
+  { name: "鞠婧祎", spurl: "http://api.yujn.cn/api/jjy.php?type=video"},
+  { name: "章若楠", spurl: "http://api.yujn.cn/api/zrn.php?type=video"},
+  { name: "周杰伦", spurl: "http://api.yujn.cn/api/jay.php?type=video"},
+  //{ name: "萌娃", spurl: "http://api.yujn.cn/api/mengwa.php?type=video"},
+  { name: "杀姐", spurl: "http://api.yujn.cn/api/shajie.php?type=video"},
+  { name: "快手翻唱", spurl: "http://api.yujn.cn/api/ks_fc.php?type=video"},
+  { name: "汉服", spurl: "http://api.yujn.cn/api/hanfu.php?type=video"},
+  { name: "极品美腿", spurl: "http://api.yujn.cn/api/jpmt.php?type=video"},
+  { name: "慢摇", spurl: "http://api.yujn.cn/api/mamyao.php?type=video"},
+  { name: "穿搭", spurl: "http://api.yujn.cn/api/chuanda.php?type=video"},
+  { name: "丝滑舞蹈", spurl: "http://api.yujn.cn/api/shwd.php?type=video"},
+  { name: "完美身材", spurl: "http://api.yujn.cn/api/wmsc.php?type=video"},
+  { name: "吊带", spurl: "http://api.yujn.cn/api/diaodai.php?type=video"},
+  { name: "清纯", spurl: "http://api.yujn.cn/api/qingchun.php?type=video"},
+  { name: "COS", spurl: "http://api.yujn.cn/api/COS.php?type=video"},
+  { name: "女高", spurl: "http://api.yujn.cn/api/nvgao.php?type=video"},
+  { name: "街拍", spurl: "http://api.yujn.cn/api/jiepai.php?type=video"},
+  { name: "快手变装", spurl: "http://api.yujn.cn/api/ksbianzhuang.php?type=video"},
+  { name: "懒羊羊翻唱", spurl: "http://api.yujn.cn/api/lyy.php?type=video"},
+  { name: "双倍快乐", spurl: "http://api.yujn.cn/api/sbkl.php?type=video"},
+  { name: "萝莉", spurl: "http://api.yujn.cn/api/luoli.php?type=video"},
+  { name: "蜡笔小新翻唱", spurl: "http://api.yujn.cn/api/xiaoxin.php?type=video"},
+  { name: "甜妹", spurl: "http://api.yujn.cn/api/tianmei.php?type=video"},
+  { name: "JK", spurl: "http://api.yujn.cn/api/jksp.php?type=video"},
+  { name: "玉足", spurl: "http://api.yujn.cn/api/yuzu.php?type=video"},
+  { name: "热舞", spurl: "http://api.yujn.cn/api/rewu.php?type=video"},
+  //{ name: "小哥哥", spurl: "http://api.yujn.cn/api/xgg.php?type=video"},
+  //{ name: "胖狐推荐", spurl: "http://api.yujn.cn/api/panghu.php?type=video"}, //err
+  { name: "漫画芋", spurl: "http://api.yujn.cn/api/manhuay.php?type=video"},
+  //{ name: "翻唱", spurl: "http://api.yujn.cn/api/fanchang.php?type=video"}, //慢
+  ///{ name: "海边", spurl: "http://api.yujn.cn/api/haibian.php?type=video"},
+  //{ name: "足球⚽️", spurl: "http://api.yujn.cn/api/zuqiu.php?type=video"},
+  { name: "潇潇", spurl: "http://api.yujn.cn/api/xiaoxiao.php?type=video"},
+  { name: "变装", spurl: "http://api.yujn.cn/api/bianzhuang.php?type=video"},
+  //{ name: "动漫视频", spurl: "http://api.yujn.cn/api/dmsp.php?type=video"},//慢
+  //{ name: "PC风景", spurl: "http://api.yujn.cn/api/pcfj.php?type=video"},//慢
+  //{ name: "DJ", spurl: "http://api.yujn.cn/api/dj.php?type=video"},//VOC
+  
 
   { name: "村少", spurl: "https://www.cunshao.com/666666/api/web.php?_t="},
-  { name: "清晰横版", spurl: "https://www.cunshao.com/666666/api/pc.php?_t="},
+  { name: "高清横屏", spurl: "https://www.cunshao.com/666666/api/pc.php?_t="},
 
   //以下均是bt8内容，地址发布页：https://fb.qu8.top/mnfb.php
   { name: "DJ姐姐", spurl: "http://xjj1.716888.xyz/fenlei/djxjj/dj1.php?random="},
@@ -293,7 +319,11 @@ var srclist = [
 
   { name: "188sp", spurl: "https://188sp.711888.xyz/188/video.php" },
   { name: "抖音", spurl: "https://xiranimg.com/api.php?type=dyxjj&t="},
-
+  { name: "横屏高清", spurl: "https://kpi.21lhz.cn/api.php?url=v1.21lhz.cn"},//https://v1.21lhz.cn/API/Video/api.php
+  { name: "抖音2", spurl: "https://xjj.349457.xyz/video.php?_t="},
+  { name: "21lhz", spurl: "https://21lhz.cn/cdn/api/roll.php?video=xsp"},
+  { name: "春秋", spurl: "https://www.chunqiuss.com/xjj/get.php"},
+  
   
 
   //以下均为api-girl收集
@@ -308,43 +338,42 @@ var srclist = [
   { name: "玉足", spurl: "https://www.mnapi.cn/yz.php?type=video" },
   { name: "双马尾", spurl: "https://www.mnapi.cn/smw.php?type=video" },
   { name: "帅哥", spurl: "https://www.mnapi.cn/sg.php?type=video" },
-  { name: "摸鱼日报", spurl: "https://dayu.qqsuu.cn/moyuribaoshipin/apis.php?t=" },
 
-  { name: "qinggongju", spurl: "https://v.api.aa1.cn/api/api-girl-11-02/index.php?type=video&t=" }, //302
+  { name: "摸鱼日报", spurl: "https://dayu.qqsuu.cn/moyuribaoshipin/apis.php?t=" },
+  //{ name: "qinggongju", spurl: "https://v.api.aa1.cn/api/api-girl-11-02/index.php?type=video&t=" }, //302//502
   { name: "wpon", spurl: "https://tucdn.wpon.cn/api-girl/index.php?wpon=url&t=" }, //302
-  { name: "woeo", spurl: "https://api.woeo.net/API/api-girl/index.php?type=mp4&t=" },
+  //{ name: "woeo", spurl: "https://api.woeo.net/API/api-girl/index.php?type=mp4&t=" },//404
   { name: "yujn", spurl: "http://api.yujn.cn/api/zzxjj.php?type=video&t=" },
   { name: "777.cam", spurl: "https://777.cam/api/M/?type=302&t=" },
-  { name: "高清横版", spurl: "https://api.heylie.cn/api/video?v=xq&t=" },//限制ip每天只能访问一次
+  //{ name: "高清横版", spurl: "https://api.heylie.cn/api/video?v=xq&t=" },//限制ip每天只能访问一次
   { name: "🛥游艇girl", spurl: "https://play.cnnnnet.com/youtinggirl.php?_t=" },
-
-
-  
-
-  //{ name: "你好污啊", spurl: "https://www.nihaowua.com/v/video.php?_t=" },  //mp4 质量高，速度快 //2024.01.15gg
+  { name: "你好污啊", spurl: "https://www.nihaowua.com/v/video.php?_t=" },  //mp4 质量高，速度快 //2024.01.15gg //ok
   { name: "男人之家", spurl: "http://v.nrzj.vip/video.php?_t=" },           //质量高,更新少
-  //{ name: "完美视频", spurl: "http://wmsp.cc/video.php?_t=" }, gg
+  //{ name: "完美视频", spurl: "http://wmsp.cc/video.php?_t=" }, 404
   { name: "xyz", spurl: "https://xjj.349457.xyz/video.php?_t=" },
   //{ name: "快抖社", spurl: "http://www.kuaidoushe.com/zb_users/theme/lanyexvideo/include/video.php?t=" }, //2024.01.15 接口返回值更改为json todo
   //{ name: "有福利", spurl: "https://xjj.pw/zb_users/theme/lanyexvideo/include/video.php?t=" }, //2024.01.15 接口地址更改 todo
-  //{ name: "yhqtv", spurl: "http://yhqtv.com/girl/get.php?_t=" }, gg
+  //{ name: "yhqtv", spurl: "http://yhqtv.com/girl/get.php?_t=" }, //No redirect found
   //{ name: "dnwz99", spurl: "https://dnwz99.wang/cute-girl/video.php?_t=" },//2024.01.15 404
   { name: "快手xjj", spurl: "http://ksxjj.txqq.pro/video.php?_t=" },   //2次302 //2024.01.15 部分视频地址失效
   { name: "兔儿集", spurl: "http://v.tuerji.net/video.php?_t=", logo: "https://tuerji.net/wp-content/uploads/2020/10/favicon-tuerji.ico" },
-
   { name: "xiaoac", spurl: "https://www.xiaoac.com/ac/xiaojiejie/video.php?_t=" },//2024.01.15 可用率50%
   // { name: "baozi66", spurl: "http://hc.baozi66.top:99/xjj1.php&t=" }, //2024.01.15 404 
   { name: "99sgou", spurl: "https://www.99sgou.com/xjj/video.php?_t=" },
   { name: "小男人", spurl: "https://xiao.nanna.ren/video.php?_t=" },
-  { name: "188导航", spurl: "https://188sp.711888.xyz/188/video.php?_t=" },
-
+  { name: "188", spurl: "https://188sp.711888.xyz/188/video.php?_t=" },
+  { name: "qqsuu", spurl: "https://api.qqsuu.cn/api/dm-xjj?&apiKey=856f80fe0c92205fa59107135c872733" },
+  { name: "qinggongju", spurl: "https://qinggongju.com/xiaojie/video.php" },
+  
+  //0. 此类没有302,直接返回mp4数据。 缺点：无法获取真实地址，无法下载当前当前播放的视频
+  { name: "mhycould", spurl: "http://api.mhycould.fun:81/api/dy/"},//GET 200 ,Content-Type: video/mp4 //虽然没有302,但是xhr.responseURL是原始值，也ok
 
   //2.requrl 是需要请求之后得到视频源的src  (存在CROS跨域问题，可安装插件解决)
   { name: "抖一抖", requrl: "http://dou.plus/get/get1.php?_t=", logo: "http://dou.plus/logo.png" },
   
   //{ name: "diskgirl(用户1)", requrl: "https://mm.diskgirl.com/get/get.php?user=1&_t=" },
-  { name: "diskgirl(国内)", requrl: "https://mm.diskgirl.com/get/get1.php?_t=" },
-  { name: "diskgirl(国外)", requrl: "https://mm.diskgirl.com/get/get2.php?_t=" },
+  { name: "diskgirl", requrl: "https://mm.diskgirl.com/get/get1.php?_t=" },//国内
+  { name: "diskgirl2", requrl: "https://mm.diskgirl.com/get/get2.php?_t=" },//国外
 
   //{ name:"韩国福利", spurl:"https://jiejie.uk/xjj/fuli/video.php"},  //质量高,目前无法播放, 302url => https://player.tvv.tw/player/?url=//pic.xiazai.de/fuli/GirlsRepublic/xxx.mp4
   { name: "tiktok", spurl: "https://jiejie.uk/xjj/tiktok/video.php" },//2024.01.15 不稳定
@@ -365,9 +394,18 @@ var srclist = [
   { name: "小姐姐11", requrl: "https://jiejie.uk/xjj/get/get11.php" },
   { name: "小姐姐12", requrl: "https://jiejie.uk/xjj/get/get12.php" },
 
-  { name: "onexiaolaji", requrl: "https://www.onexiaolaji.cn/RandomPicture/video/api.php?uid=&type=url&_t=" },
+  //{ name: "onexiaolaji", requrl: "https://www.onexiaolaji.cn/RandomPicture/video/api.php?uid=&type=url&_t=" },//视频失效
   
-  { name: "平凡1(你懂的)", requrl: "https://pf129.com/xjj/get/get1.php?_t=" },//2024.01.15 gg 1~9 //2024年01月29日 good 1~9
+  { name: "平凡1", requrl: "https://pf129.com/xjj/get/get1.php?_t=" },//2024.01.15 gg 1~9 //2024年01月29日 good 1~9
+  { name: "平凡2", requrl: "https://pf129.com/xjj/get/get2.php?_t=" },
+  { name: "平凡3", requrl: "https://pf129.com/xjj/get/get3.php?_t=" },
+  { name: "平凡4", requrl: "https://pf129.com/xjj/get/get4.php?_t=" },
+  { name: "平凡5", requrl: "https://pf129.com/xjj/get/get5.php?_t=" },
+  { name: "平凡6", requrl: "https://pf129.com/xjj/get/get6.php?_t=" },
+  //{ name: "平凡7", requrl: "https://pf129.com/xjj/get/get7.php?_t=" },//err
+  { name: "平凡8", requrl: "https://pf129.com/xjj/get/get8.php?_t=" },
+  { name: "平凡9", requrl: "https://pf129.com/xjj/get/get9.php?_t=" },
+
   { name: "treason", requrl: "http://api.treason.cn/API/xjj.php?_t=" },
 
   //3. 同1、2类似，但是返回的是个json，需要解析出url
@@ -475,6 +513,9 @@ $(document).ready(function () {
       //一言：https://tenapi.cn/yiyan/?format=text
       //随机情话：https://api.uomg.com/api/rand.qinghua?format=text
       httpRequest("https://api.uomg.com/api/rand.qinghua?format=text", idx, testcallback3);
+      //随机头像
+      //https://v2.api-m.com/api/head?return=302
+      //if(!node.logo) httpRequest("https://api.lolimi.cn/API/sjtx/?type=text", idx, testcallback4);
       
       //用于设置当前slide的视频src地址，之所以不在return <div>中直接填充，是因为这个webreq比较慢。直接填是空的，需要回调填充。//todo:可优化改成then链式调用
       set_node_url(node,idx);
@@ -507,6 +548,9 @@ $(document).ready(function () {
         error_cnt++;
         console.log(`video${idx} 出错 ${error_cnt} 次 (networkState=${video.networkState},readyState=${video.readyState})，换一个...`);
         changeslide(idx);
+        //2024年02月04日: 有些视频错误一次但后续能加载成功（表现为刚播放1~2s就被替换）；
+        //但大部分确实是404、403等终极形态不可能再成功了，这里又无法区分(都是networkState=3,readyState=0)，
+        //考虑到观看体验（换一个能看的 比 等一个不能看的 好），所以都换掉好了
       };
 
       document.getElementById(`homepage${idx}`).onclick = function homepage() {
@@ -522,12 +566,13 @@ $(document).ready(function () {
         mui.alert(locked ? "只看该作者功能开启!" : "只看该作者功能关闭!")
       };
       document.getElementById(`follow${idx}`).onclick = function follow() {
+        if(like_list==[]){mui.alert("[我的收藏❤️] 为空，请先收藏几个视频！");return;}
         locked = 1;
         lock_node = {
           name: "我的收藏❤️",
           format_url:"{idstr}",
           id_list: like_list,
-          video_type: "mp4/m3u8",//todo：实际上也有m3u8
+          video_type: "mp4/m3u8",
         };
         mui.alert("[我的收藏❤️] 开启！")
         //mui.alert("[关注功能] 敬请期待!")
@@ -562,10 +607,10 @@ $(document).ready(function () {
         if(switch_btn_flag%5 == 0){
             _tmp = srclist;
             srclist = srclist18;
-            mui.toast("好像触发了什么奇妙的东西...");
+            mui.toast("好像触发了彩蛋...");
         }else{
             srclist = _tmp;
-            mui.toast(`[更多功能] 敬请期待! ${switch_btn_flag}会有什么惊喜呢...`);
+            mui.toast(`[更多功能] 敬请期待! ${switch_btn_flag}`);
         }
       };
     }
@@ -624,13 +669,20 @@ $(document).ready(function () {
         httpRequest(slide.spurl /*+ Math.random()*/, index, testcallback2);
       }
       else if (slide.requrl) {
-        httpRequest(slide.requrl + Math.random(), index, testcallback);
+        httpRequest(slide.requrl /*+ Math.random()*/, index, testcallback);
       }
     }
     //无需请求，直接就是视频地址，用hls.js播放m3u8视频
     function add_video(type, idx, url, bgimg = "") {
       //console.log('add_video 当前活动的Slide：', i);
       var video = document.getElementById(`video${idx}`);
+      //【已知bug】2024年02月04日：因为开启了虚拟slide最多只有三个，若某个视频xhr很慢，用户已经划走了超过2个，则这里get会失败，导致后续绑定报错；
+      //解决方案：后期可改为后台单独task请求随机api,将视频url存入list，用户滑动从list中消费（出队），加入虚拟slides
+      //好处：用户滑动添加新slide时，无需xhr异步加载+回调设置video.src, 可直接设置完事；
+      if(!video) {
+        console.log(`等待期间主动划走了超过2个（导致找不到视频div）, 准备绑定的slide=${idx} 当前slide=${swiper.activeIndex}`); 
+        return;
+      }
       video.setAttribute("data_src", url);
       video.setAttribute("poster", bgimg);
       //判断是否已收藏
@@ -739,6 +791,13 @@ $(document).ready(function () {
     function testcallback3(xhr, requrl, index) {
       var desctext = xhr.responseText;
       set_desc(index, desctext);
+    }
+    function testcallback4(xhr, requrl, index) {
+      //console.log(`video${index} img请求地址: ${requrl} , img响应地址: ${xhr.responseText}`);
+      var desctext = xhr.responseText;
+      var img = $(`#homepage${index}`);//todo
+      //console.log(img);
+      img && img[0] && (img[0].src = desctext);
     }
     
 })
